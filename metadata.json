@@ -15,7 +15,7 @@
 				"Name": "...which was a fork of zren's Tiled Menu 46"
 			}
 		],
-		"BugReportUrl": "https://github.com/kombatant/plasma-applet_tiled_rld/issues",
+		"BugReportUrl": "https://github.com/Kombatant/plasma-applet-tiled_rld/issues",
 		"Category": "Application Launchers",
 		"Description": "A menu based on Windows 10's Start Menu.",
 		"Description[es]": "Menú basado en el menú de inicio de Windows 10",
@@ -49,7 +49,7 @@
 		"Name[tr]": "Döşeli Menü",
 		"Name[zh_TW]": "方塊磚選單",
 		"Version": "v0.2",
-		"Website": "https://github.com/kombatant/plasma-applet_tiled_rld"
+		"Website": "https://github.com/Kombatant/plasma-applet-tiled_rld"
 	},
 	"X-Plasma-API-Minimum-Version": "6.0",
 	"X-Plasma-Provides": [
