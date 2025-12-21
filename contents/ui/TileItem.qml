@@ -45,7 +45,9 @@ Item {
 			anchors.top: parent.top
 			anchors.margins: cellMargin
 			width: modelData.w * cellBoxSize
-			height: Math.max(0, parent.height - (descriptionLabel.visible ? (descriptionLabel.height + descriptionSpacing) : 0))
+			// Reserve bottom spacing so vertical gaps match horizontal gaps.
+			// (Horizontal gap is cellMargin from each neighbor => total tileMargin.)
+			height: Math.max(0, parent.height - (descriptionLabel.visible ? (descriptionLabel.height + descriptionSpacing) : 0) - (cellMargin * 2))
 			readonly property int minSize: Math.min(width, height)
 			readonly property int maxSize: Math.max(width, height)
 			hovered: tileMouseArea.containsMouse

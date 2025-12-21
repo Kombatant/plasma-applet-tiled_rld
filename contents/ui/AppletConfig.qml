@@ -168,12 +168,16 @@ Item {
 
 	readonly property real tileScale: plasmoid.configuration.tileScale
 	readonly property int cellBoxUnits: 80
-	readonly property int cellMarginUnits: plasmoid.configuration.tileMargin
-	readonly property int cellSizeUnits: cellBoxUnits - cellMarginUnits*2
-	readonly property int cellSize: cellSizeUnits * tileScale * Screen.devicePixelRatio
+	// "Tile Margin" is expressed as the *gap between tiles* in px.
+	// Since adjacent tiles each contribute spacing on their touching edge,
+	// we split the gap across each tile side.
+	readonly property real tileMarginUnits: plasmoid.configuration.tileMargin
+	readonly property real cellMarginUnits: tileMarginUnits / 2
+	readonly property real cellSizeUnits: cellBoxUnits - tileMarginUnits
+	readonly property int cellSize: Math.round(cellSizeUnits * tileScale * Screen.devicePixelRatio)
 	readonly property real cellMargin: cellMarginUnits * tileScale * Screen.devicePixelRatio
 	readonly property real cellPushedMargin: cellMargin * 2
-	readonly property int cellBoxSize: cellMargin + cellSize + cellMargin
+	readonly property int cellBoxSize: Math.round(cellMargin + cellSize + cellMargin)
 	readonly property int tileGridWidth: plasmoid.configuration.favGridCols * cellBoxSize
 
 	readonly property int favCellWidth: 60 * Screen.devicePixelRatio
