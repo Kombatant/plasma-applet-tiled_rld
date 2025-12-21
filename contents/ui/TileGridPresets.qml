@@ -99,7 +99,7 @@ PlasmaExtras.MenuItem {
 		if (isAppInstalled('octopi.desktop')) {
 			return tileGrid.addTile(x, y, {
 				url: 'octopi.desktop',
-				label: i18n("Software Center"),
+				label: i18n("Software Centre"),
 			})
 		} else if (isAppInstalled('org.manjaro.pamac.manager.desktop')) {
 			return tileGrid.addTile(x, y, {
@@ -109,12 +109,12 @@ PlasmaExtras.MenuItem {
 		} else if (isAppInstalled('org.opensuse.yast.Packager.desktop')) {
 			return tileGrid.addTile(x, y, {
 				url: 'org.opensuse.yast.Packager.desktop',
-				label: i18n("Software Center"),
+				label: i18n("Software Centre"),
 			})
 		} else if (isAppInstalled('org.kde.discover')) {
 			return tileGrid.addTile(x, y, {
 				url: 'org.kde.discover',
-				label: i18n("Software Center"),
+				label: i18n("Software Centre"),
 			})
 		} else {
 			return null

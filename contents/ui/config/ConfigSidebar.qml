@@ -114,7 +114,7 @@ LibConfig.FormKCM {
 		}
 		RowLayout {
 			QQC2.RadioButton {
-				text: i18n("Custom Color")
+				text: i18n("Custom Colour")
 				QQC2.ButtonGroup.group: sidebarThemeGroup.group
 				checked: !plasmoid.configuration.sidebarFollowsTheme
 				onClicked: plasmoid.configuration.sidebarFollowsTheme = false

@@ -120,7 +120,7 @@ ColumnLayout {
 			}
 
 			TileEditorColorGroup {
-				title: i18n("Background Color")
+				title: i18n("Background Colour")
 				placeholderText: config.defaultTileColor
 				key: 'backgroundColor'
 			}

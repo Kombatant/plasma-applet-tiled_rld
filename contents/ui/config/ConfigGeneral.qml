@@ -144,13 +144,13 @@ LibConfig.FormKCM {
 
 	LibConfig.RadioButtonGroup {
 		id: tilesThemeGroup
-		Kirigami.FormData.label: i18n("Background Color")
+		Kirigami.FormData.label: i18n("Background Colour")
 		Kirigami.FormData.buddyFor: defaultTileColorRadioButton
 		spacing: 0 // "Custom Color" has lots of spacings already
 		RowLayout {
 			QQC2.RadioButton {
 				id: defaultTileColorRadioButton
-				text: i18n("Custom Color")
+				text: i18n("Custom Colour")
 				QQC2.ButtonGroup.group: tilesThemeGroup.group
 				checked: defaultTileColorColor.value !== "#00000000"
 				onClicked: {
@@ -185,7 +185,7 @@ LibConfig.FormKCM {
 		Kirigami.FormData.label: i18n("Text Alignment")
 		model: [
 			{ value: "left", text: i18n("Left") },
-			{ value: "center", text: i18n("Center") },
+			{ value: "center", text: i18n("Centre") },
 			{ value: "right", text: i18n("Right") },
 		]
 	}
@@ -194,7 +194,7 @@ LibConfig.FormKCM {
 		Kirigami.FormData.label: i18n("Group Text Alignment")
 		model: [
 			{ value: "left", text: i18n("Left") },
-			{ value: "center", text: i18n("Center") },
+			{ value: "center", text: i18n("Centre") },
 			{ value: "right", text: i18n("Right") },
 		]
 	}
