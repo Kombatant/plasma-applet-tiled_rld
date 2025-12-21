@@ -4,7 +4,7 @@ A menu based on Windows 10's Start Menu.
 
 Forked from firefly's Tiled Menu (you can find it here: https://github.com/firefly75/plasma-applet-tiledmenu), which is a fork of zren's Tiled Menu (here: https://github.com/Zren/plasma-applet-tiledmenu). 
 
-Using this as a playground to see how much I can fix/add just by using LLMs (kinda frustrating because they're dumb, but a learning experience nevertheless). LLMs made far too many changes obviously for this fork to be any useful to the code it was forked from, hence the new branch.
+Using this as a playground to see how much I can fix/add just **by using LLMs** (kinda frustrating because they're dumb, but a learning experience nevertheless). **LLMs made far too many changes obviously for this fork to be any useful to the code it was forked from, hence the new branch.**
 
 Usable but STILL HAS BUGS so beware!
 
