@@ -6,7 +6,7 @@ Forked from firefly's Tiled Menu (you can find it here: https://github.com/firef
 
 Using this as a playground to see how much I can fix/add just **by using LLMs** (kinda frustrating because they're dumb, but a learning experience nevertheless). **LLMs made far too many changes obviously for this fork to be any useful to the code it was forked from, hence the new branch.**
 
-Usable but STILL HAS BUGS so beware!
+**Usable but STILL HAS BUGS so beware!**
 
 * Supports:
     * Pin/Favourite apps/files through the context menu (or by dragging them from dolphin).
