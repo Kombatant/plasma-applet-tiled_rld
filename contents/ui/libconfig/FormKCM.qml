@@ -13,20 +13,36 @@ KCM.SimpleKCM {
 		id: formLayout
 	}
 
-	// https://invent.kde.org/plasma/plasma-desktop/-/blame/master/desktoppackage/contents/configuration/AppletConfiguration.qml
-	// AppletConfiguration.implicitWidth: Kirigami.Units.gridUnit * 40 = 720
-	// AppletConfiguration.Layout.minimumWidth: Kirigami.Units.gridUnit * 30 = 540
-	// In practice, Window.width = 744px is a typical FormLayout.wideMode switchWidth
-	// A rough guess is 128+24+180+10+360+24+20 = 746px
-	// TabSidebar=128x, Padding=24px, Labels=180px, Spacing=10px, Controls=360px, Padding=24px, Scrollbar=20px
-	// However the default is only 720px. So we'll set it to a 800px minimum to avoid wideMode=false
-	property int wideModeMinWidth: 800 * Screen.devicePixelRatio
+	// Historically we forced a large minimum width to keep FormLayout in wideMode.
+	// On Plasma 6 (especially with fractional scaling), that results in a config
+	// window that's disproportionately wide with lots of empty horizontal space.
+	//
+	// Use Kirigami grid units (already DPI-aware) and align with Plasma defaults.
+	// https://invent.kde.org/plasma/plasma-desktop/-/blob/master/desktoppackage/contents/configuration/AppletConfiguration.qml
+	// - implicitWidth: Kirigami.Units.gridUnit * 40
+	// - minimumWidth:  Kirigami.Units.gridUnit * 30
+	property int wideModeMinWidth: Kirigami.Units.gridUnit * 30
+	property int preferredWindowWidth: Kirigami.Units.gridUnit * 40
+
+	function _applyWindowWidthConstraints() {
+		if (!Window.window || !Window.window.visible) {
+			return
+		}
+		// Keep the dialog reasonably sized on open.
+		// Still lets the user manually resize after it becomes visible.
+		if (Window.window.width < wideModeMinWidth) {
+			Window.window.width = wideModeMinWidth
+		} else if (Window.window.width > preferredWindowWidth) {
+			Window.window.width = preferredWindowWidth
+		}
+	}
 	Window.onWindowChanged: {
 		if (Window.window) {
 			Window.window.visibleChanged.connect(function(){
-				if (Window.window && Window.window.visible && Window.window.width < wideModeMinWidth) {
-					Window.window.width = wideModeMinWidth
-				}
+				// Defer the clamp: the configuration window often applies its own
+				// initial size during show; clamping too early gets overridden.
+				_applyWindowWidthConstraints()
+				Qt.callLater(_applyWindowWidthConstraints)
 			})
 		}
 	}
