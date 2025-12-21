@@ -152,7 +152,14 @@ LibConfig.FormKCM {
 				id: defaultTileColorRadioButton
 				text: i18n("Custom Color")
 				QQC2.ButtonGroup.group: tilesThemeGroup.group
-				checked: true
+				checked: defaultTileColorColor.value !== "#00000000"
+				onClicked: {
+					// If we're currently in the Transparent state, switch back to a non-transparent
+					// value so this radio can remain selected.
+					if (defaultTileColorColor.value === "#00000000") {
+						defaultTileColorColor.text = ""
+					}
+				}
 			}
 			LibConfig.ColorField {
 				id: defaultTileColorColor
@@ -164,11 +171,12 @@ LibConfig.FormKCM {
 			}
 		}
 		QQC2.RadioButton {
+			id: transparentTileColorRadioButton
 			text: i18n("Transparent")
 			QQC2.ButtonGroup.group: tilesThemeGroup.group
+			checked: defaultTileColorColor.value === "#00000000"
 			onClicked: {
 				defaultTileColorColor.text = "#00000000"
-				defaultTileColorRadioButton.checked = true
 			}
 		}
 	}
