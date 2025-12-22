@@ -24,4 +24,4 @@ Using this as a playground to see how much I can fix/add just **by using LLMs** 
 
 ![](https://i.imgur.com/I057IFC.png)
 
-![](https://i.imgur.com/Cj9XlOi.gif)
+![](https://github.com/Kombatant/plasma-applet-tiled_rld/blob/fc794773f8b69ca345e9f2434c99932297415ade/icons/tiled_rld_animation.gif)
