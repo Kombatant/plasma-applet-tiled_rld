@@ -106,7 +106,7 @@ ColumnLayout {
 				}
 				onDialogOpen: function(dialog) {
 					dialog.title = i18n("Choose an image")
-					dialog.nameFilters.unshift(i18n("Image Files (*.png *.jpg *.jpeg *.bmp *.svg *.svgz)"))
+					dialog.nameFilters.unshift(i18n("Image Files (*.png *.apng *.gif *.webp *.jpg *.jpeg *.bmp *.svg *.svgz)"))
 				}
 			}
 

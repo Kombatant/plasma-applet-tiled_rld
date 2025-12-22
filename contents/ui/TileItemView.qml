@@ -8,6 +8,35 @@ Rectangle {
 	color: appObj.backgroundColor
 	property color gradientBottomColor: Qt.darker(appObj.backgroundColor, 2.0)
 
+	function _fileExtFromUrl(url) {
+		if (!url) {
+			return ""
+		}
+		var s = ("" + url).toLowerCase()
+		// Strip query/fragment to make extension detection more reliable.
+		var q = s.indexOf("?")
+		if (q >= 0) {
+			s = s.substring(0, q)
+		}
+		var h = s.indexOf("#")
+		if (h >= 0) {
+			s = s.substring(0, h)
+		}
+		// For file URLs, keep the path portion; extension logic works either way.
+		var dot = s.lastIndexOf(".")
+		if (dot < 0 || dot === s.length - 1) {
+			return ""
+		}
+		return s.substring(dot + 1)
+	}
+
+	readonly property bool backgroundIsAnimated: {
+		var ext = _fileExtFromUrl(appObj.backgroundImage)
+		return ext === "gif" || ext === "apng" || ext === "webp"
+	}
+	readonly property bool backgroundAnimatedLoadFailed: backgroundIsAnimated && backgroundAnimatedImage.status === Image.Error
+	readonly property bool backgroundUseAnimatedRenderer: backgroundIsAnimated && !backgroundAnimatedLoadFailed
+
 	Component {
 		id: tileGradient
 		Gradient {
@@ -58,10 +87,20 @@ Rectangle {
 		}
 	]
 
+	AnimatedImage {
+		id: backgroundAnimatedImage
+		anchors.fill: parent
+		visible: !!appObj.backgroundImage && tileItemView.backgroundUseAnimatedRenderer
+		source: tileItemView.backgroundIsAnimated ? appObj.backgroundImage : ""
+		fillMode: Image.PreserveAspectCrop
+		asynchronous: true
+		playing: visible
+	}
+
 	Image {
 		id: backgroundImage
 		anchors.fill: parent
-		visible: appObj.backgroundImage
+		visible: !!appObj.backgroundImage && (!tileItemView.backgroundIsAnimated || tileItemView.backgroundAnimatedLoadFailed)
 		source: appObj.backgroundImage
 		fillMode: Image.PreserveAspectCrop
 		asynchronous: true
