@@ -20,7 +20,8 @@ Using this as a playground to see how much I can fix/add just **by using LLMs** 
 
 ## Screenshots
 
-
 ![](https://i.imgur.com/OA66oVK.png)
 
 ![](https://i.imgur.com/I057IFC.png)
+
+![](https://i.imgur.com/Cj9XlOi.gif)
