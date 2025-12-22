@@ -24,9 +24,10 @@
 - Runner results: `RunnerMatchesModel.modelForRow()` isn’t implemented; use `runner.data(runner.index(row, 0), role)` (see [contents/ui/SearchResultsModel.qml](../contents/ui/SearchResultsModel.qml)).
 
 ## Local dev loop (Plasma 6)
-```bash
+```fish
 kpackagetool6 --type Plasma/Applet --upgrade .
-kquitapp6 plasmashell && plasmashell --replace > /tmp/plasmashell.log 2>&1 & disown
+# Use fish-friendly sequencing; `nohup` avoids relying on `disown`.
+kquitapp6 plasmashell; and nohup plasmashell --replace > /tmp/plasmashell.log 2>&1 &
 tail -f /tmp/plasmashell.log
 ```
 - Prefer [contents/ui/lib/Logger.qml](../contents/ui/lib/Logger.qml) (`logger.debug(...)`) over `console.log`; toggle `showDebug` in [contents/ui/main.qml](../contents/ui/main.qml).
