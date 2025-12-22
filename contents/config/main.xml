@@ -142,34 +142,6 @@
 		<entry name="sidebarPopupButtonSize" type="int">
 			<default>36</default>
 		</entry>
-
-		<!-- Removed v28
-		<entry name="favoriteApps" type="StringList">
-			<label>List of general favorites. Supported values are menu id's (usually .desktop file names), special URLs that expand into default applications (e.g. preferred://browser), document URLs and KPeople contact URIs.</label>
-			<default>preferred://browser,kontact.desktop,systemsettings.desktop,org.kde.dolphin.desktop,ktp-contactlist.desktop,org.kde.kate.desktop,org.kde.discover</default>
-		</entry>
-		<entry name="tileData" type="string" stringType="base64json">
-			<label>Schema: { "konsole.desktop": { size: "1x1", x: 3, y: 0, label: "Terminal" }, ...}</label>
-			<default></default>
-		</entry>
-		-->
-		
-		<!-- Removed v24
-		<entry name="defaultAppListOrder" type="string">
-			< enum: alphabetical, categories >
-			<default>alphabetical</default>
-		</entry>
-		-->
-		
-		<!-- Removed v14
-		Both were serialized in pixels rather than dpi units
-		<entry name="width" type="int">
-			<default>0</default>
-		</entry>
-		<entry name="height" type="int"> 
-			<default>0</default>
-		</entry>
-		-->
 	</group>
 
 </kcfg>
