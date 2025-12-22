@@ -32,7 +32,7 @@ QQC2.ComboBox {
 	id: configComboBox
 
 	property string configKey: ''
-	readonly property string configValue: configKey ? plasmoid.configuration[configKey] : ""
+	readonly property var configValue: configKey ? plasmoid.configuration[configKey] : ""
 	onConfigValueChanged: {
 		if (!focus && value != configValue) {
 			selectValue(configValue)

@@ -16,6 +16,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: ../contents/ui/config/ConfigGeneral.qml
+msgid "Show border under Group Tile name"
+msgstr ""
+
+#: ../contents/ui/config/ConfigGeneral.qml
+msgid "Yes"
+msgstr ""
+
+#: ../contents/ui/config/ConfigGeneral.qml
+msgid "No"
+msgstr ""
+
 #: ../metadata.json
 msgid "Tiled Menu"
 msgstr "Плиточное Меню"
@@ -269,8 +281,12 @@ msgid "File Manager"
 msgstr "Файловый Менеджер"
 
 #: ../contents/ui/config/ConfigurationShortcuts.qml
-msgid "When this widget has a global shortcut set, like 'Alt+F1', Plasma will open this menu with just the ⊞ Windows / Meta key."
-msgstr "Когда этому виджету назначена глобальная комбинация клавиш, например 'Alt + F1', Plasma будет открывать это меню только с помощью клавиши Win/Meta"
+msgid ""
+"When this widget has a global shortcut set, like 'Alt+F1', Plasma will open "
+"this menu with just the ⊞ Windows / Meta key."
+msgstr ""
+"Когда этому виджету назначена глобальная комбинация клавиш, например 'Alt + "
+"F1', Plasma будет открывать это меню только с помощью клавиши Win/Meta"
 
 #: ../contents/ui/main.qml
 msgid "System Info"
@@ -313,7 +329,8 @@ msgctxt "Search [krunnerName, krunnerName, ...], "
 msgid "Search %1"
 msgstr "Поиск по %1"
 
-#: ../contents/ui/SearchFiltersViewItem.qml ../contents/ui/SearchFiltersView.qml
+#: ../contents/ui/SearchFiltersViewItem.qml
+#: ../contents/ui/SearchFiltersView.qml
 msgid "Default"
 msgstr "По умолчанию"
 

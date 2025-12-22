@@ -18,6 +18,18 @@ msgstr ""
 "X-Generator: Poedit 2.3\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: ../contents/ui/config/ConfigGeneral.qml
+msgid "Show border under Group Tile name"
+msgstr ""
+
+#: ../contents/ui/config/ConfigGeneral.qml
+msgid "Yes"
+msgstr ""
+
+#: ../contents/ui/config/ConfigGeneral.qml
+msgid "No"
+msgstr ""
+
 #: ../metadata.json
 msgid "Tiled Menu"
 msgstr "Tiled Menu"

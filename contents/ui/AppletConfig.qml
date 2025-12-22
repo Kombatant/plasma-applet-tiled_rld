@@ -73,6 +73,7 @@ Item {
 		_ensureSettingInitialized('sidebarFollowsTheme', false)
 		_ensureSettingInitialized('tileLabelAlignment', 'left')
 		_ensureSettingInitialized('groupLabelAlignment', 'left')
+		_ensureSettingInitialized('showGroupTileNameBorder', true)
 		_ensureSettingInitialized('presetTilesFolder', '')
 		_ensureSettingInitialized('appDescription', 'after')
 		_ensureSettingInitialized('appListIconSize', 32)

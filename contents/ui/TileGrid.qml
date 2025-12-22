@@ -570,7 +570,7 @@ DropArea {
 				model: tileModel
 				Rectangle {
 					readonly property var tile: modelData
-					visible: tile && tile.tileType === "group"
+					visible: plasmoid.configuration.showGroupTileNameBorder && tile && tile.tileType === "group"
 					z: 10000
 					color: Kirigami.Theme.textColor
 					opacity: 0.25

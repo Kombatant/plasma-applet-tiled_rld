@@ -198,6 +198,14 @@ LibConfig.FormKCM {
 			{ value: "right", text: i18n("Right") },
 		]
 	}
+	LibConfig.ComboBox {
+		configKey: "showGroupTileNameBorder"
+		Kirigami.FormData.label: i18n("Show border under Group Tile name")
+		model: [
+			{ value: true, text: i18n("Yes") },
+			{ value: false, text: i18n("No") },
+		]
+	}
 	RowLayout {
 		id: presetTilesFolderRow
 		Kirigami.FormData.label: i18n("Preset Tile Folder")
