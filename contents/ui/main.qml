@@ -143,14 +143,7 @@ PlasmoidItem {
 		 //Layout.minimumHeight: 900 // For quickly testing as a desktop widget
 		// Layout.minimumWidth: 800
 
-		onWidthChanged: {
-			//console.log('popup.size', width, height, 'width')
-			// resizeToFit.run()
-		}
-		onHeightChanged: {
-			// console.log('popup.size', width, height, 'height')
-			// resizeHeight.restart()
-		}
+
 
 		// Make popup resizeable like default Kickoff widget.
 		// The FullRepresentation must have an appletInterface property.
