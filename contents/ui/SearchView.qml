@@ -245,8 +245,9 @@ Item {
 		visible: !config.isEditingTile && searchView.showSearchField
 		height: config.searchFieldHeight
 		implicitHeight: config.searchFieldHeight
+		
+		anchors.left: parent.left
 		readonly property var _targetListView: (listView && typeof listView.width === 'number') ? listView : null
-		x: _targetListView ? _targetListView.mapToItem(searchView, 0, 0).x : 0
 		width: _targetListView ? _targetListView.width : parent.width
 
 		listView: stackView.currentItem && stackView.currentItem.listView ? stackView.currentItem.listView : []
