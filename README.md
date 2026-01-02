@@ -1,6 +1,6 @@
 # Tiled Menu Reloaded
 
-A menu based on Windows 10's Start Menu. 
+A menu (loosely) based on Windows 10's Start Menu.
 
 Forked from firefly's Tiled Menu (you can find it here: https://github.com/firefly75/plasma-applet-tiledmenu), which is a fork of zren's Tiled Menu (here: https://github.com/Zren/plasma-applet-tiledmenu). 
 
@@ -17,6 +17,10 @@ Using this as a playground to see how much I can fix/add just **by using LLMs** 
     * Jump to Letter/Category (can also default to this view)
     * Defaulting to only showing the tiles.
     * Labeling Groups of Tiles + Move Groups of Tiles + Sorting items in the group
+
+## Installation
+
+Just download the .zip, extract its contents inside ~/.local/share/plasma/plasmoids/. Restart Plasmashell, right click on your application launcher -> show alternatives and choose Tiled Menu Reloaded. That's pretty much it. 
 
 ## Screenshots
 
