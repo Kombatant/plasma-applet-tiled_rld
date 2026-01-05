@@ -3,11 +3,17 @@ import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
 import org.kde.plasma.components as PlasmaComponents3
 import org.kde.draganddrop as DragAndDrop
+import org.kde.kquickcontrolsaddons as KQuickControlsAddons
 import "Utils.js" as Utils
 
 
 AppToolButton {
 	id: itemDelegate
+	preventStealing: true
+
+	KQuickControlsAddons.Clipboard {
+		id: clipboard
+	}
 
 	width: ListView.view.width
 	implicitHeight: row.implicitHeight
@@ -108,6 +114,20 @@ AppToolButton {
 		//("click menu ", model.iconName)
 		if (mouse.buttons & Qt.LeftButton) {
 			initDrag(mouse)
+		} else if (mouse.buttons & Qt.RightButton) {
+			mouse.accepted = true
+			resetDragState()
+			if (typeof logger !== "undefined" && logger) {
+				logger.debug('MenuListItem.openContextMenu (pressed)', 'index', index, 'name', model && model.name)
+			}
+			var targetModel = contextMenuModel()
+			// Avoid probing action lists on unsafe models (some runner models can hard-crash plasmashell).
+			if (modelSupportsActionLists(targetModel) && targetModel && typeof targetModel.hasActionList === "function") {
+				var hasActions = false
+				try { hasActions = targetModel.hasActionList(index) } catch (e) { hasActions = false; console.warn('MenuListItem.hasActionList exception', e) }
+				console.log('MenuListItem.hasActionList?', hasActions, 'runner', model && model.runnerName)
+			}
+			contextMenu.open(mouse.x, mouse.y)
 		}
 	}
 	onContainsMouseChanged: function(containsMouse) {
@@ -199,19 +219,6 @@ AppToolButton {
 		console.log('MenuListItem.onClicked', 'button', mouse.button, 'index', index, 'name', model && model.name)
 		if (mouse.button == Qt.LeftButton) {
 			trigger()
-		} else if (mouse.button == Qt.RightButton) {
-			if (typeof logger !== "undefined" && logger) {
-				logger.debug('MenuListItem.openContextMenu', 'index', index, 'name', model && model.name)
-			}
-			console.log('MenuListItem.openContextMenu', 'index', index, 'name', model && model.name)
-			var targetModel = contextMenuModel()
-			// Avoid probing action lists on unsafe models (some runner models can hard-crash plasmashell).
-			if (modelSupportsActionLists(targetModel) && targetModel && typeof targetModel.hasActionList === "function") {
-				var hasActions = false
-				try { hasActions = targetModel.hasActionList(index) } catch (e) { hasActions = false; console.warn('MenuListItem.hasActionList exception', e) }
-				console.log('MenuListItem.hasActionList?', hasActions, 'runner', model && model.runnerName)
-			}
-			contextMenu.open(mouse.x, mouse.y)
 		}
 	}
 
@@ -294,6 +301,36 @@ AppToolButton {
 	AppContextMenu {
 		id: contextMenu
 		onPopulateMenu: function(menu) {
+			var targetModel = contextMenuModel()
+			var isSearchResultsModel = (typeof search !== "undefined" && targetModel === search.results)
+			var copyableValueRunnerIds = [
+				'calculator',
+				'unitconverter',
+				'Dictionary',
+				'org.kde.datetime',
+			]
+			var runnerId = (model && typeof model.runnerId !== 'undefined') ? ('' + model.runnerId) : ''
+			var copyText = ''
+			if (model) {
+				if (typeof model.name !== 'undefined' && ('' + model.name).length > 0) {
+					copyText = '' + model.name
+				} else if (typeof model.description !== 'undefined' && ('' + model.description).length > 0) {
+					copyText = '' + model.description
+				}
+			}
+			var shouldShowCopy = isSearchResultsModel
+				&& !!copyText
+				&& (copyableValueRunnerIds.indexOf(runnerId) !== -1 || !launcherUrl)
+			if (shouldShowCopy) {
+				var copyMenuItem = menu.newMenuItem()
+				copyMenuItem.text = i18n("Copy")
+				copyMenuItem.icon = "edit-copy"
+				copyMenuItem.enabled = copyText.length > 0
+				copyMenuItem.clicked.connect(function() {
+					clipboard.content = copyText
+				})
+				menu.addMenuItem(copyMenuItem)
+			}
 			if (launcherUrl && !plasmoid.configuration.tilesLocked) {
 				menu.addPinToMenuAction(launcherUrl, {
 					label: model.name,
@@ -302,8 +339,6 @@ AppToolButton {
 				})
 			}
 
-			var targetModel = contextMenuModel()
-			var isSearchResultsModel = (typeof search !== "undefined" && targetModel === search.results)
 			var isMergedSearch = isSearchResultsModel && search && search.runnerModel && !!search.runnerModel.mergeResults
 			var shouldAttemptActions = modelSupportsActionLists(targetModel)
 			var actionList = []
