@@ -310,13 +310,72 @@ AppToolButton {
 				'org.kde.datetime',
 			]
 			var runnerId = (model && typeof model.runnerId !== 'undefined') ? ('' + model.runnerId) : ''
+			function _normalizeCopyText(s) {
+				if (typeof s === 'undefined' || s === null) {
+					return ''
+				}
+				var t = ('' + s).trim()
+				if (!t) {
+					return ''
+				}
+				// Prefer a single line.
+				var nl = t.indexOf('\n')
+				if (nl >= 0) {
+					t = t.substring(0, nl).trim()
+				}
+				// Collapse whitespace.
+				t = t.replace(/\s+/g, ' ').trim()
+				return t
+			}
+			function _extractValuePart(s) {
+				var t = _normalizeCopyText(s)
+				if (!t) {
+					return ''
+				}
+				// Common patterns for value-like results.
+				var splitters = ['=', '→', '=>', '->', ':']
+				for (var si = 0; si < splitters.length; si++) {
+					var sep = splitters[si]
+					var p = t.lastIndexOf(sep)
+					if (p >= 0 && p + sep.length < t.length) {
+						var rhs = t.substring(p + sep.length).trim()
+						if (rhs) {
+							return rhs
+						}
+					}
+				}
+				return t
+			}
+			function _hasDigit(s) {
+				return /\d/.test(s)
+			}
+			function _preferValueLike(a, b) {
+				var aa = _extractValuePart(a)
+				var bb = _extractValuePart(b)
+				if (!aa) {
+					return bb
+				}
+				if (!bb) {
+					return aa
+				}
+				// Prefer digit-containing strings when possible.
+				var aHas = _hasDigit(aa)
+				var bHas = _hasDigit(bb)
+				if (aHas && !bHas) {
+					return aa
+				}
+				if (bHas && !aHas) {
+					return bb
+				}
+				// Prefer the shorter one if both look similar.
+				if (aa.length !== bb.length) {
+					return aa.length < bb.length ? aa : bb
+				}
+				return aa
+			}
 			var copyText = ''
 			if (model) {
-				if (typeof model.name !== 'undefined' && ('' + model.name).length > 0) {
-					copyText = '' + model.name
-				} else if (typeof model.description !== 'undefined' && ('' + model.description).length > 0) {
-					copyText = '' + model.description
-				}
+				copyText = _preferValueLike(model.name, model.description)
 			}
 			var shouldShowCopy = isSearchResultsModel
 				&& !!copyText
