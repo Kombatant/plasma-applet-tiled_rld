@@ -90,6 +90,60 @@ KCM.SimpleKCM {
 	property var cfg_sidebarPopupButtonSize
 	property var cfg_sidebarPopupButtonSizeDefault
 
+	readonly property var _cfgKeys: [
+		"icon",
+		"fixedPanelIcon",
+		"searchResultsGrouped",
+		"searchDefaultFilters",
+		"showRecentApps",
+		"recentOrdering",
+		"numRecentApps",
+		"sidebarShortcuts",
+		"defaultAppListView",
+		"terminalApp",
+		"taskManagerApp",
+		"fileManagerApp",
+		"tileModel",
+		"tileScale",
+		"tileIconSize",
+		"tileMargin",
+		"tilesLocked",
+		"defaultTileColor",
+		"defaultTileGradient",
+		"sidebarBackgroundColor",
+		"hideSearchField",
+		"searchOnTop",
+		"searchFieldFollowsTheme",
+		"sidebarFollowsTheme",
+		"tileLabelAlignment",
+		"groupLabelAlignment",
+		"showGroupTileNameBorder",
+		"presetTilesFolder",
+		"appDescription",
+		"appListIconSize",
+		"searchFieldHeight",
+		"appListWidth",
+		"popupHeight",
+		"favGridCols",
+		"sidebarButtonSize",
+		"sidebarIconSize",
+		"sidebarViewLabels",
+		"sidebarPopupButtonSize",
+	]
+
+	function _bindCfgToConfiguration() {
+		for (var i = 0; i < _cfgKeys.length; i++) {
+			var key = _cfgKeys[i]
+			var propName = "cfg_" + key
+			if (typeof page[propName] === "undefined") {
+				continue
+			}
+			page[propName] = Qt.binding((function(k) {
+				return function() { return plasmoid.configuration[k] }
+			})(key))
+		}
+	}
+
 	// Kate-like: sidebar search + section list + page content.
 	title: i18n("Settings")
 
@@ -211,6 +265,7 @@ KCM.SimpleKCM {
 
 	onFilterTextChanged: _ensureValidSelection()
 	Component.onCompleted: {
+		_bindCfgToConfiguration()
 		_startCollapseOuterNavigation()
 		_ensureValidSelection()
 		_shortcutPending = ("" + Plasmoid.globalShortcut)
