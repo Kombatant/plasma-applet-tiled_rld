@@ -13,7 +13,7 @@ QQC2.TextField {
 
 	onTextChanged: serializeTimer.restart()
 
-	wrapMode: textField.Wrap
+
 
 	Kirigami.FormData.labelAlignment: Qt.AlignTop
 

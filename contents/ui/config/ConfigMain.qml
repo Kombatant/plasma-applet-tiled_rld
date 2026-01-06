@@ -10,6 +10,86 @@ import org.kde.plasma.plasmoid
 KCM.SimpleKCM {
 	id: page
 
+	// Plasma's config dialog tries to set `cfg_<key>` and `cfg_<key>Default` properties
+	// on the root item. We write directly to `plasmoid.configuration` in our pages, but
+	// defining these avoids noisy "Setting initial properties failed" warnings.
+	property var cfg_icon
+	property var cfg_iconDefault
+	property var cfg_fixedPanelIcon
+	property var cfg_fixedPanelIconDefault
+	property var cfg_searchResultsGrouped
+	property var cfg_searchResultsGroupedDefault
+	property var cfg_searchDefaultFilters
+	property var cfg_searchDefaultFiltersDefault
+	property var cfg_showRecentApps
+	property var cfg_showRecentAppsDefault
+	property var cfg_recentOrdering
+	property var cfg_recentOrderingDefault
+	property var cfg_numRecentApps
+	property var cfg_numRecentAppsDefault
+	property var cfg_sidebarShortcuts
+	property var cfg_sidebarShortcutsDefault
+	property var cfg_defaultAppListView
+	property var cfg_defaultAppListViewDefault
+	property var cfg_terminalApp
+	property var cfg_terminalAppDefault
+	property var cfg_taskManagerApp
+	property var cfg_taskManagerAppDefault
+	property var cfg_fileManagerApp
+	property var cfg_fileManagerAppDefault
+	property var cfg_tileModel
+	property var cfg_tileModelDefault
+	property var cfg_tileScale
+	property var cfg_tileScaleDefault
+	property var cfg_tileIconSize
+	property var cfg_tileIconSizeDefault
+	property var cfg_tileMargin
+	property var cfg_tileMarginDefault
+	property var cfg_tilesLocked
+	property var cfg_tilesLockedDefault
+	property var cfg_defaultTileColor
+	property var cfg_defaultTileColorDefault
+	property var cfg_defaultTileGradient
+	property var cfg_defaultTileGradientDefault
+	property var cfg_sidebarBackgroundColor
+	property var cfg_sidebarBackgroundColorDefault
+	property var cfg_hideSearchField
+	property var cfg_hideSearchFieldDefault
+	property var cfg_searchOnTop
+	property var cfg_searchOnTopDefault
+	property var cfg_searchFieldFollowsTheme
+	property var cfg_searchFieldFollowsThemeDefault
+	property var cfg_sidebarFollowsTheme
+	property var cfg_sidebarFollowsThemeDefault
+	property var cfg_tileLabelAlignment
+	property var cfg_tileLabelAlignmentDefault
+	property var cfg_groupLabelAlignment
+	property var cfg_groupLabelAlignmentDefault
+	property var cfg_showGroupTileNameBorder
+	property var cfg_showGroupTileNameBorderDefault
+	property var cfg_presetTilesFolder
+	property var cfg_presetTilesFolderDefault
+	property var cfg_appDescription
+	property var cfg_appDescriptionDefault
+	property var cfg_appListIconSize
+	property var cfg_appListIconSizeDefault
+	property var cfg_searchFieldHeight
+	property var cfg_searchFieldHeightDefault
+	property var cfg_appListWidth
+	property var cfg_appListWidthDefault
+	property var cfg_popupHeight
+	property var cfg_popupHeightDefault
+	property var cfg_favGridCols
+	property var cfg_favGridColsDefault
+	property var cfg_sidebarButtonSize
+	property var cfg_sidebarButtonSizeDefault
+	property var cfg_sidebarIconSize
+	property var cfg_sidebarIconSizeDefault
+	property var cfg_sidebarViewLabels
+	property var cfg_sidebarViewLabelsDefault
+	property var cfg_sidebarPopupButtonSize
+	property var cfg_sidebarPopupButtonSizeDefault
+
 	// Kate-like: sidebar search + section list + page content.
 	title: i18n("Settings")
 
@@ -372,29 +452,30 @@ KCM.SimpleKCM {
 					// Plasma/Qt6 style versions; avoid using non-portable properties.
 				}
 
-				QQC2.ScrollView {
+
+				// Keep the navigation list fixed; only the right pane should scroll.
+				ListView {
+					id: sectionList
 					Layout.fillWidth: true
 					Layout.fillHeight: true
-
-					ListView {
-						id: sectionList
-						clip: true
-						model: page.filteredSections
-						currentIndex: {
-							for (var i = 0; i < page.filteredSections.length; i++) {
-								if (page.filteredSections[i].key === page.currentSectionKey) {
-									return i
-								}
+					clip: true
+					interactive: false
+					boundsBehavior: Flickable.StopAtBounds
+					model: page.filteredSections
+					currentIndex: {
+						for (var i = 0; i < page.filteredSections.length; i++) {
+							if (page.filteredSections[i].key === page.currentSectionKey) {
+								return i
 							}
-							return -1
 						}
-						delegate: QQC2.ItemDelegate {
-							width: ListView.view.width
-							text: modelData.name
-							icon.name: modelData.icon
-							highlighted: modelData.key === page.currentSectionKey
-							onClicked: page.currentSectionKey = modelData.key
-						}
+						return -1
+					}
+					delegate: QQC2.ItemDelegate {
+						width: ListView.view.width
+						text: modelData.name
+						icon.name: modelData.icon
+						highlighted: modelData.key === page.currentSectionKey
+						onClicked: page.currentSectionKey = modelData.key
 					}
 				}
 			}

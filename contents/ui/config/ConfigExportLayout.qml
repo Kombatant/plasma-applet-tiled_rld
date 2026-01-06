@@ -1,12 +1,191 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.plasma5support as Plasma5Support
+import org.kde.kirigami as Kirigami
+import Qt.labs.platform as QtLabsPlatform
 
 import ".." as TiledMenu
 
 ColumnLayout {
 	id: page
+	spacing: Kirigami.Units.smallSpacing
+
+	Component.onCompleted: {
+		// Populate the export text area with the current settings on first open.
+		// (Without this, the page can appear blank until the user imports.)
+		if (exportData && typeof exportData.setValue === "function" && typeof exportData.buildNestedExportObject === "function") {
+			exportData.setValue(exportData.buildNestedExportObject())
+		}
+	}
+
+	function _shellSingleQuote(s) {
+		s = (typeof s === "undefined" || s === null) ? "" : ("" + s)
+		// POSIX shell single-quote escape: close, insert \' , reopen.
+		return "'" + s.replace(/'/g, "'\\''") + "'"
+	}
+
+	function _toLocalPath(urlOrString) {
+		var s = (typeof urlOrString === "undefined" || urlOrString === null) ? "" : ("" + urlOrString)
+		if (!s) {
+			return ""
+		}
+		// Qt.labs.platform FileDialog returns a file:// URL.
+		if (s.indexOf("file://") === 0) {
+			s = s.substring("file://".length)
+			// file:///home/... => /home/...
+			if (s.length >= 2 && s.charAt(0) === '/' && s.charAt(1) === '/') {
+				s = s.substring(1)
+			}
+			try {
+				s = decodeURIComponent(s)
+			} catch (e) {
+				// ignore
+			}
+		}
+		return s
+	}
+
+	Plasma5Support.DataSource {
+		id: exec
+		engine: "executable"
+		connectedSources: []
+		onNewData: function(sourceName, data) {
+			// One-shot command execution.
+			disconnectSource(sourceName)
+			var exitCode = data && typeof data["exit code"] !== "undefined" ? data["exit code"] : 0
+			if (exitCode && exitCode !== 0) {
+				var stderr = data && data.stderr ? ("" + data.stderr).trim() : ""
+				var msg = stderr ? stderr : i18n("Failed to save file")
+				if (typeof showPassiveNotification === "function") {
+					showPassiveNotification(msg)
+				}
+			}
+		}
+	}
+
+	Plasma5Support.DataSource {
+		id: execRead
+		engine: "executable"
+		connectedSources: []
+		property string pendingImportPath: ""
+		onNewData: function(sourceName, data) {
+			disconnectSource(sourceName)
+			var exitCode = data && typeof data["exit code"] !== "undefined" ? data["exit code"] : 0
+			if (exitCode && exitCode !== 0) {
+				var stderr = data && data.stderr ? ("" + data.stderr).trim() : ""
+				var msg = stderr ? stderr : i18n("Failed to import file")
+				if (typeof showPassiveNotification === "function") {
+					showPassiveNotification(msg)
+				}
+				return
+			}
+			var out = data && data.stdout ? ("" + data.stdout).trim() : ""
+			if (!out) {
+				if (typeof showPassiveNotification === "function") {
+					showPassiveNotification(i18n("Import produced no data"))
+				}
+				return
+			}
+			var text = ""
+			try {
+				text = Qt.atob(out)
+			} catch (e) {
+				if (typeof showPassiveNotification === "function") {
+					showPassiveNotification(i18n("Failed to decode imported file"))
+				}
+				return
+			}
+			try {
+				exportData.textArea.text = text
+				exportData.serialize()
+				if (typeof showPassiveNotification === "function") {
+					showPassiveNotification(i18n("Imported from %1", pendingImportPath || ""))
+				}
+			} catch (e2) {
+				if (typeof showPassiveNotification === "function") {
+					showPassiveNotification(i18n("Failed to import settings"))
+				}
+			}
+		}
+	}
+
+	QtLabsPlatform.FileDialog {
+		id: saveDialog
+		title: i18n("Save Layout")
+		fileMode: QtLabsPlatform.FileDialog.SaveFile
+		nameFilters: [
+			i18n("Layout Files (*.xml)"),
+			i18n("All Files (*)"),
+		]
+		defaultSuffix: "xml"
+		onAccepted: {
+			var chosenUrl = (saveDialog.currentFile || saveDialog.file || saveDialog.selectedFile || (saveDialog.files && saveDialog.files.length ? saveDialog.files[0] : ""))
+			var filePath = page._toLocalPath(chosenUrl)
+			if (!filePath) {
+				return
+			}
+			page.saveExportToFilePath(filePath)
+		}
+	}
+
+	QtLabsPlatform.FileDialog {
+		id: importDialog
+		title: i18n("Import Layout")
+		fileMode: QtLabsPlatform.FileDialog.OpenFile
+		nameFilters: [
+			i18n("Layout Files (*.xml)"),
+			i18n("All Files (*)"),
+		]
+		onAccepted: {
+			var chosenUrl = (importDialog.currentFile || importDialog.file || importDialog.selectedFile || (importDialog.files && importDialog.files.length ? importDialog.files[0] : ""))
+			var filePath = page._toLocalPath(chosenUrl)
+			if (!filePath) {
+				return
+			}
+			page.importFromFilePath(filePath)
+		}
+	}
+
+	function saveExportToFilePath(filePath) {
+		var text = exportData && typeof exportData.textAreaText !== "undefined" ? ("" + exportData.textAreaText) : ""
+		var b64 = Qt.btoa(text)
+		// Use python for the actual write to avoid shell/base64 utility dependencies.
+		var py = "import sys,base64,pathlib; pathlib.Path(sys.argv[1]).write_bytes(base64.b64decode(sys.argv[2].encode('ascii')))"
+		var cmd = "python3 -c " + _shellSingleQuote(py) + " " + _shellSingleQuote(filePath) + " " + _shellSingleQuote(b64)
+		exec.connectSource(cmd)
+		if (typeof showPassiveNotification === "function") {
+			showPassiveNotification(i18n("Saved to %1", filePath))
+		}
+	}
+
+	function importFromFilePath(filePath) {
+		execRead.pendingImportPath = filePath
+		// Read bytes then base64 to stdout so QML can safely receive the content.
+		var py = "import sys,base64; sys.stdout.write(base64.b64encode(open(sys.argv[1],'rb').read()).decode('ascii'))"
+		var cmd = "python3 -c " + _shellSingleQuote(py) + " " + _shellSingleQuote(filePath)
+		execRead.connectSource(cmd)
+	}
+
+	RowLayout {
+		Layout.fillWidth: true
+		spacing: Kirigami.Units.smallSpacing
+		Item { Layout.fillWidth: true }
+		Button {
+			text: i18n("Import XML")
+			icon.name: "document-open"
+			onClicked: {
+				importDialog.open()
+			}
+		}
+		Button {
+			text: i18n("Export XML")
+			icon.name: "document-save"
+			onClicked: {
+				saveDialog.open()
+			}
+		}
+	}
 
 	ScrollView {
 		Layout.fillWidth: true

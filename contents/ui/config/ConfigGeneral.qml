@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls as QQC2
 import QtQuick.Layouts
+import org.kde.plasma.core as PlasmaCore
 import org.kde.kirigami as Kirigami
 import Qt.labs.platform as QtLabsPlatform
 

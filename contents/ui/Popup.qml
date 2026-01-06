@@ -106,10 +106,23 @@ MouseArea {
 		}
 	}
 
+	function resetViewsAfterTileModelReload() {
+		// Importing settings can replace the tileModel JS array and invalidate any
+		// references held by editor views. Ensure the editor is fully destroyed.
+		if (tileEditorViewLoader && tileEditorViewLoader.active) {
+			tileEditorViewLoader.active = false
+		}
+		// Return to the user's default view.
+		if (searchView && typeof searchView.showDefaultView === "function") {
+			searchView.showDefaultView()
+		}
+	}
+
 	Connections {
 		target: config && config.tileModel ? config.tileModel : null
 		function onLoaded() {
 			popup.normalizeGroupHeaderHeights()
+			popup.resetViewsAfterTileModelReload()
 		}
 	}
 
