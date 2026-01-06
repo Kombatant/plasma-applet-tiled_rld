@@ -16,57 +16,7 @@ LibConfig.FormKCM {
 		return plasmaStyleText + ' (' + PlasmaCore.Theme.themeName + ')'
 	}
 
-	function isClassName(item, className) {
-		var itemClassName = (''+item).split('_', 1)[0]
-		return itemClassName == className
-	}
-	function getAncestor(item, className) {
-		var curItem = item
-		while (curItem.parent) {
-			curItem = curItem.parent
-			if (isClassName(curItem, className)) {
-				return curItem
-			}
-		}
-		return null
-	}
-	function getAppletConfiguration() {
-		// https://github.com/KDE/plasma-desktop/blob/master/desktoppackage/contents/configuration/AppletConfiguration.qml
-		if (typeof root === "undefined") {
-			return null
-		}
-		// [Plasma 5.15] root was the StackView { id: pageStack } in plasmoidviewer
-		// [Plasma 5.15] However root was plasmashell is AppletConfiguration for some reason
-		// [Plasma 5.15] The "root" id can't always be referenced here, so use one of the child id's and get it's parent.
-		if (isClassName(root, 'AppletConfiguration')) {
-			return root
-		}
-		// https://github.com/KDE/plasma-desktop/blob/master/desktoppackage/contents/configuration/ConfigurationAppletPage.qml
-		// [Plasma 5.24] root is ConfigurationAppletPage. It does not have a parent when we check first check it so we need to
-		//               wait until it is attached before looking for it's ancestor.
-		// Walk up to the top node of the "DOM" for AppletConfiguration
-		return getAncestor(root, 'AppletConfiguration')
-	}
-	property bool keyboardShortcutsHidden: false
-	function hideKeyboardShortcutTab() {
-		var appletConfiguration = getAppletConfiguration()
-		if (appletConfiguration && typeof appletConfiguration.globalConfigModel !== "undefined") {
-			// Remove default Global Keyboard Shortcut config tab.
-			var keyboardShortcuts = appletConfiguration.globalConfigModel.get(0)
-			appletConfiguration.globalConfigModel.removeCategoryAt(0)
-			keyboardShortcutsHidden = true
-		}
-	}
-
-	Component.onCompleted: {
-		hideKeyboardShortcutTab()
-
-		if (typeof root !== "undefined" && isClassName(root, 'ConfigurationAppletPage')) {
-			root.parentChanged.connect(function(){
-				hideKeyboardShortcutTab()
-			})
-		}
-	}
+	// Keyboard shortcuts are handled by the main settings shell.
 
 	property var config: TiledMenu.AppletConfig {
 		id: config

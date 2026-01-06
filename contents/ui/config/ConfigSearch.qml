@@ -18,47 +18,7 @@ LibConfig.FormKCM {
 		return plasmaStyleText + ' (' + PlasmaCore.Theme.themeName + ')'
 	}
 
-	function isClassName(item, className) {
-		var itemClassName = (''+item).split('_', 1)[0]
-		return itemClassName == className
-	}
-	function getAncestor(item, className) {
-		var curItem = item
-		while (curItem.parent) {
-			curItem = curItem.parent
-			if (isClassName(curItem, className)) {
-				return curItem
-			}
-		}
-		return null
-	}
-	function getAppletConfiguration() {
-		if (typeof root === "undefined") {
-			return null
-		}
-		if (isClassName(root, 'AppletConfiguration')) {
-			return root
-		}
-		return getAncestor(root, 'AppletConfiguration')
-	}
-	property bool keyboardShortcutsHidden: false
-	function hideKeyboardShortcutTab() {
-		var appletConfiguration = getAppletConfiguration()
-		if (appletConfiguration && typeof appletConfiguration.globalConfigModel !== "undefined") {
-			appletConfiguration.globalConfigModel.removeCategoryAt(0)
-			keyboardShortcutsHidden = true
-		}
-	}
-
-	Component.onCompleted: {
-		hideKeyboardShortcutTab()
-
-		if (typeof root !== "undefined" && isClassName(root, 'ConfigurationAppletPage')) {
-			root.parentChanged.connect(function(){
-				hideKeyboardShortcutTab()
-			})
-		}
-	}
+	// Keyboard shortcuts are handled by the main settings shell.
 
 	property var config: TiledMenu.AppletConfig {
 		id: config
