@@ -17,7 +17,7 @@ ColumnLayout {
 	// Installed runners are listed at: /usr/share/kservices5/plasma-runner-*.desktop
 
 	SearchFiltersViewItem {
-		runnerId: "services"
+		runnerId: "krunner_services"
 		indentLevel: 1
 		iconSource: "window"
 		text: i18n("Applications")
@@ -59,7 +59,7 @@ ColumnLayout {
 	}
 
 	SearchFiltersViewItem {
-		runnerId: "bookmarks"
+		runnerId: "krunner_bookmarksrunner"
 		indentLevel: 1
 		iconSource: "globe"
 		text: i18n("Bookmarks")
@@ -73,7 +73,7 @@ ColumnLayout {
 	}
 
 	SearchFiltersViewItem {
-		runnerId: "Dictionary"
+		runnerId: "krunner_dictionary"
 		indentLevel: 1
 		iconSource: "accessories-dictionary"
 		text: i18n("Dictionary")
@@ -81,7 +81,7 @@ ColumnLayout {
 	}
 
 	SearchFiltersViewItem {
-		runnerId: "shell"
+		runnerId: "krunner_shell"
 		indentLevel: 1
 		iconSource: "system-run"
 		text: i18n("Shell")

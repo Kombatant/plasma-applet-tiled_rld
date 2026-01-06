@@ -5,15 +5,10 @@ KickerListView { // RunnerResultsList
 
 	model: search.results
 	delegate: MenuListItem {
-		property var runner: search.runnerModel.modelForRow(model.runnerIndex)
-		readonly property bool hasRunnerRow: runner && typeof runner.count === 'number'
-			&& model.runnerItemIndex >= 0 && model.runnerItemIndex < runner.count
-		iconSource: hasRunnerRow ? runner.data(runner.index(model.runnerItemIndex, 0), Qt.DecorationRole) : ""
-		Component.onCompleted: {
-			if (!hasRunnerRow && typeof logger !== "undefined" && logger) {
-				logger.warn('SearchResultsList.delegate: missing runner row', model.runnerIndex, model.runnerItemIndex, runner ? runner.count : 'no-runner')
-			}
-		}
+		// Use the icon already captured in the result model instead of re-fetching
+		// from the runner. This avoids stale-index issues when filters change and
+		// the runner model structure is updated.
+		iconSource: model.icon || ""
 		iconSize: config.appListIconSize
 	}
 	

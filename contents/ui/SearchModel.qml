@@ -9,9 +9,10 @@ Item {
 	property string query: ""
 	property bool isSearching: query.length > 0
 	onQueryChanged: {
+		logger.debug('SearchModel.onQueryChanged', 'query:', search.query)
 		runnerModel.query = search.query
-		// Force a refresh so results update when clearing and retyping.
-		debouncedRefresh.logAndRestart()
+		// Clear results immediately when query is cleared.
+		// Don't trigger debouncedRefresh here - rely on onQueryFinished.
 		if (search.query.length === 0) {
 			resultModel.clear()
 		}
@@ -22,14 +23,67 @@ Item {
 	//     find /usr/share/kservices5/ -iname "plasma-runner-*.desktop" -print0 | xargs -0 grep "PluginInfo-Name" | sort
 	property var filters: []
 	onFiltersChanged: {
+		logger.debug('SearchModel.onFiltersChanged', 'filters:', JSON.stringify(filters), 'query:', search.query)
+		
+		// Save query and clear it first - this makes the RunnerModel clear its internal state
+		var savedQuery = search.query
+		
+		// Clear the query on the RunnerModel BEFORE changing runners
+		// This ensures the model releases its stale data
+		runnerModel.query = ""
+		
 		// Empty QStringList == all runners; avoid assigning undefined (Qt 6 rejects it)
 		var runnerList = Array.isArray(filters) ? filters : []
 		runnerModel.runners = runnerList.length === 0 ? [] : runnerList
+		logger.debug('SearchModel.onFiltersChanged', 'set runners to:', JSON.stringify(runnerModel.runners))
+
+		// Clear stale results immediately so the UI doesn't show old data.
+		resultModel.clear()
+		logger.debug('SearchModel.onFiltersChanged', 'cleared resultModel')
+
 		// Re-run the current query with the updated runner set.
-		var currentQuery = search.query
-		runnerModel.query = ""
-		runnerModel.query = currentQuery
-		debouncedRefresh.logAndRestart()
+		// Use a timer to ensure the runners change has propagated before re-querying.
+		if (savedQuery.length > 0) {
+			filterQueryTimer.savedQuery = savedQuery
+			filterQueryTimer.restart()
+		}
+	}
+
+	Timer {
+		id: filterQueryTimer
+		property string savedQuery: ""
+		interval: 100
+		repeat: false
+		onTriggered: {
+			logger.debug('filterQueryTimer.onTriggered', 'savedQuery:', savedQuery)
+			// The RunnerModel ignores query changes if the query string is identical.
+			// We need to set a different query and then restore, using a timer between
+			// so the model actually processes the change.
+			runnerModel.query = ""
+			filterRestoreQueryTimer.restart()
+		}
+	}
+
+	Timer {
+		id: filterRestoreQueryTimer
+		interval: 50
+		repeat: false
+		onTriggered: {
+			logger.debug('filterRestoreQueryTimer.onTriggered', 'restoring query:', filterQueryTimer.savedQuery)
+			runnerModel.query = filterQueryTimer.savedQuery
+			// Also schedule a manual refresh in case onQueryFinished doesn't fire
+			filterRefreshTimer.restart()
+		}
+	}
+
+	Timer {
+		id: filterRefreshTimer
+		interval: 200
+		repeat: false
+		onTriggered: {
+			logger.debug('filterRefreshTimer.onTriggered', 'runnerModel.count:', runnerModel.count)
+			resultModel.refresh()
+		}
 	}
 
 	Kicker.RunnerModel {
@@ -44,15 +98,32 @@ Item {
 		// deleteWhenEmpty: isDash
 		// deleteWhenEmpty: false
 
-		onRunnersChanged: debouncedRefresh.restart()
-		onDataChanged: debouncedRefresh.restart()
-		onCountChanged: debouncedRefresh.restart()
+		// Don't use onRunnersChanged, onDataChanged, or onCountChanged to trigger
+		// refresh as these fire when the model is in a transitional state with
+		// stale count values but undefined data.
+		// onRunnersChanged: debouncedRefresh.restart()
+		// onDataChanged: debouncedRefresh.restart()
+		// onCountChanged: debouncedRefresh.restart()
+
+		// Wait for the runner to finish querying before refreshing results.
+		// This is the only reliable signal that indicates fresh data is available.
+		onQueryFinished: {
+			logger.debug('RunnerModel.onQueryFinished', 'count:', runnerModel.count)
+			for (var i = 0; i < runnerModel.count; i++) {
+				var runner = runnerModel.modelForRow(i)
+				logger.debug('  runner', i, 'name:', runner ? runner.name : 'null', 'count:', runner ? runner.count : 'null')
+			}
+			resultModel.refresh()
+		}
 	}
 
 	Timer {
 		id: debouncedRefresh
 		interval: 100
-		onTriggered: resultModel.refresh()
+		onTriggered: {
+			logger.debug('debouncedRefresh.onTriggered')
+			resultModel.refresh()
+		}
 		function logAndRestart() {
 			restart()
 		}
@@ -87,9 +158,9 @@ Item {
 	}
 	// Empty filters = all runners (default "All results" state)
 	property bool isDefaultFilter: filters.length === 0
-	property bool isAppsFilter: isFilter('services')
+	property bool isAppsFilter: isFilter('krunner_services')
 	property bool isFileFilter: isFilter('baloosearch')
-	property bool isBookmarksFilter: isFilter('bookmarks')
+	property bool isBookmarksFilter: isFilter('krunner_bookmarksrunner')
 
 	function hasFilter(runnerId) {
 		return filters.indexOf(runnerId) >= 0

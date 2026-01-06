@@ -38,7 +38,7 @@ GridLayout {
 			icon.height: searchFiltersRow.filterIconSize
 			QQC2.ToolTip.text: i18n("Applications only")
 			QQC2.ToolTip.visible: hovered
-			onClicked: search.filters = ['services']
+			onClicked: search.filters = ['krunner_services']
 			checked: search.isAppsFilter
 			checkedEdge: searchView.searchOnTop ?  Qt.TopEdge : Qt.BottomEdge
 		}

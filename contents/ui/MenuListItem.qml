@@ -205,7 +205,7 @@ AppToolButton {
 			var runnerName = item ? (item.runnerName || '') : ''
 			var url = item ? (item.url || '') : ''
 
-			var allowByRunnerId = runnerId === 'services'
+			var allowByRunnerId = runnerId === 'krunner_services'
 			var allowByUrl = (typeof url === 'string') && (
 				url.indexOf('applications://') === 0
 				|| url.indexOf('applications:') === 0

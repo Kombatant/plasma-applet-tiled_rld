@@ -30,10 +30,10 @@ Item {
 		_ensureSettingInitialized('searchResultsGrouped', true)
 		_ensureSettingInitialized('searchDefaultFilters', [
 			'krunner_systemsettings',
-			'Dictionary',
-			'services',
+			'krunner_dictionary',
+			'krunner_services',
 			'calculator',
-			'shell',
+			'krunner_shell',
 			'org.kde.windowedwidgets',
 			'org.kde.datetime',
 			'baloosearch',
