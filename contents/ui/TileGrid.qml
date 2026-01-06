@@ -318,8 +318,19 @@ DropArea {
 		appsModel.tileGridModel.favorites = urlList
 		updateSize()
 	}
+	function refreshTileDelegates() {
+		// When the config system reloads tileModel, the JS array is replaced.
+		// Ensure Repeater delegates are rebuilt from the new array.
+		tileModelRepeater.model = 0
+		tileModelRepeater.model = tileModel
+		groupHeaderSeparatorRepeater.model = 0
+		groupHeaderSeparatorRepeater.model = tileModel
+	}
 	onDraggedItemChanged: update()
-	onTileModelChanged: update()
+	onTileModelChanged: {
+		refreshTileDelegates()
+		update()
+	}
 	property var tileModel: []
 
 
@@ -554,7 +565,7 @@ DropArea {
 
 			Repeater {
 				id: tileModelRepeater
-				model: tileModel
+				model: 0
 				// onCountChanged: console.log('onCountChanged', count)
 				
 				TileItem {
@@ -567,7 +578,7 @@ DropArea {
 			// by sub-pixel overlap or neighboring items.
 			Repeater {
 				id: groupHeaderSeparatorRepeater
-				model: tileModel
+				model: 0
 				Rectangle {
 					readonly property var tile: modelData
 					visible: plasmoid.configuration.showGroupTileNameBorder && tile && tile.tileType === "group"
