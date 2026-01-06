@@ -152,7 +152,9 @@ KCM.SimpleKCM {
 		repeat: true
 		property int attemptsLeft: 20
 		onTriggered: {
-			if (page._collapseOuterNavigationOnce()) {
+			var collapsed = page._collapseOuterNavigationOnce()
+			var applyHidden = page._hideHostApplyButtonOnce()
+			if (collapsed && applyHidden) {
 				stop()
 				return
 			}
@@ -284,6 +286,65 @@ KCM.SimpleKCM {
 			appItem.anchors.leftMargin = 0
 		}
 
+		return true
+	}
+
+	function _hideHostApplyButtonOnce() {
+		// Plasma's AppletConfiguration.qml defines an Apply button in the footer.
+		// It is often redundant for our settings shell; hide it to avoid a
+		// permanently-disabled control in the UI.
+		function isClassName(item, className) {
+			var itemClassName = ("" + item).split("_", 1)[0]
+			return itemClassName === className
+		}
+		function getAncestor(item, className) {
+			var curItem = item
+			while (curItem && curItem.parent) {
+				curItem = curItem.parent
+				if (isClassName(curItem, className)) {
+					return curItem
+				}
+			}
+			return null
+		}
+
+		if (typeof root === "undefined" || !root) {
+			return false
+		}
+		var appletConfiguration = isClassName(root, "AppletConfiguration") ? root : getAncestor(root, "AppletConfiguration")
+		if (!appletConfiguration) {
+			return false
+		}
+
+		var applyButton = _findFirst(appletConfiguration, 6, function(node) {
+			if (!node) {
+				return false
+			}
+			// Match by icon name; text is translated.
+			try {
+				return node.icon && node.icon.name === "dialog-ok-apply"
+			} catch (e) {
+				return false
+			}
+		})
+
+		if (!applyButton) {
+			return false
+		}
+
+		applyButton.visible = false
+		applyButton.enabled = false
+		// Try to also remove any remaining layout allocation.
+		if (typeof applyButton.implicitWidth !== "undefined") {
+			applyButton.implicitWidth = 0
+		}
+		if (typeof applyButton.width !== "undefined") {
+			applyButton.width = 0
+		}
+		if (typeof applyButton.Layout !== "undefined") {
+			applyButton.Layout.preferredWidth = 0
+			applyButton.Layout.maximumWidth = 0
+		}
 		return true
 	}
 
