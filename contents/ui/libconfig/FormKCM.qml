@@ -41,8 +41,10 @@ KCM.SimpleKCM {
 			Window.window.visibleChanged.connect(function(){
 				// Defer the clamp: the configuration window often applies its own
 				// initial size during show; clamping too early gets overridden.
-				_applyWindowWidthConstraints()
-				Qt.callLater(_applyWindowWidthConstraints)
+				simpleKCM._applyWindowWidthConstraints()
+				Qt.callLater(function() {
+					simpleKCM._applyWindowWidthConstraints()
+				})
 			})
 		}
 	}

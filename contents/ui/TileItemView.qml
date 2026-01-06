@@ -112,7 +112,6 @@ Rectangle {
 		source: appObj.iconSource
 		anchors.verticalCenter: parent.verticalCenter
 		anchors.horizontalCenter: parent.horizontalCenter
-		// property int size: 72 // Just a default, overriden in State change
 		property int size: Math.min(parent.width, parent.height) / 2
 		width: appObj.showIcon ? size : 0
 		height: appObj.showIcon ? size : 0

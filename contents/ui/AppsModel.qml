@@ -12,8 +12,6 @@ Item {
 
 	property string order: "categories"
 	onOrderChanged: allAppsModel.refresh()
-    
-
 
 
 	signal refreshing()
@@ -91,33 +89,10 @@ Item {
 		Component.onCompleted: {
 			if (!autoPopulate) {
 				rootModelRefresh.restart()
-				// console.log('rootModel.refresh.star', Date.now())
-				// rootModel.refresh()
-				// console.log('rootModel.refresh.done', Date.now())
-			}
-		}
-
-
-		function log() {
-			// logListModel('rootModel', rootModel);
-			var listModel = rootModel;
-			for (var i = 0; i < listModel.count; i++) {
-				var item = listModel.modelForRow(i);
-				// console.log(listModel, i, item);
-				logObj('rootModel[' + i + ']', item)
-				// logListModel('rootModel[' + i + ']', item);
 			}
 		}
 
 		onCountChanged: {
-			// for (var i = 0; i < rootModel.count; i++) {
-			// 	var listModel = rootModel.modelForRow(i);
-			// 	if (listModel.description == 'KICKER_ALL_MODEL') {
-			// 		logObj('rootModel[' + i + ']', listModel)
-			// 		appsModel.allAppsList = listModel;
-			// 		appsModel.refreshed()
-			// 	}
-			// }
 			debouncedRefresh.restart()
 		}
 			
@@ -128,7 +103,9 @@ Item {
 			if (systemModel) {
 				powerActionsModel.parseModel(systemList, systemModel)
 			} else {
-				console.log('systemModel is null')
+				if (typeof logger !== "undefined" && logger) {
+					logger.warn('AppsModel: systemModel is null')
+				}
 			}
 			powerActionsModel.list = systemList
 			sessionActionsModel.parseSourceModel(powerActionsModel)
@@ -144,11 +121,7 @@ Item {
 			id: favoritesModel
 
 			Component.onCompleted: {
-				// TODO:
-				// Populate this model with all the 'tileModel' urls so that the Search Runner
-				// will prioritize the "favorited" apps.
-
-				// favorites = 'systemsettings.desktop,sublime-text.desktop'.split(',')
+				// TODO: Populate with tileModel urls so KRunner prioritizes tile apps.
 			}
 		}
 
@@ -186,7 +159,6 @@ Item {
 			
 			Item {
 				Component.onCompleted: {
-					 //console.log('debouncedRefreshRecentApps', index)
 					if (plasmoid.configuration.showRecentApps) {
 						debouncedRefreshRecentApps.restart()
 					}
@@ -206,15 +178,10 @@ Item {
 
 					Item {
 						Component.onCompleted: {
-							// console.log('depth2', index, display, model)
 							debouncedRefresh.restart()
 						}
 					}
 				}
-
-				// Component.onCompleted: {
-				// 	console.log('depth1', index, display, model)
-				// }
 			}
 		}
 
@@ -240,7 +207,6 @@ Item {
 	KickerListModel {
 		id: powerActionsModel
 		onItemTriggered: {
-			// console.log('powerActionsModel.onItemTriggered')
 			plasmoid.expanded = false
 		}
 		
@@ -264,7 +230,6 @@ Item {
 	KickerListModel {
 		id: sessionActionsModel
 		onItemTriggered: {
-			// console.log('sessionActionsModel.onItemTriggered')
 			plasmoid.expanded = false
 		}
 
@@ -274,7 +239,6 @@ Item {
 			var sessionIconNames = ['system-lock-screen', 'system-log-out', 'system-save-session', 'system-switch-user']
 			for (var i = 0; i < powerActionsModel.list.length; i++) {
 				var item = powerActionsModel.list[i];
-				// console.log(item, item.iconName, sessionIconNames.indexOf(item.iconName) >= 0)
 				if (sessionIconNames.indexOf(item.iconName) >= 0) {
 					sessionActionsList.push(item)
 				}
@@ -286,7 +250,6 @@ Item {
 	KickerListModel {
 		id: allAppsModel
 		onItemTriggered: {
-			// console.log('allAppsModel.onItemTriggered')
 			plasmoid.expanded = false
 		}
 
@@ -298,7 +261,9 @@ Item {
 			if (model) {
 				parseModel(recentAppList, model)
 			} else {
-				console.log('getRecentApps() recent apps model is null')
+				if (typeof logger !== "undefined" && logger) {
+					logger.warn('AppsModel.getRecentApps(): recent apps model is null')
+				}
 			}
 
 			//--- filter
@@ -324,7 +289,6 @@ Item {
 		}
 
 		function refreshRecentApps() {
-			// console.log('refreshRecentApps')
 			if (debouncedRefresh.running) {
 				// We're about to do a full refresh so don't bother doing a partial update.
 				return
@@ -338,7 +302,6 @@ Item {
 				// Overwrite the exisiting items.
 				for (var i = 0; i < recentAppList.length; i++) {
 					var item = recentAppList[i]
-					//console.log('item ', i , item) 
 					list[i] = item
 					set(i, item)
 				}
@@ -354,13 +317,14 @@ Item {
 			var modelIndex = rootModel.index(rootIndex, 0)
 			var categoryLabel = rootModel.data(modelIndex, Qt.DisplayRole)
 			var categoryIcon = rootModel.data(modelIndex, Qt.DecorationRole)
-			 //console.log('categoryLabel1', categoryLabel, categoryIcon)
 			var categoryModel = rootModel.modelForRow(rootIndex)
 			var appList = []
 			if (categoryModel) {
 				parseModel(appList, categoryModel)
 			} else {
-				console.log('allAppsModel.getCategory', rootIndex, categoryModel, 'is null')
+				if (typeof logger !== "undefined" && logger) {
+					logger.warn('AppsModel.getCategory(): category model is null', rootIndex)
+				}
 			}
 			
 			for (var i = 0; i < appList.length; i++) {
@@ -386,34 +350,10 @@ Item {
 			if (model) {
 				parseModel(appList, model)
 			} else {
-				console.log('getAllApps() all apps model is null')
+				if (typeof logger !== "undefined" && logger) {
+					logger.warn('AppsModel.getAllApps(): all apps model is null')
+				}
 			}
-
-			//--- filter
-			// var powerActionsList = [];
-			// var sceneUrls = [];
-			// appList = appList.filter(function(item){
-			// 	//--- filter multiples
-			// 	if (item.url) {
-			// 		if (sceneUrls.indexOf(item.url) >= 0) {
-			// 			return false;
-			// 		} else {
-			// 			sceneUrls.push(item.url);
-			// 			return true;
-			// 		}
-			// 	} else {
-			// 		return true;
-			// 		//--- filter
-			// 		// if (item.parentModel.toString().indexOf('SystemModel') >= 0) {
-			// 		// 	// console.log(item.description, 'removed');
-			// 		// 	powerActionsList.push(item);
-			// 		// 	return false;
-			// 		// } else {
-			// 		// 	return true;
-			// 		// }
-			// 	}
-			// });
-			// powerActionsModel.list = powerActionsList; 
 
 			//---
 			for (var i = 0; i < appList.length; i++) {
@@ -434,7 +374,6 @@ Item {
 				} else {
 					item.sectionKey = '?';
 				}
-				// console.log(item.sectionKey, item.name)
 			}
 
 			//--- sort
@@ -442,7 +381,6 @@ Item {
 				if (a.name && b.name) {
 					return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
 				} else {
-					// console.log(a, b);
 					return 0;
 				}
 			})
@@ -486,17 +424,6 @@ Item {
 
 			//--- apply model
 			allAppsModel.list = appList;
-			// allAppsModel.log();
-
-			//--- listen for changes
-			// for (var i = 0; i < runnerModel.count; i++){
-			// 	var runner = runnerModel.modelForRow(i);
-			// 	if (!runner.listenersBound) {
-			// 		runner.countChanged.connect(debouncedRefresh.logAndRestart)
-			// 		runner.dataChanged.connect(debouncedRefresh.logAndRestart)
-			// 		runner.listenersBound = true;
-			// 	}
-			// }
 
 			logger.debug("allAppsModel.refresh().done", Date.now())
 			refreshed()

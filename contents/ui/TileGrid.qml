@@ -2,7 +2,6 @@ import QtQuick
 import QtQuick.Controls as QQC2
 import org.kde.kirigami as Kirigami
 import org.kde.plasma.extras as PlasmaExtras
-//import org.kde.draganddrop 2.0
 import "Utils.js" as Utils
 
 DropArea {
@@ -49,22 +48,18 @@ DropArea {
 	}
 
 	onEntered: drag => {
-		// console.log('onEntered', drag)
 		dragTick(drag)
 	}
 	onPositionChanged: drag => {
-		// console.log('onPositionChanged', drag)
 		dragTick(drag)
 	}
 	onExited: drag => {
-		// console.log('onExited')
 		resetDragHover()
 	}
 
 
 
 		onDropped: drop => {
-		 //console.log('onDropped', draggedItem)
 		 dragTick(drop)
 		if (canDrop) {
 		if (draggedItem) {
@@ -137,17 +132,14 @@ DropArea {
 			) {
 				// We effectively use Math.min() here as we shrink the box tileWithin uses.
 				y2 = tile.y - 1
-				// console.log('group found at y =', tile.y, 'y2 set to', y2)
 			}
 		}
 
 		var lowestTileY = y1
-		// console.log('lowestTileY start at y = ', lowestTileY)
 		for (var i = 0; i < tileModel.length; i++) {
 			var tile = tileModel[i]
 			if (tileWithin(tile, x1, y1, x2, y2)) {
 				lowestTileY = Math.max(lowestTileY, tile.y + tile.h - 1)
-				// console.log('lowestTileY set to', lowestTileY, JSON.stringify(tile))
 			}
 		}
 
@@ -202,14 +194,11 @@ DropArea {
 	// https://github.com/qt/qtdeclarative/blob/a4aa8d9ade44d75cb5a1d84bd7c1773fadc73095/src/quick/items/qquickdroparea_p.h#L63
 	function dragTick(event) {
 		
-		 //console.log('onDragStarted -> ',draggedItem.x, draggedItem.y)
-		 
 		var dragX = event.x - dropOffsetX
 		var dragY = event.y - dropOffsetY
 		var modelX = Math.floor(dragX / cellBoxSize)
 		var modelY = Math.floor(dragY / cellBoxSize)
 		var globalPoint = popup.mapFromItem(tileGrid, event.x, event.y)
-		// console.log('onDragMove', event.x, event.y, modelX, modelY, globalPoint)
 		scrollUpArea.checkContains(event)
 		scrollDownArea.checkContains(event)
 
@@ -221,21 +210,10 @@ DropArea {
 			if (event.keys && event.keys.indexOf('favoriteId') >= 0) {
 				var url = event.getDataAsString('favoriteId')
 				url = Utils.parseDropUrl(url)
-				//console.log('onDragStarted -> ', JSON.stringify(draggedItem))
 			} else {
 				var url = event.urls[0]
-				// console.log('new addedItem', event.urls, url)
 				url = Utils.parseDropUrl(url)
 			}
-			// console.log('new addedItem')
-			// console.log('\t', 'urls', event.urls)
-			// console.log('\t', 'url', url)
-			// console.log('\t', 'keys', event.keys)
-			// for (var i = 0; i < event.keys.length; i++) {
-			// 	var key = event.keys[i]
-			// 	var value = event.getDataAsString(key)
-			// 	console.log('\t', 'mimeData', key, value)
-			// }
 
 			addedItem = newTile(url)
 			dropHoverX = modelX
@@ -335,7 +313,6 @@ DropArea {
 
 
 	function hits(x, y, w, h) {
-		// console.log('hits', [columns,rows], [x,y,w,h], hitBox)
 		for (var j = y; j < y + h; j++) {
 			if (j < 0 || j >= hitBox.length) {
 				continue; // Should we return true when out of bounds?
@@ -372,15 +349,6 @@ DropArea {
 				tileList.push(tile)
 			}
 		}
-
-		// Sort results by y, then by x
-		// tileList.sort(function(a, b) {
-		// 	if (a.y == b.y) {
-		// 		return b.x - a.x
-		// 	} else {
-		// 		return b.y - a.y
-		// 	}
-		// })
 
 		return tileList
 	}
@@ -442,26 +410,15 @@ DropArea {
 
 		function scrollBy(deltaY) {
 			if (flickableItem) {
-				// console.log('scrollHeight', scrollTopAtBottom, scrollHeight, viewport.height)
 				flickableItem.contentY = Math.max(0, Math.min(scrollTop + deltaY, scrollTopAtBottom))
 			}
 		}
-
-		// __wheelAreaScrollSpeed: cellBoxSize
-		// style: ScrollViewStyle {
-		// 	transientScrollBars: true
-		// }
 		
 		Item {
 			id: scrollItem
 
 			width: columns * cellBoxSize
 			height: rows * cellBoxSize
-
-			// Rectangle {
-			// 	anchors.fill: parent
-			// 	color: "#88336699"
-			// }
 
 			Repeater {
 				id: cellRepeater

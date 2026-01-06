@@ -72,15 +72,4 @@ LibConfig.FormKCM {
 		enabled: formLayout.searchOptionsEnabled
 		opacity: enabled ? 1 : 0.45
 	}
-
-	// For debugging purposes.
-	// User can configures the Filters in the SearchView
-	// LibConfig.TextAreaStringList {
-	// 	Kirigami.FormData.label: i18n("Search Plugins")
-	// 	configKey: 'searchDefaultFilters'
-	// 	readOnly: true
-	// 	function serialize() {
-	// 		// Do nothing
-	// 	}
-	// }
 }

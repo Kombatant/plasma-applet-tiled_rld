@@ -5,9 +5,6 @@ import org.kde.kirigami as Kirigami
 import org.kde.plasma.components as PlasmaComponents3
 import org.kde.ksvg as KSvg
 
-// import QtQuick.Controls.Styles 1.1 as QtQuickControlStyle
-// import QtQuick.Controls.Styles.Plasma 2.0 as PlasmaStyles
-
 RowLayout {
 	id: searchFiltersViewItem
 	Layout.fillWidth: true
@@ -42,41 +39,6 @@ RowLayout {
 		id: applyFilterButton
 		Layout.fillWidth: true
 		property string subText: ""
-
-		// style: PlasmaStyles.ToolButtonStyle {
-		// 	id: style
-		// 	readonly property bool smallIcon: !control.subText
-
-		// 	label: RowLayout {
-		// 		Kirigami.Icon {
-		// 			source: control.iconSource
-		// 			Layout.preferredHeight: style.smallIcon ? config.flatButtonIconSize : -1
-		// 			Layout.preferredWidth: style.smallIcon ? config.flatButtonIconSize : -1
-		// 		}
-		// 		ColumnLayout {
-		// 			id: textColumn
-		// 			Layout.fillWidth: true
-		// 			Layout.fillHeight: true
-		// 			spacing: 0
-		// 			PlasmaComponents3.Label {
-		// 				Layout.fillWidth: true
-		// 				text: control.text
-		// 				horizontalAlignment: Text.AlignLeft
-		// 				maximumLineCount: 1
-		// 				elide: Text.ElideRight
-		// 			}
-		// 			PlasmaComponents3.Label {
-		// 				Layout.fillWidth: true
-		// 				text: control.subText
-		// 				horizontalAlignment: Text.AlignLeft
-		// 				visible: control.subText
-		// 				color: config.menuItemTextColor2
-		// 				maximumLineCount: 1
-		// 				elide: Text.ElideRight
-		// 			}
-		// 		}
-		// 	}
-		// }
 		onClicked: {
 			if (searchFiltersViewItem.runnerId) {
 				search.filters = [searchFiltersViewItem.runnerId]

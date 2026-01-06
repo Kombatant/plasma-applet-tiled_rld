@@ -23,11 +23,9 @@ KickerListView { // RunnerResultsList
 	Connections {
 		target: search.results
 		function onRefreshing() {
-			// console.log('search.results.onRefreshing')
 			searchResultsList.currentIndex = 0
 		}
 		function onRefreshed() {
-			// console.log('search.results.onRefreshed')
 			searchResultsList.currentIndex = 0
 		}
 	}

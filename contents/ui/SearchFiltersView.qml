@@ -3,20 +3,6 @@ import QtQuick.Layouts
 
 ColumnLayout {
 	id: searchFiltersView
-	// width: parent.width
-	// Layout.fillHeight: true
-
-	SearchFiltersViewItem {
-		visible: false
-		runnerId: ""
-		indentLevel: 0
-		iconSource: "applications-other"
-		text: i18n("All") + ' (Not working)'
-		subText: i18n("Search with all KRunner plugins")
-		checkBox.visible: false
-		onApplyButtonClicked: search.filters = []
-		enabled: false
-	}
 
 	SearchFiltersViewItem {
 		runnerId: ""

@@ -20,24 +20,6 @@ ListView {
 	delegate: MenuListItem {}
 
 	property var modelList: model ? model.list : []
-	
-	// currentIndex: 0
-	// Connections {
-	// 	target: appsModel.allAppsModel
-	// 	function onRefreshing() {
-	// 		console.log('appsList.onRefreshing')
-	// 		appsList.model = []
-	// 		// console.log('search.results.onRefreshed')
-	// 		appsList.currentIndex = 0
-	// 	}
-	// 	function onRefreshed() {
-	// 		console.log('appsList.onRefreshed')
-	// 		// appsList.model = appsModel.allAppsList
-	// 		appsList.model = appsModel.allAppsList
-	// 		appsList.modelList = appsModel.allAppsList.list
-	// 		appsList.currentIndex = 0
-	// 	}
-	// }
 
 	highlight: PlasmaExtras.Highlight {
 		visible: listView.currentItem && !listView.currentItem.isSeparator

@@ -65,16 +65,11 @@ MouseArea {
 		active: launcherIcon.containsMouse && !justOpenedTimer.running
 		smooth: true
 	}
-	
-	// Debugging
-	// Rectangle { anchors.fill: parent; border.color: "#ff0"; color: "transparent"; border.width: 1; }
-	// Rectangle { anchors.fill: icon; border.color: "#f00"; color: "transparent"; border.width: 1; }
 
 	Accessible.name: Plasmoid.title
 	Accessible.role: Accessible.Button
 
 	hoverEnabled: true
-	// cursorShape: Qt.PointingHandCursor
 
 	property bool wasExpanded
 	onPressed: wasExpanded = widget.expanded

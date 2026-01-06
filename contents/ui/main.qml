@@ -6,7 +6,6 @@ import org.kde.kirigami as Kirigami
 import org.kde.plasma.plasmoid
 import org.kde.plasma.private.kicker as Kicker
 import org.kde.coreaddons as KCoreAddons
-// import org.kde.kquickcontrolsaddons 2.0 as KQuickControlsAddons
 
 import "lib"
 
@@ -45,13 +44,6 @@ PlasmoidItem {
 			id: dragHelper
 
 			dragIconSize: Kirigami.Units.iconSizes.medium
-
-			// Used when we only have a string and don't have a QIcon.
-			// DragHelper.startDrag(...) requires a QIcon. See Issue #75.
-			// property var defaultIconItem: KQuickControlsAddons.QIconItem {
-			// 	id: defaultIconItem
-			// }
-			// property alias defaultIcon: defaultIconItem.icon
 		}
 
 		Kicker.ProcessRunner {
@@ -62,36 +54,6 @@ PlasmoidItem {
 
 	AppletConfig {
 		id: config
-	}
-
-	function logListModel(label, listModel) {
-		console.log(label + '.count', listModel.count);
-		// logObj(label, listModel);
-		for (var i = 0; i < listModel.count; i++) {
-			var item = listModel.modelForRow(i);
-			var itemLabel = label + '[' + i + ']';
-			console.log(itemLabel, item);
-			logObj(itemLabel, item);
-			if (('' + item).indexOf('Model') >= 0) {
-				logListModel(itemLabel, item);
-			}
-		}
-	}
-	function logObj(label, obj) {
-		// if (obj && typeof obj === 'object') {
-		//  console.log(label, Object.keys(obj))
-		// }
-		
-		for (var key in obj) {
-			var val = obj[key];
-			if (typeof val !== 'function') {
-				var itemLabel = label + '.' + key;
-				console.log(itemLabel, typeof val, val);
-				if (('' + val).indexOf('Model') >= 0) {
-					logListModel(itemLabel, val);
-				}
-			}
-		}
 	}
 
 	toolTipMainText: ""
@@ -108,15 +70,8 @@ PlasmoidItem {
 		if (expanded) {
 			search.query = ""
 			search.applyDefaultFilters()
-			// config.showSearch = false
-			// TODO popup is an invalid reference here for some reason
 			fullRepresentationItem.searchView.searchField.forceActiveFocus()
 			fullRepresentationItem.searchView.showDefaultView()
-
-			// Debug TileEditorView
-			// fullRepresentationItem.tileGrid.addDefaultTiles()
-			// var testTile = fullRepresentationItem.tileGrid.getTileAt(0, 1)
-			// fullRepresentationItem.tileGrid.editTile(testTile)
 
 			// Show icon active effect without hovering
 			justOpenedTimer.start()
@@ -127,10 +82,6 @@ PlasmoidItem {
 		repeat: false
 		interval: 600
 	}
-
-	// property alias searchResultsView: popup.searchView.searchResultsView
-	// width: popup.width
-	// height: popup.height
 
 	fullRepresentation: Popup {
 		id: popup
@@ -174,10 +125,6 @@ PlasmoidItem {
 				attemptsLeft -= 1
 			}
 		}
-		// Layout.onPreferredWidthChanged: console.log('popup.size', width, height)
-		// Layout.onPreferredHeightChanged: console.log('popup.size', width, height)
-
-
 		onFocusChanged: {
 			if (focus) {
 				popup.searchView.searchField.forceActiveFocus()
@@ -225,6 +172,5 @@ PlasmoidItem {
 	]
 
 	Component.onCompleted: {
-		// Plasmoid.internalAction("configure").trigger() // Uncomment to open the config window on load.
 	}
 }

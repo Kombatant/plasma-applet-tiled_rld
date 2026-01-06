@@ -74,7 +74,6 @@ ListModel {
 	}
 
 	function parseModel(appList, model, path) {
-		// console.log(path, model, model.description, model.count)
 		for (var i = 0; i < model.count; i++) {
 			var item = model.modelForRow(i)
 			if (!item) {
@@ -90,10 +89,8 @@ ListModel {
 			}
 			var itemPath = (path || []).concat(i)
 			if (item && item.hasChildren) {
-				// console.log(item)
 				parseModel(appList, item, itemPath)
 			} else {
-				// console.log(itemPath, item, item.description)
 				appList.push(item)
 			}
 		}
@@ -104,16 +101,6 @@ ListModel {
 		refreshing()
 
 		refreshed()
-	}
-
-	function log() {
-		for (var i = 0; i < list.length; i++) {
-			var item = list[i]
-			console.log(JSON.stringify({
-				name: item.name,
-				description: item.description,
-			}, null, '\t'))
-		}
 	}
 
 	function triggerIndex(index) {

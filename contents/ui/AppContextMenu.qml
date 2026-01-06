@@ -132,7 +132,6 @@ Item {
 				}
 				for (var i = 0; i < actionList.length; i++) {
 					var actionItem = actionList[i]
-					// console.log(index, actionItem.actionId, actionItem.actionArgument, actionItem.text)
 					var menuItem = menu.newMenuItem()
 					menuItem.text = actionItem.text ? actionItem.text : ""
 					menuItem.enabled = actionItem.type != "title" && ("enabled" in actionItem ? actionItem.enabled : true)

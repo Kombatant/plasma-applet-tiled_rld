@@ -186,18 +186,13 @@ Item {
 	// https://stackoverflow.com/a/24729837/947742
 	property bool dragActive: tileMouseArea.drag.active
 	onDragActiveChanged: {
-		//console.log("drag active", tileMouseArea.drag.active , 'var ' , dragActive)
 		if (dragActive) {
-			//console.log("drag started")
-		    //console.log('onDragStarted', JSON.stringify(modelData), index, tileModel.length, modelData)
 			tileGrid.startDrag(index)
 			 tileGrid.dropOffsetX = 0
 			// tileGrid.dropOffsetY = 0
 			tileItem.z = 1
 			Drag.start()
 		} else {
-			// console.log("drag finished")
-			// console.log('DragArea.onDrop', draggedItem)
 			Qt.callLater(tileGrid.resetDrag)
 			Qt.callLater(tileItem.fixCoordinateBindings)
 			Drag.drop() // Breaks QML context.

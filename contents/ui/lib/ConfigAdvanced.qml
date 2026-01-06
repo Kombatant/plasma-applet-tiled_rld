@@ -267,8 +267,6 @@ ColumnLayout {
 				return true
 			})
 			configTableModel.keys = keys
-
-			// console.log(JSON.stringify(keys, null, '\t'))
 			for (var i = 0; i < keys.length; i++) {
 				var key = keys[i]
 				if (key === 'minimumWidth') {
@@ -304,7 +302,6 @@ ColumnLayout {
 					continue // Ignore
 				}
 				if (!node) {
-					console.log('configDefaults doesn\'t contain an entry for plasmoid.configuration.' + key)
 					continue
 				}
 

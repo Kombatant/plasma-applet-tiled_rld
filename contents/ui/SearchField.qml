@@ -1,9 +1,6 @@
 import QtQuick
-// import QtQuick.Controls as QQC2
 import org.kde.kirigami as Kirigami
 import org.kde.plasma.components as PlasmaComponents3
-
-// import QtQuick.Controls.Styles.Plasma 2.0 as PlasmaStyles
 
 Item {
 	id: searchField

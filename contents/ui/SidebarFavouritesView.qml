@@ -90,7 +90,6 @@ Repeater {
 					}
 				} else if (startsWith(s, 'file:///home/')) {
 					s = s.substring('file:///home/'.length, s.length)
-					// console.log(model.url, s)
 
 					var trimIndex = s.indexOf('/')
 					if (trimIndex == -1) { // file:///home/username
@@ -98,7 +97,6 @@ Repeater {
 					} else {
 						s = s.substring(trimIndex, s.length)
 					}
-					// console.log(model.url, s)
 
 					if (s === '') { // Home Directory
 						return 'user-home-symbolic'

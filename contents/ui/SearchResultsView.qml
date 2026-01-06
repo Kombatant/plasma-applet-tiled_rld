@@ -54,14 +54,6 @@ GridLayout {
 			checked: search.isFileFilter
 			checkedEdge: searchView.searchOnTop ?  Qt.TopEdge : Qt.BottomEdge
 		}
-		// FlatButton {
-		// 	icon.name: "globe"
-		// 	Layout.preferredHeight: parent.Layout.preferredHeight
-		// 	Layout.preferredWidth: parent.Layout.preferredHeight
-		// 	onClicked: search.filters = ['bookmarks']
-		// 	checked: search.isBookmarksFilter
-		// 	checkedEdge: searchView.searchOnTop ?  Qt.TopEdge : Qt.BottomEdge
-		// }
 
 		Item { Layout.fillWidth: true }
 
@@ -101,7 +93,6 @@ GridLayout {
 		color: "#111"
 		height: 1
 		width: parent.width
-		// anchors.bottom: searchFiltersRow.bottom - 1
 	}
 
 	QQC2.StackView {

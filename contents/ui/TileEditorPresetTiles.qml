@@ -47,8 +47,6 @@ TileEditorGroupBox {
 	}
 
 	function checkIfRecognizedLauncher() {
-		// console.log('checkIfRecognizedLauncher', appObj.appUrl)
-
 		resetRecognizedLaunchers()
 		checkForPreset()
 
@@ -59,20 +57,6 @@ TileEditorGroupBox {
 		if (!isDesktopFile) {
 			return
 		}
-
-		// Qt 5.15+ warns that XHR on local file will be removed.
-		// Requests.getFile(appObj.appUrl, function(err, data) {
-		// 	if (err) {
-		// 		console.log('[tiledmenu] checkIfRecognizedLauncher.err', err)
-		// 		return
-		// 	}
-
-		// 	var desktopFile = Requests.parseMetadata(data)
-		// 	checkIfSteamLauncher(desktopFile)
-		// 	checkIfLutrisLauncher(desktopFile)
-
-		// 	tileEditorPresetTiles.checkForPreset()
-		// })
 
 		checkIfSteamIcon(appObj.iconSource)
 		appObj.iconSourceChanged.connect(function(){
@@ -192,8 +176,6 @@ TileEditorGroupBox {
 			iconField: tileEditorPresetTiles.iconField
 			tileGrid: tileEditorPresetTiles.tileGrid
 			filename: 'lutris_' + lutrisGameSlug + '_2x1.jpg'
-			// property string tileImageUrl: '/home/' + kuser.loginName + '/.local/share/lutris/banners/' + lutrisGameSlug + '.jpg'
-			// source: (isLutrisGameLauncher && kuser.loginName) ? tileImageUrl : ''
 			property string tileImageUrl: 'https://lutris.net/games/banner/' + lutrisGameSlug + '.jpg'
 			source: (isLutrisGameLauncher) ? tileImageUrl : ''
 			w: 2

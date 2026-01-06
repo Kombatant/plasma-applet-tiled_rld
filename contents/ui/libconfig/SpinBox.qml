@@ -121,7 +121,6 @@ QQC2.SpinBox {
 		if (isNaN(val)) {
 			val = -0
 		}
-		// console.log('valueFromText', text, val)
 		return Math.round(val * factor)
 	}
 
@@ -145,8 +144,6 @@ QQC2.SpinBox {
 		if (minusIndex >= 0) {
 			var a = str.substr(0, minusIndex)
 			var b = str.substr(minusIndex+1)
-			console.log('a', a, 'b', b)
-
 			return '-' + a + b
 		} else {
 			return str
@@ -165,9 +162,7 @@ QQC2.SpinBox {
 
 	function onTextEdited() {
 		var oldText = spinBox.contentItem.text
-		// console.log('onTextEdited', 'oldText1', oldText)
 		oldText = fixText(oldText)
-		// console.log('onTextEdited', 'oldText2', oldText)
 		var oldPeriodIndex = oldText.indexOf('.')
 		if (oldPeriodIndex == -1) {
 			oldPeriodIndex = oldText.length
@@ -179,9 +174,7 @@ QQC2.SpinBox {
 		spinBox.valueModified()
 
 		var newText = spinBox.contentItem.text
-		// console.log('onTextEdited', 'newText1', newText)
 		newText = fixText(newText)
-		// console.log('onTextEdited', 'newText2', newText)
 		var newPeriodIndex = newText.indexOf('.')
 		if (newPeriodIndex == -1) {
 			newPeriodIndex = newText.length

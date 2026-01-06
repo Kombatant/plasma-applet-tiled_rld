@@ -54,7 +54,6 @@ Item {
 		interval: 100
 		onTriggered: resultModel.refresh()
 		function logAndRestart() {
-			// console.log('debouncedRefresh')
 			restart()
 		}
 	}
@@ -75,7 +74,6 @@ Item {
 		}
 	}
 	function removeDefaultFilter(runnerId) {
-		//console.log(JSON.stringify(plasmoid.configuration.searchDefaultFilters))
 		var i = defaultFilters.indexOf(runnerId)
 		if (i >= 0) {
 			var l = plasmoid.configuration.searchDefaultFilters

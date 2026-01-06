@@ -6,7 +6,6 @@ MouseArea {
 	id: sectionDelegate
 
 	width: ListView.view.width
-	// height: childrenRect.height
 	implicitHeight: listView.iconSize
 
 	property bool enableJumpToSection: false

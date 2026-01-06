@@ -7,9 +7,7 @@ function request(opt, callback) {
 	}
 	var req = new XMLHttpRequest()
 	req.onerror = function(e) {
-		console.log('XMLHttpRequest.onerror', e)
 		if (e) {
-			console.log('\t', e.status, e.statusText, e.message)
 			callback(e.message)
 		} else {
 			callback('XMLHttpRequest.onerror(undefined)')
@@ -20,9 +18,6 @@ function request(opt, callback) {
 			if (200 <= req.status && req.status < 400) {
 				callback(null, req.responseText, req)
 			} else {
-				if (req.status === 0) {
-					console.log('HTTP 0 Headers: \n' + req.getAllResponseHeaders())
-				}
 				var msg = "HTTP Error " + req.status + ": " + req.statusText
 				callback(msg, req.responseText, req)
 			}
@@ -102,9 +97,7 @@ function postJSON(opt, callback) {
 function getFile(url, callback) {
 	var req = new XMLHttpRequest()
 	req.onerror = function(e) {
-		console.log('XMLHttpRequest.onerror', e)
 		if (e) {
-			console.log('\t', e.status, e.statusText, e.message)
 			callback(e.message)
 		} else {
 			callback('XMLHttpRequest.onerror(undefined)')

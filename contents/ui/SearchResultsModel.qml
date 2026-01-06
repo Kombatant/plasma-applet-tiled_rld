@@ -9,12 +9,10 @@ ListModel {
 	function refresh() {
 		refreshing()
 		
-		// console.log('resultModel.refresh')
 		//--- populate list
 		var resultList = [];
 		for (var i = 0; i < runnerModel.count; i++){
 			var runner = runnerModel.modelForRow(i);
-			// console.log(i, runner, runner.runnerId, runner.name)
 			for (var j = 0; j < runner.count; j++) {
 				// RunnerMatchesModel.modelForRow is NOT implemented.
 				// We need to use model.data(model.index(row, 0), role)
@@ -77,12 +75,6 @@ ListModel {
 					favoriteId: favoriteId,
 					largeIcon: false, // for KickerListView
 				};
-
-				// console.log(resultItem.name, resultItem.url);
-				// for (var x = 0; x < 10; x++) {
-				// 	console.log('\t', typeof runner.data(runner.index(j, 0), DescriptionRole + x));
-				// }
-				// console.log(resultItem.name, Qt.DisplayRole, DescriptionRole, UrlRole)
 				resultList.push(resultItem);
 			}
 		}
@@ -122,8 +114,6 @@ ListModel {
 		for (var i = 0; i < resultList.length; i++) {
 			resultModel.append(resultList[i]);
 		}
-
-		// console.log(JSON.stringify(resultList, null, '\t'))
 
 		//--- listen for changes
 		for (var i = 0; i < runnerModel.count; i++){

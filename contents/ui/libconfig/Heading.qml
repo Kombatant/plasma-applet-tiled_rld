@@ -47,7 +47,6 @@ ColumnLayout {
 	}
 
 	Layout.fillWidth: true
-	// Kirigami.FormData.isSection: true
 	Kirigami.MnemonicData.controlType: Kirigami.MnemonicData.FormLabel
 
 	Kirigami.Separator {
@@ -66,18 +65,6 @@ ColumnLayout {
 		text: heading.text
 		level: 1
 		font.weight: Font.Bold
-		// horizontalAlignment: (!__formLayout || __formLayout.wideMode) ? Text.AlignHCenter : Text.AlignLeft
 		verticalAlignment: (!__formLayout || __formLayout.wideMode) ? Text.AlignVCenter : Text.AlignBottom
 	}
 }
-
-//--- Test Default Kirigami Heading
-// Kirigami.Separator {
-// 	property string text: ""
-// 	Kirigami.FormData.label: text
-// 	Kirigami.FormData.isSection: true
-// 	property alias separator: separator
-// 	Item {
-// 		id: separator
-// 	}
-// }

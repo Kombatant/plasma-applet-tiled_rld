@@ -51,12 +51,9 @@ Kicker.SimpleFavoritesModel {
 				app.group = kickerAppModel.data(modelIndex, Qt.UserRole + 2)
 				app.url = kickerAppModel.data(modelIndex, Qt.UserRole + 10)
 
-				// console.log(app, app.display, app.decoration, app.description, app.group, app.favoriteId)
-
 				return app
 			}
 		}
-		//console.log('getApp', url, 'no index')
 		return null
 	}
 	function runApp(url) {
@@ -68,7 +65,6 @@ Kicker.SimpleFavoritesModel {
 				return true
 			}
 		}
-		console.log('runApp', url, 'no index')
 		return false
 	}
 

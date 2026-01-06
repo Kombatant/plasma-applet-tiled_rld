@@ -4,7 +4,6 @@ import org.kde.kirigami as Kirigami
 
 // https://doc.qt.io/qt-5/graphicaleffects.html
 // https://doc.qt.io/qt-6/qtgraphicaleffects5-index.html
-// import QtGraphicalEffects 1.0 // TODO Deprecated in Qt6
 import Qt5Compat.GraphicalEffects as QtGraphicalEffects
 
 Item {
