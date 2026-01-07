@@ -15,7 +15,7 @@ PlasmoidItem {
 	Logger {
 		id: logger
 		name: 'tiledmenu'
-		showDebug: true
+		showDebug: false
 	}
 
 	SearchModel {

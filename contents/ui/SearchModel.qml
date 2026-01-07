@@ -9,7 +9,6 @@ Item {
 	property string query: ""
 	property bool isSearching: query.length > 0
 	onQueryChanged: {
-		logger.debug('SearchModel.onQueryChanged', 'query:', search.query)
 		runnerModel.query = search.query
 		// Clear results immediately when query is cleared.
 		// Don't trigger debouncedRefresh here - rely on onQueryFinished.
@@ -23,8 +22,6 @@ Item {
 	//     find /usr/share/kservices5/ -iname "plasma-runner-*.desktop" -print0 | xargs -0 grep "PluginInfo-Name" | sort
 	property var filters: []
 	onFiltersChanged: {
-		logger.debug('SearchModel.onFiltersChanged', 'filters:', JSON.stringify(filters), 'query:', search.query)
-		
 		// Save query and clear it first - this makes the RunnerModel clear its internal state
 		var savedQuery = search.query
 		
@@ -35,11 +32,9 @@ Item {
 		// Empty QStringList == all runners; avoid assigning undefined (Qt 6 rejects it)
 		var runnerList = Array.isArray(filters) ? filters : []
 		runnerModel.runners = runnerList.length === 0 ? [] : runnerList
-		logger.debug('SearchModel.onFiltersChanged', 'set runners to:', JSON.stringify(runnerModel.runners))
 
 		// Clear stale results immediately so the UI doesn't show old data.
 		resultModel.clear()
-		logger.debug('SearchModel.onFiltersChanged', 'cleared resultModel')
 
 		// Re-run the current query with the updated runner set.
 		// Use a timer to ensure the runners change has propagated before re-querying.
@@ -55,7 +50,6 @@ Item {
 		interval: 100
 		repeat: false
 		onTriggered: {
-			logger.debug('filterQueryTimer.onTriggered', 'savedQuery:', savedQuery)
 			// The RunnerModel ignores query changes if the query string is identical.
 			// We need to set a different query and then restore, using a timer between
 			// so the model actually processes the change.
@@ -69,7 +63,6 @@ Item {
 		interval: 50
 		repeat: false
 		onTriggered: {
-			logger.debug('filterRestoreQueryTimer.onTriggered', 'restoring query:', filterQueryTimer.savedQuery)
 			runnerModel.query = filterQueryTimer.savedQuery
 			// Also schedule a manual refresh in case onQueryFinished doesn't fire
 			filterRefreshTimer.restart()
@@ -81,7 +74,6 @@ Item {
 		interval: 200
 		repeat: false
 		onTriggered: {
-			logger.debug('filterRefreshTimer.onTriggered', 'runnerModel.count:', runnerModel.count)
 			resultModel.refresh()
 		}
 	}
@@ -108,11 +100,6 @@ Item {
 		// Wait for the runner to finish querying before refreshing results.
 		// This is the only reliable signal that indicates fresh data is available.
 		onQueryFinished: {
-			logger.debug('RunnerModel.onQueryFinished', 'count:', runnerModel.count)
-			for (var i = 0; i < runnerModel.count; i++) {
-				var runner = runnerModel.modelForRow(i)
-				logger.debug('  runner', i, 'name:', runner ? runner.name : 'null', 'count:', runner ? runner.count : 'null')
-			}
 			resultModel.refresh()
 		}
 	}
@@ -121,7 +108,6 @@ Item {
 		id: debouncedRefresh
 		interval: 100
 		onTriggered: {
-			logger.debug('debouncedRefresh.onTriggered')
 			resultModel.refresh()
 		}
 		function logAndRestart() {

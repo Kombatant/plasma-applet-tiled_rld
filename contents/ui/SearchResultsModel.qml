@@ -9,13 +9,10 @@ ListModel {
 	function refresh() {
 		refreshing()
 		
-		logger.debug('SearchResultsModel.refresh() START', 'runnerModel.count:', runnerModel.count)
-		
 		//--- populate list
 		var resultList = [];
 		for (var i = 0; i < runnerModel.count; i++){
 			var runner = runnerModel.modelForRow(i);
-			logger.debug('  runner', i, 'name:', runner ? runner.name : 'null', 'count:', runner ? runner.count : 'null')
 			for (var j = 0; j < runner.count; j++) {
 				// RunnerMatchesModel.modelForRow is NOT implemented.
 				// We need to use model.data(model.index(row, 0), role)
@@ -66,8 +63,6 @@ ListModel {
 
 				var name = runner.data(modelIndex, Qt.DisplayRole)
 				var description = runner.data(modelIndex, DescriptionRole)
-				
-				logger.debug('    item', j, 'name:', name, 'icon:', icon, 'url:', url)
 
 				var resultItem = {
 					runnerIndex: i,
@@ -86,8 +81,6 @@ ListModel {
 				resultList.push(resultItem);
 			}
 		}
-
-		logger.debug('SearchResultsModel.refresh() resultList.length:', resultList.length)
 
 		//--- Ensure grouped headers are contiguous when runner results are merged.
 		// Preserve the original order within each section.
