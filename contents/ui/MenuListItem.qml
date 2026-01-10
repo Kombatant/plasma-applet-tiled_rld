@@ -1,6 +1,8 @@
 import QtQuick
+import QtQuick.Controls as QQC2
 import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
+import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components as PlasmaComponents3
 import org.kde.draganddrop as DragAndDrop
 import org.kde.kquickcontrolsaddons as KQuickControlsAddons
@@ -29,6 +31,19 @@ AppToolButton {
 	property string iconName: model.iconName || ''
 	property alias iconSource: itemIcon.source
 	property int iconSize: model.largeIcon ? listView.iconSize * 2 : listView.iconSize
+
+	// Tooltip: show full result text (name + description) when hovered
+	property string fullResultTooltip: (model && model.name ? model.name : '') + ((model && model.description) ? ('\n' + model.description) : '')
+	readonly property string tooltipMainText: (model && model.name) ? ('' + model.name) : ''
+	readonly property string tooltipSubText: (model && model.description && model.description !== model.name) ? ('' + model.description) : ''
+
+	// Plasma tooltip follows cursor without stealing hover (avoids flashing).
+	PlasmaCore.ToolTipArea {
+		anchors.fill: parent
+		active: itemDelegate.containsMouse && (tooltipMainText.length > 0 || tooltipSubText.length > 0)
+		mainText: tooltipMainText
+		subText: tooltipSubText
+	}
 
 	function endsWith(s, substr) {
 		return s.indexOf(substr) == s.length - substr.length
@@ -156,6 +171,7 @@ AppToolButton {
 	}
 
 	acceptedButtons: Qt.LeftButton | Qt.RightButton
+
 	onClicked: function(mouse) {
 		mouse.accepted = true
 		resetDragState()
