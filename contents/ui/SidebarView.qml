@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.extras as PlasmaExtras
+import org.kde.kirigami as Kirigami
 import org.kde.config as KConfig
 import org.kde.draganddrop as DragAndDrop
 import org.kde.kcmutils as KCM // KCMLauncher
@@ -9,10 +10,22 @@ import "Utils.js" as Utils
 
 Item {
 	id: sidebarView
+	property var popup
 	anchors.left: parent.left
 	anchors.top: parent.top
 	anchors.bottom: parent.bottom
 	z: 1
+
+	Timer {
+		id: autoResizeDebounce
+		interval: 200
+		repeat: false
+		onTriggered: {
+			if (popup && typeof popup.autoResizeToContent === "function") {
+				popup.autoResizeToContent()
+			}
+		}
+	}
 
 	width: sidebarMenu.width
 	Behavior on width { NumberAnimation { duration: 100 } }
@@ -40,13 +53,18 @@ Item {
 			id: sidebarMenuTop
 			spacing: 0
 
-			// SidebarItem {
-			// 	icon.name: 'open-menu-symbolic'
-			// 	text: i18n("Menu")
-			// 	closeOnClick: false
-			// 	onClicked: sidebarMenu.open = !sidebarMenu.open
-			// 	zoomOnPush: expanded
-			// }
+			SidebarItem {
+				icon.name: "transform-scale"
+				text: i18n("Auto Resize")
+				onClicked: autoResizeDebounce.restart()
+			}
+
+			Rectangle {
+				Layout.fillWidth: true
+				height: 1
+				color: Kirigami.Theme.textColor
+				opacity: 0.25
+			}
 
 			SidebarViewButton {
 				appletIconName: "view-grid-symbolic"

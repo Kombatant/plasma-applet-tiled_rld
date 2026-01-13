@@ -118,6 +118,156 @@ MouseArea {
 		}
 	}
 
+	function autoResizeToContent() {
+		function logObj(label, obj) {
+			if (!logger.showDebug) {
+				return
+			}
+			try {
+				logger.log(label, JSON.stringify(obj))
+			} catch (e) {
+				logger.log(label, obj)
+			}
+		}
+
+		logObj('autoResize:start', {
+			popupW: width,
+			popupH: height,
+			favGridCols: plasmoid.configuration.favGridCols,
+			popupHeightCfg: plasmoid.configuration.popupHeight,
+			tileCount: tileGrid && tileGrid.tileModel ? tileGrid.tileModel.length : -1,
+			tileGridMaxCol: tileGrid ? tileGrid.maxColumn : -1,
+			tileGridMaxRow: tileGrid ? tileGrid.maxRow : -1,
+			cellBox: config ? config.cellBoxSize : -1,
+			layoutPrefW: popup.Layout.preferredWidth,
+			layoutPrefH: popup.Layout.preferredHeight,
+			layoutMinW: popup.Layout.minimumWidth,
+			layoutMinH: popup.Layout.minimumHeight,
+			screenW: Screen.width,
+			screenH: Screen.height,
+			screenAvailW: Screen.desktopAvailableWidth,
+			screenAvailH: Screen.desktopAvailableHeight,
+			leftSectionWidth: config ? config.leftSectionWidth : -1,
+		})
+
+		if (!tileGrid || !config) {
+			logger.log('autoResize:abort', 'missing tileGrid/config')
+			return
+		}
+
+		var beforeMax = {
+			cols: tileGrid.maxColumn,
+			rows: tileGrid.maxRow,
+		}
+		tileGrid.update() // refresh cached bounds
+		var afterMax = {
+			cols: tileGrid.maxColumn,
+			rows: tileGrid.maxRow,
+		}
+
+		var cols = Math.max(1, Math.ceil(tileGrid.maxColumn))
+		var rows = Math.max(1, Math.ceil(tileGrid.maxRow))
+		var cellBox = config.cellBoxSize
+		var targetGridWidth = cols * cellBox
+		var targetWidth = config.leftSectionWidth + targetGridWidth
+		var targetHeight = Math.max(config.minimumHeight, rows * cellBox)
+		var dpr = Screen.devicePixelRatio || 1
+		var logicalHeight = Math.ceil(targetHeight / dpr)
+		var logicalWidth = Math.ceil(targetWidth / dpr)
+
+		logObj('autoResize:computed', {
+			beforeMax: beforeMax,
+			afterMax: afterMax,
+			cellBox: cellBox,
+			cols: cols,
+			rows: rows,
+			targetGridWidth: targetGridWidth,
+			targetWidth: targetWidth,
+			targetHeight: targetHeight,
+			logicalHeight: logicalHeight,
+			logicalWidth: logicalWidth,
+		})
+
+		var changedCols = plasmoid.configuration.favGridCols !== cols
+		var changedHeight = plasmoid.configuration.popupHeight !== logicalHeight
+		if (changedCols) {
+			plasmoid.configuration.favGridCols = cols
+		}
+		if (changedHeight) {
+			plasmoid.configuration.popupHeight = logicalHeight
+		}
+
+		// Force the popup's layout hints to the computed size so the view actually resizes.
+		var previousMinW = popup.Layout.minimumWidth
+		var previousMinH = popup.Layout.minimumHeight
+		popup.Layout.preferredWidth = targetWidth
+		popup.Layout.preferredHeight = targetHeight
+		popup.Layout.minimumWidth = targetWidth
+		popup.Layout.minimumHeight = targetHeight
+		popup.Layout.maximumWidth = targetWidth
+		popup.Layout.maximumHeight = targetHeight
+		popup.implicitWidth = targetWidth
+		popup.implicitHeight = targetHeight
+
+		// Also set the actual item sizes to push the change through even if a binding was broken earlier.
+		popup.width = targetWidth
+		popup.height = targetHeight
+		Qt.callLater(function() {
+			popup.width = targetWidth
+			popup.height = targetHeight
+				logObj('autoResize:forceSizes', {
+				popupWidth: popup.width,
+				popupHeight: popup.height,
+				layoutPrefW: popup.Layout.preferredWidth,
+				layoutPrefH: popup.Layout.preferredHeight,
+				layoutMinW: popup.Layout.minimumWidth,
+				layoutMinH: popup.Layout.minimumHeight,
+				layoutMaxW: popup.Layout.maximumWidth,
+				layoutMaxH: popup.Layout.maximumHeight,
+			})
+			// Release max/implicit on the following frame to re-enable manual resize.
+			Qt.callLater(function() {
+					popup.Layout.maximumWidth = -1
+					popup.Layout.maximumHeight = -1
+					popup.Layout.minimumWidth = previousMinW
+					popup.Layout.minimumHeight = previousMinH
+				logObj('autoResize:releaseLimits', {
+					layoutPrefW: popup.Layout.preferredWidth,
+					layoutPrefH: popup.Layout.preferredHeight,
+					layoutMinW: popup.Layout.minimumWidth,
+					layoutMinH: popup.Layout.minimumHeight,
+					layoutMaxW: popup.Layout.maximumWidth,
+					layoutMaxH: popup.Layout.maximumHeight,
+				})
+				if (plasmoid.expanded) {
+					plasmoid.expanded = false
+					Qt.callLater(function() { plasmoid.expanded = true })
+				}
+			})
+		})
+
+		logObj('autoResize:apply', {
+			changedCols: changedCols,
+			changedHeight: changedHeight,
+			newFavGridCols: plasmoid.configuration.favGridCols,
+			newPopupHeightCfg: plasmoid.configuration.popupHeight,
+			popupWidthNow: width,
+			popupHeightNow: height,
+			targetWidth: targetWidth,
+			targetHeight: targetHeight,
+		})
+
+		// Log again on the next frame so we can see the actual size after bindings settle.
+		Qt.callLater(function() {
+			logObj('autoResize:postLayout', {
+				popupWidth: width,
+				popupHeight: height,
+				favGridCols: plasmoid.configuration.favGridCols,
+				popupHeightCfg: plasmoid.configuration.popupHeight,
+			})
+		})
+	}
+
 	Connections {
 		target: config && config.tileModel ? config.tileModel : null
 		function onLoaded() {
@@ -213,6 +363,7 @@ MouseArea {
 
 	SidebarView {
 		id: sidebarView
+		popup: popup
 	}
 
 	MouseArea {
