@@ -24,8 +24,8 @@ Just download the .zip, extract its contents inside ~/.local/share/plasma/plasmo
 
 ## Screenshots
 
-![](https://i.imgur.com/OA66oVK.png)
+![Main menu](contents/docs/main.png)
 
-![](contents/docs/settings.png)
+![Settings](contents/docs/settings.png)
 
-![](https://github.com/Kombatant/plasma-applet-tiled_rld/blob/fc794773f8b69ca345e9f2434c99932297415ade/icons/tiled_rld_animation.gif)
+![Animations supported](https://github.com/Kombatant/plasma-applet-tiled_rld/blob/fc794773f8b69ca345e9f2434c99932297415ade/icons/tiled_rld_animation.gif)
