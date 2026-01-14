@@ -55,7 +55,7 @@ Item {
 		_ensureSettingInitialized('taskManagerApp', 'org.kde.plasma-systemmonitor.desktop')
 		_ensureSettingInitialized('fileManagerApp', 'org.kde.dolphin.desktop')
 
-		// Base64 JSON string; empty string means "use default".
+		// Base64 encoded XML string; empty string means "use default".
 		_ensureSettingInitialized('tileModel', '')
 		_ensureSettingInitialized('tileScale', 0.8)
 		_ensureSettingInitialized('tileIconSize', 72)
@@ -131,7 +131,7 @@ Item {
 	function resolveDefaultPresetTilesFolder() {
 		var pictures = QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.PicturesLocation)
 		if (pictures) {
-			return pictures + '/tiledmenu'
+			return pictures + '/TiledMenuReloaded'
 		}
 		var downloads = QtLabsPlatform.StandardPaths.writableLocation(QtLabsPlatform.StandardPaths.DownloadLocation)
 		if (downloads) {
@@ -267,7 +267,7 @@ Item {
 	readonly property bool searchResultsGrouped: plasmoid.configuration.searchResultsGrouped
 	
 	//--- Tile Data
-	property var tileModel: Base64JsonString {
+	property var tileModel: Base64XmlString {
 		configKey: 'tileModel'
 		defaultValue: []
 

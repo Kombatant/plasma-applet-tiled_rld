@@ -10,7 +10,12 @@ Using this as a playground to see how much I can fix/add just **by using LLMs** 
 
 * Supports:
     * Pin/Favourite apps/files through the context menu (or by dragging them from dolphin).
-    * Resizing (permanently) the size of the menu.
+    * Resizing (permanently) the size of the menu. Auto-resize button added for extra comfort.
+    * Animated tiles (GIFs, APNGs, SVGs).
+    * Revamped settings menu.
+    * Various fixes for Qt6 compatibility.
+    * New XML format for storing pinned items (not backwards compatible).
+    * User can now define where custom tile images are stored (default is ~/Pictures/TiledMenuReloaded).   
     * Any size tile 1x1, 2x2, 4x4, 4x2, 1x3, etc.
     * Easily edit the background image of a tile.
     * Customizable sidebar shortcuts.

@@ -12,11 +12,11 @@
 ## Critical project gotchas (don’t break Plasma)
 - **Kicker parent-chain crash**: `KickerAppModel` (`Kicker.SimpleFavoritesModel`) must remain a child of `Kicker.RootModel` so `appEntry.actions()` can find `appletInterface` (see [contents/ui/AppsModel.qml](../contents/ui/AppsModel.qml) and [contents/ui/KickerAppModel.qml](../contents/ui/KickerAppModel.qml)).
 
-## Tile layout persistence (Base64 JSON)
-- Layout lives in `plasmoid.configuration.tileModel` encoded via [contents/ui/Base64JsonString.qml](../contents/ui/Base64JsonString.qml) and exposed as `config.tileModel.value` in [contents/ui/AppletConfig.qml](../contents/ui/AppletConfig.qml).
+## Tile layout persistence (Base64 XML)
+- Layout lives in `plasmoid.configuration.tileModel` encoded as a Base64-wrapped XML string and exposed as `config.tileModel.value` in [contents/ui/AppletConfig.qml](../contents/ui/AppletConfig.qml).
 - The grid binds directly: `TileGrid.tileModel: config.tileModel.value` (see [contents/ui/Popup.qml](../contents/ui/Popup.qml)).
-- **After any mutation to the JS array or tile objects**, call `tileGrid.tileModelChanged()` (see [contents/ui/TileGrid.qml](../contents/ui/TileGrid.qml)). Saving is debounced in Popup (`Timer` → `config.tileModel.save()`); don’t save on every event.
-- **Editor stale-reference rule**: the tile editor holds a reference to a tile object; when `save()` reloads, the array is replaced. [contents/ui/TileEditorView.qml](../contents/ui/TileEditorView.qml) closes on `config.tileModel.loaded()` to avoid editing stale refs—keep this behavior.
+- **After any mutation to the tile data or objects**, call `tileGrid.tileModelChanged()` (see [contents/ui/TileGrid.qml](../contents/ui/TileGrid.qml)). Saving is debounced in Popup (`Timer` → `config.tileModel.save()`); don’t save on every event.
+- **Editor stale-reference rule**: the tile editor holds a reference to a tile object; when `save()` reloads, the underlying data may be replaced. [contents/ui/TileEditorView.qml](../contents/ui/TileEditorView.qml) closes on `config.tileModel.loaded()` to avoid editing stale refs—keep this behavior.
 
 ## Drag/drop + search specifics
 - Always normalize drop URLs before storing: `Utils.parseDropUrl()` strips `applications:` and paths → bare `.desktop` id (see [contents/ui/Utils.js](../contents/ui/Utils.js) and drop handling in [contents/ui/TileGrid.qml](../contents/ui/TileGrid.qml)).

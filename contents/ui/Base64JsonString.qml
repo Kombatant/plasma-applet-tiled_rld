@@ -1,5 +1,7 @@
 // Version 4
-
+// NOTE: Historically this helper decoded/encoded Base64-wrapped JSON.
+// This component remains for backwards compatibility with any data that
+// is still stored as Base64 JSON. New code should use `Base64XmlString`.
 import QtQuick
 
 QtObject {

@@ -1,12 +1,12 @@
-# Translation of tiledmenu in zh_TW
+# Translation of Tiled Menu Reloaded in zh_TW
 # Copyright (C) 2022
-# This file is distributed under the same license as the tiledmenu package.
+# This file is distributed under the same license as the Tiled Menu Reloaded package.
 #
 # Kisaragi Hiu <mail@kisaragi-hiu.com>, 2022.
 msgid ""
 msgstr ""
-"Project-Id-Version: tiledmenu\n"
-"Report-Msgid-Bugs-To: https://github.com/Zren/plasma-applet-tiledmenu\n"
+"Project-Id-Version: Tiled Menu Reloaded\n"
+"Report-Msgid-Bugs-To: https://github.com/Kombatant/plasma-applet-tiled_rld/issues\n"
 "POT-Creation-Date: 2025-02-25 20:49+1100\n"
 "PO-Revision-Date: 2022-08-21 00:40+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"

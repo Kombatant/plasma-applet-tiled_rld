@@ -1,13 +1,13 @@
-# Translation of tiledmenu in Persian
+# Translation of Tiled Menu Reloaded in Persian
 # Copyright (C) 2022
-# This file is distributed under the same license as the tiledmenu package.
+# This file is distributed under the same license as the Tiled Menu Reloaded package.
 # FIRST AUTHOR <alirezarashidigoorabi@gmail.com>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: tiledmenu\n"
-"Report-Msgid-Bugs-To: https://github.com/Zren/plasma-applet-tiledmenu\n"
+"Project-Id-Version: Tiled Menu Reloaded\n"
+"Report-Msgid-Bugs-To: https://github.com/Kombatant/plasma-applet-tiled_rld/issues\n"
 "POT-Creation-Date: 2025-02-25 20:49+1100\n"
 "PO-Revision-Date: 2024-01-02 15:00-0330\n"
 "Last-Translator: Alireza Rashidi <alirezarashidigoorabi@gmail.com>\n"

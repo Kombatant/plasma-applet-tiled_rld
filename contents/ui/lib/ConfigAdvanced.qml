@@ -81,16 +81,9 @@ ColumnLayout {
 			}
 
 			Component {
-				id: base64jsonControl
+				id: base64xmlControl
 				QQC2.TextArea {
-					text: {
-						if (modelValue) {
-							var data = JSON.parse(Qt.atob(modelValue))
-							return JSON.stringify(data, null, '  ')
-						} else {
-							return ''
-						}
-					}
+					text: (modelValue && modelValue.length) ? Qt.atob(modelValue) : ''
 					readOnly: true
 					implicitHeight: contentHeight + font.pixelSize
 					wrapMode: TextEdit.Wrap
@@ -137,8 +130,8 @@ ColumnLayout {
 						} else if (model.valueType === 'object') { // StringList
 							return stringListControl
 						} else { // string
-							if (model.stringType === 'base64json') {
-								return base64jsonControl
+							if (model.stringType === 'base64xml') {
+								return base64xmlControl
 							} else {
 								return stringControl
 							}

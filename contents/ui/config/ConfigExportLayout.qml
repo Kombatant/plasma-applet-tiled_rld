@@ -58,11 +58,11 @@ ColumnLayout {
 		sidebarPopupButtonSize: "int",
 	})
 
-	TiledMenu.Base64JsonString {
-		id: configTileModel
-		configKey: "tileModel"
-		defaultValue: []
-	}
+			TiledMenu.Base64XmlString {
+				id: configTileModel
+				configKey: "tileModel"
+				defaultValue: []
+			}
 
 	property bool _updatingTextFromConfig: false
 	property bool _applyingXmlToConfig: false
@@ -429,12 +429,18 @@ ColumnLayout {
 					return
 				}
 				if (typeName === "tilemodel") {
-					// main.xml stores tileModel as a base64-encoded JSON string.
-					var encoded = ""
+					// main.xml stores tileModel as a base64-encoded XML fragment (<tiles>...)</n+                    var encoded = ""
 					try {
-						encoded = Qt.btoa(JSON.stringify(normalizedValue || []))
+						var lines = _buildTileModelXml(normalizedValue || [])
+						// _buildTileModelXml returns an <entry> wrapper; extract inner <tiles>...</tiles>
+						// join and remove the first and last lines which are the <entry> tags.
+						var joined = lines.join("\n")
+						// Extract the <tiles>...</tiles> fragment
+						var m = /<tiles[\s\S]*<\/tiles>/.exec(joined)
+						var tilesFragment = m && m.length >= 0 ? m[0] : "<tiles></tiles>"
+						encoded = Qt.btoa(tilesFragment)
 					} catch (e) {
-						encoded = Qt.btoa("[]")
+						encoded = Qt.btoa("<tiles></tiles>")
 					}
 					rootKcm[propName] = encoded
 				} else {
@@ -453,7 +459,7 @@ ColumnLayout {
 				var typeName = settingsSchema[key]
 				var normalized = _normalizeValueForType(imported[key], typeName)
 				if (key === "tileModel") {
-					// Ensure the config page's own Base64JsonString mirrors the new value.
+					// Ensure the config page's own Base64XmlString mirrors the new value.
 					if (configTileModel.value !== normalized) {
 						configTileModel.value = normalized
 					}
