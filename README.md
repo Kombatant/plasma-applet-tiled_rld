@@ -49,6 +49,9 @@ Usage
 Configuration
 - Settings are available from the applet configuration dialog. Important options include default tile folder, tile scale, grid columns, and search filters.
 
+And an fyi...
+- Nothing is free. If you use a LOT of images, animations etc in your menu, a lot of RAM *AND* VRAM is consumed by Plasmashell. That can actually have ramifications if you play games and you have a graphics card that doesn't have much VRAM. So keep an eye on that number!
+
 Contact
 - Report issues at: https://github.com/Kombatant/plasma-applet-tiled_rld/issues
 
