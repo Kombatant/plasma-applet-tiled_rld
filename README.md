@@ -44,7 +44,7 @@ Usage
 - Pin items: right‑click an application or file and select "Pin" or drag it to the tile grid.
 - Edit tiles: use the tile editor to change label, icon, background image, size, and placement.
 - Groups: create a new group from the grid context menu; drag tiles into groups and use the group header to sort.
-- Resize the popup: Meta + Right Click then drag; the size is persisted across restarts.
+- Resize the popup by dragging its edges or just use the auto resize button in the sidebar.
 
 Configuration
 - Settings are available from the applet configuration dialog. Important options include default tile folder, tile scale, grid columns, and search filters.
