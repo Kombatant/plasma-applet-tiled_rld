@@ -37,16 +37,19 @@ ColumnLayout {
 	// a ColumnLayout is to shrink the spacing between the buttons.
 	spacing: Kirigami.Units.smallSpacing
 
-	// Assign buddyFor to the first RadioButton so that the Kirigami label aligns with it.
-	// Repeater is also a visibleChild, so avoid it.
-	Kirigami.FormData.buddyFor: {
-		for (var i = 0; i < visibleChildren.length; i++) {
-			if (!(visibleChildren[i] instanceof Repeater)) {
-				return visibleChildren[i]
-			}
-		}
-		return null
+	// Provide a hidden direct-child RadioButton to satisfy
+	// `Kirigami.FormData.buddyFor` which requires the buddy to be
+	// a direct child of the attachee. This avoids timing/delegation
+	// issues with Repeater-created delegates.
+	QQC2.RadioButton {
+		id: _buddyRadioButton
+		visible: false
+		enabled: false
 	}
+
+	// Assign buddyFor only if there's a direct child RadioButton so the
+	// Kirigami FormData requirement (buddy must be a direct child) is met.
+	Kirigami.FormData.buddyFor: _buddyRadioButton
 
 	Repeater {
 		id: buttonRepeater

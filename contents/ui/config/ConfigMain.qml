@@ -386,19 +386,30 @@ KCM.AbstractKCM {
     }
     onFilterTextChanged: _ensureValidSelection()
     Component.onCompleted: {
-        _bindCfgToConfiguration();
-        _startCollapseOuterNavigation();
-        _ensureValidSelection();
-        _shortcutPending = ("" + Plasmoid.globalShortcut);
-        _applyWindowWidthConstraints();
-        // On some Plasma versions, the config page attaches late.
-        // Retry once root gets a parent.
-        if (typeof root !== "undefined" && root && typeof root.parentChanged === "function")
-            root.parentChanged.connect(function() {
-            _startCollapseOuterNavigation();
-            _applyWindowWidthConstraints();
-        });
+        // Defer initialization to avoid creating graphical objects before
+        // the page is attached to the host configuration shell. This
+        // prevents intermittent "Created graphical object was not placed
+        // in the graphics scene" warnings on some Plasma versions.
+        Qt.callLater(function() {
+            try {
+                _bindCfgToConfiguration();
+                _startCollapseOuterNavigation();
+                _ensureValidSelection();
+                _shortcutPending = ("" + Plasmoid.globalShortcut);
+                _applyWindowWidthConstraints();
 
+                // On some Plasma versions, the config page attaches late.
+                // Retry once root gets a parent.
+                if (typeof root !== "undefined" && root && typeof root.parentChanged === "function") {
+                    root.parentChanged.connect(function() {
+                        _startCollapseOuterNavigation();
+                        _applyWindowWidthConstraints();
+                    });
+                }
+            } catch (e) {
+                console.warn('ConfigMain: deferred initialization failed', e)
+            }
+        })
     }
 
     Timer {

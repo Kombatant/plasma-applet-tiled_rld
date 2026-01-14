@@ -69,19 +69,16 @@ KCM.SimpleKCM {
 		}
 	}
 
-	QQC2.ScrollView {
-		id: scrollView
+	Item {
 		anchors.fill: parent
-		clip: true
-		leftPadding: Kirigami.Units.largeSpacing
-		rightPadding: Kirigami.Units.largeSpacing
-		topPadding: Kirigami.Units.largeSpacing
-		bottomPadding: Kirigami.Units.largeSpacing
+
 		ColumnLayout {
 			id: column
-			// Bind to the viewport width so layouts wrap nicely and don't
-			// get squeezed into the top-left corner.
-			width: scrollView.availableWidth
+			anchors {
+				left: parent.left; right: parent.right; top: parent.top; bottom: parent.bottom
+				leftMargin: Kirigami.Units.largeSpacing; rightMargin: Kirigami.Units.largeSpacing; topMargin: Kirigami.Units.largeSpacing; bottomMargin: Kirigami.Units.largeSpacing
+			}
+			width: Math.max(0, parent.width - (Kirigami.Units.largeSpacing * 2))
 			spacing: Kirigami.Units.largeSpacing
 
 			GridLayout {
