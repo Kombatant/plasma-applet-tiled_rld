@@ -1,36 +1,54 @@
+
 # Tiled Menu Reloaded
 
-A menu (loosely) based on Windows 10's Start Menu.
+Tiled Menu Reloaded is a Plasma applet that provides a tiled launcher loosely inspired by Windows 10's start menu. It offers flexible tile layouts, groupable tiles, and configurable shortcuts while targeting Plasma 6 and Qt6 compatibility. *Used various LLMs as a playground for code generation and assistance in forking/structuring the project.*
 
-Forked from firefly's Tiled Menu (you can find it here: https://github.com/firefly75/plasma-applet-tiledmenu), which is a fork of zren's Tiled Menu (here: https://github.com/Zren/plasma-applet-tiledmenu). 
+Origins
+- Forked from firefly75's Tiled Menu: https://github.com/firefly75/plasma-applet-tiledmenu
+- Original project by zren: https://github.com/Zren/plasma-applet-tiledmenu
 
-Using this as a playground to see how much I can fix/add just **by using LLMs** (kinda frustrating because they're dumb, but a learning experience nevertheless). **LLMs made far too many changes obviously for this fork to be any useful to the code it was forked from, hence the new branch.**
+Key goals:
+- Provide an attractive, editable tile-based application launcher.
+- Make common launcher workflows (pinning, grouping, quick search) fast and discoverable.
+- Support modern Qt6/Plasma 6 environments.
 
-**Usable but STILL HAS BUGS so beware!**
+Highlights
+- Tile-based launcher with configurable sizes (1×1, 2×2, 4×4, and mixed layouts).
+- Group tiles with headers; move and sort items within groups.
+- Drag-and-drop pinning from file manager and search results.
+- Animated tile support (GIF, APNG, SVG) and per-tile background images.
+- Configurable sidebar shortcuts and search filters.
+- Stores tile layout as a Base64-encoded XML fragment. Default preset images folder: ~/Pictures/TiledMenuReloaded
 
-* Supports:
-    * Pin/Favourite apps/files through the context menu (or by dragging them from dolphin).
-    * Resizing (permanently) the size of the menu. Auto-resize button added for extra comfort.
-    * Animated tiles (GIFs, APNGs, SVGs).
-    * Revamped settings menu.
-    * Various fixes for Qt6 compatibility.
-    * New XML format for storing pinned items (not backwards compatible).
-    * User can now define where custom tile images are stored (default is ~/Pictures/TiledMenuReloaded).   
-    * Any size tile 1x1, 2x2, 4x4, 4x2, 1x3, etc.
-    * Easily edit the background image of a tile.
-    * Customizable sidebar shortcuts.
-    * Jump to Letter/Category (can also default to this view)
-    * Defaulting to only showing the tiles.
-    * Labeling Groups of Tiles + Move Groups of Tiles + Sorting items in the group
-
-## Installation
-
-Just download the .zip, extract its contents inside ~/.local/share/plasma/plasmoids/. Restart Plasmashell, right click on your application launcher -> show alternatives and choose Tiled Menu Reloaded. That's pretty much it. 
-
-## Screenshots
+Screenshots
 
 ![Main menu](contents/docs/main.png)
 
 ![Settings](contents/docs/settings.png)
 
-![Animations supported](https://github.com/Kombatant/plasma-applet-tiled_rld/blob/fc794773f8b69ca345e9f2434c99932297415ade/icons/tiled_rld_animation.gif)
+![Animations supported](icons/tiled_rld_animation.gif)
+
+Installation
+1. Copy the package to your local plasmoids directory:
+
+    mkdir -p ~/.local/share/plasma/plasmoids/
+    unzip <package>.zip -d ~/.local/share/plasma/plasmoids/
+
+2. Restart Plasma Shell to load the new applet:
+
+    kquitapp6 plasmashell && nohup plasmashell --replace > /tmp/plasmashell.log 2>&1 &
+
+3. Add the applet: right-click your application launcher, choose "Show Alternatives", and select "Tiled Menu Reloaded".
+
+Usage
+- Pin items: right‑click an application or file and select "Pin" or drag it to the tile grid.
+- Edit tiles: use the tile editor to change label, icon, background image, size, and placement.
+- Groups: create a new group from the grid context menu; drag tiles into groups and use the group header to sort.
+- Resize the popup: Meta + Right Click then drag; the size is persisted across restarts.
+
+Configuration
+- Settings are available from the applet configuration dialog. Important options include default tile folder, tile scale, grid columns, and search filters.
+
+Contact
+- Report issues at: https://github.com/Kombatant/plasma-applet-tiled_rld/issues
+
