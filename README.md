@@ -1,7 +1,7 @@
 
 # Tiled Menu Reloaded
 
-Tiled Menu Reloaded is a Plasma applet that provides a tiled launcher loosely inspired by Windows 10's start menu. It offers flexible tile layouts, groupable tiles, and configurable shortcuts while targeting Plasma 6 and Qt6 compatibility. *Used various LLMs as a playground for code generation and assistance in forking/structuring the project.*
+Tiled Menu Reloaded is a Plasma applet that provides a tiled launcher loosely inspired by Windows 10's start menu. It offers flexible tile layouts, groupable tiles, and configurable shortcuts while targeting Plasma 6 and Qt6 compatibility. **Used various LLMs as a playground for code generation and assistance in forking/structuring/coding the project.**
 
 ## Origins
 - Forked from firefly75's Tiled Menu: https://github.com/firefly75/plasma-applet-tiledmenu
@@ -28,30 +28,30 @@ Tiled Menu Reloaded is a Plasma applet that provides a tiled launcher loosely in
 
 ![Animations supported](icons/tiled_rld_animation.gif)
 
-Installation
+## Installation
 1. Copy the package to your local plasmoids directory:
 
-    mkdir -p ~/.local/share/plasma/plasmoids/
-    unzip <package>.zip -d ~/.local/share/plasma/plasmoids/
+    ```mkdir -p ~/.local/share/plasma/plasmoids/
+    ```unzip <package>.zip -d ~/.local/share/plasma/plasmoids/
 
 2. Restart Plasma Shell to load the new applet:
 
-    kquitapp6 plasmashell && nohup plasmashell --replace > /tmp/plasmashell.log 2>&1 &
+    ```kquitapp6 plasmashell && nohup plasmashell --replace > /tmp/plasmashell.log 2>&1 &
 
 3. Add the applet: right-click your application launcher, choose "Show Alternatives", and select "Tiled Menu Reloaded".
 
-Usage
+## Usage
 - Pin items: right‑click an application or file and select "Pin" or drag it to the tile grid.
 - Edit tiles: use the tile editor to change label, icon, background image, size, and placement.
 - Groups: create a new group from the grid context menu; drag tiles into groups and use the group header to sort.
 - Resize the popup by dragging its edges or just use the auto resize button in the sidebar.
 
-Configuration
+## Configuration
 - Settings are available from the applet configuration dialog. Important options include default tile folder, tile scale, grid columns, and search filters.
 
-And an fyi...
-- Nothing is free. If you use a LOT of images, animations etc in your menu, a lot of RAM *AND* VRAM is consumed by Plasmashell. That can actually have ramifications if you play games and you have a graphics card that doesn't have much VRAM. So keep an eye on that number!
+> [!And an fyi...]
+> Nothing is free. If you use a LOT of images, animations etc in your menu, a lot of RAM **AND** VRAM is consumed by Plasmashell. That can actually have ramifications if you play games and you have a graphics card that doesn't have much VRAM. So keep an eye on that number!
 
-Contact
+## Contact
 - Report issues at: https://github.com/Kombatant/plasma-applet-tiled_rld/issues
 
