@@ -20,6 +20,9 @@ Tiled Menu Reloaded is a Plasma applet that provides a tiled launcher loosely in
 - Configurable sidebar shortcuts and search filters.
 - Stores tile layout as a Base64-encoded XML fragment. Default preset images folder: ~/Pictures/TiledMenuReloaded
 
+> [!CAUTION]
+> Nothing is free. If you use a LOT of images, animations etc in your menu, a lot of RAM **AND** VRAM is consumed by Plasmashell. That can actually have ramifications if you play games and you have a graphics card that doesn't have much VRAM. So keep an eye on that number!
+
 ## Screenshots
 
 ![Main menu](contents/docs/main.png)
@@ -49,9 +52,6 @@ Tiled Menu Reloaded is a Plasma applet that provides a tiled launcher loosely in
 
 ## Configuration
 - Settings are available from the applet configuration dialog. Important options include default tile folder, tile scale, grid columns, and search filters.
-
-> [!CAUTION]
-> Nothing is free. If you use a LOT of images, animations etc in your menu, a lot of RAM **AND** VRAM is consumed by Plasmashell. That can actually have ramifications if you play games and you have a graphics card that doesn't have much VRAM. So keep an eye on that number!
 
 ## Contact
 - Report issues at: https://github.com/Kombatant/plasma-applet-tiled_rld/issues
