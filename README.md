@@ -32,13 +32,14 @@ Tiled Menu Reloaded is a Plasma applet that provides a tiled launcher loosely in
 1. Copy the package to your local plasmoids directory:
 
     ```mkdir -p ~/.local/share/plasma/plasmoids/```
+   
     ```unzip <package>.zip -d ~/.local/share/plasma/plasmoids/```
 
-2. Restart Plasma Shell to load the new applet:
+3. Restart Plasma Shell to load the new applet:
 
     ```kquitapp6 plasmashell && nohup plasmashell --replace > /tmp/plasmashell.log 2>&1 &```
 
-3. Add the applet: right-click your application launcher, choose "Show Alternatives", and select "Tiled Menu Reloaded".
+4. Add the applet: right-click your application launcher, choose "Show Alternatives", and select "Tiled Menu Reloaded".
 
 ## Usage
 - Pin items: right‑click an application or file and select "Pin" or drag it to the tile grid.
