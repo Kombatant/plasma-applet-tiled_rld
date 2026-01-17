@@ -34,8 +34,8 @@ Item {
 	readonly property bool hasDescription: appObj.descriptionText.length > 0 || appObj.labelText.length > 0
 	readonly property real descriptionSpacing: cellMargin
 	readonly property bool useOverlayLabel: !!appObj.backgroundImage
-	readonly property real labelPaddingX: cellMargin + (2 * Screen.devicePixelRatio)
-	readonly property real labelPaddingY: cellMargin + (2 * Screen.devicePixelRatio)
+	readonly property real labelPaddingX: cellMargin + (6 * Screen.devicePixelRatio)
+	readonly property real labelPaddingY: cellMargin + (4 * Screen.devicePixelRatio)
 	readonly property real labelShadowOffset: Math.max(1, Math.round(1 * Screen.devicePixelRatio))
 	readonly property color labelBaseColor: (tileItemView && tileItemView.gradient ? tileItemView.gradientBottomColor : appObj.backgroundColor)
 	readonly property real labelBaseLuma: _relativeLuminance(labelBaseColor)
