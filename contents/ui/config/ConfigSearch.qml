@@ -12,6 +12,9 @@ LibConfig.FormKCM {
 	id: formLayout
 	readonly property bool searchFieldHidden: !!plasmoid.configuration.hideSearchField
 	readonly property bool searchOptionsEnabled: !searchFieldHidden
+	readonly property bool searchFieldHeightEnabled: searchOptionsEnabled
+		&& plasmoid.configuration.sidebarPosition !== 'top'
+		&& plasmoid.configuration.sidebarPosition !== 'bottom'
 
 	readonly property string plasmaStyleLabelText: {
 		var plasmaStyleText = i18nd("kcm_desktoptheme", "Plasma Style")
@@ -46,7 +49,7 @@ LibConfig.FormKCM {
 		Kirigami.FormData.label: i18n("Search Field Height")
 		suffix: i18n("px")
 		minimumValue: 0
-		enabled: formLayout.searchOptionsEnabled
+		enabled: formLayout.searchFieldHeightEnabled
 		opacity: enabled ? 1 : 0.45
 	}
 

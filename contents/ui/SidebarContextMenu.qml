@@ -9,6 +9,19 @@ PlasmaExtras.Menu {
 	required property var model
 
 	function computePlacement() {
+		// Align to the sidebar, not the panel edge, per Plasma 6 menu behavior.
+		if (typeof config !== "undefined" && config) {
+			if (config.sidebarOnLeft) {
+				return PlasmaExtras.Menu.RightPosedTopAlignedPopup;
+			}
+			if (config.sidebarOnTop) {
+				return PlasmaExtras.Menu.BottomPosedLeftAlignedPopup;
+			}
+			if (config.sidebarOnBottom) {
+				return PlasmaExtras.Menu.TopPosedLeftAlignedPopup;
+			}
+		}
+
 		if (Plasmoid.location === PlasmaCore.Types.LeftEdge) {
 			return PlasmaExtras.Menu.RightPosedTopAlignedPopup;
 		} else if (Plasmoid.location === PlasmaCore.Types.TopEdge) {
