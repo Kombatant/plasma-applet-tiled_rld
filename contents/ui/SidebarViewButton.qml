@@ -13,16 +13,15 @@ SidebarItem {
 	// Use theme-provided icon names to follow the current KDE icon theme.
 	property string appletIconName: ""
 
-	checkedEdge: Qt.LeftEdge
+	// Adjust checked edge based on sidebar orientation
+	checkedEdge: config.sidebarHorizontal ? (config.sidebarOnTop ? Qt.BottomEdge : Qt.TopEdge) : Qt.LeftEdge
 	checkedEdgeWidth: 4 * Screen.devicePixelRatio // Twice as thick as normal
 	display: QQC2.AbstractButton.IconOnly
 	tooltipText: labelText
 	implicitHeight: config.flatButtonSize
 
-	contentItem: Column {
+	contentItem: Item {
 		anchors.fill: parent
-		anchors.margins: Kirigami.Units.smallSpacing
-		spacing: Kirigami.Units.smallSpacing / 2
 
 		Kirigami.Icon {
 			id: icon
@@ -32,7 +31,7 @@ SidebarItem {
 			property int iconSize: Kirigami.Units.iconSizes.roundedIconSize(config.flatButtonIconSize)
 			width: iconSize
 			height: iconSize
-			anchors.horizontalCenter: parent.horizontalCenter
+			anchors.centerIn: parent
 		}
 
 		Text {
@@ -44,6 +43,8 @@ SidebarItem {
 			horizontalAlignment: Text.AlignHCenter
 			wrapMode: Text.WordWrap
 			anchors.horizontalCenter: parent.horizontalCenter
+			anchors.top: icon.bottom
+			anchors.topMargin: Kirigami.Units.smallSpacing / 2
 		}
 	}
 }

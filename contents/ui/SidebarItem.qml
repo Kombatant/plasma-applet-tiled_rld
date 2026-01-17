@@ -4,8 +4,16 @@ import QtQuick.Layouts
 
 FlatButton {
 	id: sidebarItem
-	Layout.fillWidth: true
+	// In vertical mode (left sidebar): fill width, fixed height
+	// In horizontal mode (top/bottom sidebar): fixed width, fixed height
+	Layout.fillWidth: !config.sidebarHorizontal
+	Layout.fillHeight: false
+	Layout.preferredWidth: config.sidebarHorizontal ? config.flatButtonSize : undefined
+	Layout.preferredHeight: config.flatButtonSize
 	Layout.minimumWidth: expanded ? config.sidebarMinOpenWidth : implicitWidth
+	Layout.alignment: config.sidebarHorizontal ? Qt.AlignVCenter : Qt.AlignHCenter
+	implicitWidth: config.flatButtonSize
+	implicitHeight: config.flatButtonSize
 	property var sidebarMenu: parent.parent // Column.SidebarMenu
 	expanded: sidebarMenu ? sidebarMenu.open : false
 	labelVisible: expanded

@@ -7,28 +7,64 @@ import org.kde.config as KConfig
 import org.kde.draganddrop as DragAndDrop
 import org.kde.kcmutils as KCM // KCMLauncher
 import "Utils.js" as Utils
+import "./lib/" as Lib
 
 Item {
 	id: sidebarView
 	property var popup
-	anchors.left: parent.left
-	anchors.top: parent.top
-	anchors.bottom: parent.bottom
 	z: 1
 
-	Timer {
-		id: autoResizeDebounce
-		interval: 200
-		repeat: false
-		onTriggered: {
-			if (popup && typeof popup.autoResizeToContent === "function") {
-				popup.autoResizeToContent()
+	// Use states for cleaner anchor management based on sidebar position
+	states: [
+		State {
+			name: "left"
+			when: config.sidebarOnLeft
+			AnchorChanges {
+				target: sidebarView
+				anchors.left: parent.left
+				anchors.top: parent.top
+				anchors.bottom: parent.bottom
+				anchors.right: undefined
+			}
+			PropertyChanges {
+				target: sidebarView
+				width: sidebarMenu.width
+			}
+		},
+		State {
+			name: "top"
+			when: config.sidebarOnTop
+			AnchorChanges {
+				target: sidebarView
+				anchors.left: parent.left
+				anchors.right: parent.right
+				anchors.top: parent.top
+				anchors.bottom: undefined
+			}
+			PropertyChanges {
+				target: sidebarView
+				height: sidebarMenu.height
+			}
+		},
+		State {
+			name: "bottom"
+			when: config.sidebarOnBottom
+			AnchorChanges {
+				target: sidebarView
+				anchors.left: parent.left
+				anchors.right: parent.right
+				anchors.top: undefined
+				anchors.bottom: parent.bottom
+			}
+			PropertyChanges {
+				target: sidebarView
+				height: sidebarMenu.height
 			}
 		}
-	}
+	]
 
-	width: sidebarMenu.width
 	Behavior on width { NumberAnimation { duration: 100 } }
+	Behavior on height { NumberAnimation { duration: 100 } }
 
 	DragAndDrop.DropArea {
 		anchors.fill: sidebarMenu
@@ -42,16 +78,28 @@ Item {
 		}
 	}
 
+	Timer {
+		id: autoResizeDebounce
+		interval: 200
+		repeat: false
+		onTriggered: {
+			if (popup && typeof popup.autoResizeToContent === "function") {
+				popup.autoResizeToContent()
+			}
+		}
+	}
+
 	SidebarMenu {
 		id: sidebarMenu
+		// Don't use anchors.fill - SidebarMenu manages its own size based on orientation
 		anchors.left: parent.left
 		anchors.top: parent.top
-		anchors.bottom: parent.bottom
 
-
+		// Vertical layout for left sidebar
 		ColumnLayout {
-			id: sidebarMenuTop
+			id: sidebarMenuTopVertical
 			spacing: 0
+			visible: !config.sidebarHorizontal
 
 			SidebarItem {
 				icon.name: "transform-scale"
@@ -72,36 +120,27 @@ Item {
 				labelText: i18n("Tiles Only")
 				onClicked: searchView.showTilesOnly()
 				checked: searchView.showingOnlyTiles
-				//visible: checked || plasmoid.configuration.defaultAppListView == 'TilesOnly'
 			}
 
-			
-			
 			SidebarViewButton {
 				appletIconName: "view-list-text"
 				labelText: i18n("Alphabetical")
 				onClicked: appsView.showAppsAlphabetically()
 				checked: searchView.showingAppsAlphabetically
 			}
-			
+
 			SidebarViewButton {
 				appletIconName: "view-list-tree"
 				labelText: i18n("Categories")
 				onClicked:  appsView.showAppsCategorically()
 				checked: searchView.showingAppsCategorically
 			}
-			// SidebarItem {
-			// 	icon.name: 'system-search-symbolic'
-			// 	text: i18n("Search")
-			// 	onClicked: searchResultsView.showDefaultSearch()
-			// 	// checked: stackView.currentItem == searchResultsView
-			// 	// checkedEdge: Qt.RightEdge
-			// 	// checkedEdgeWidth: 4 * Screen.devicePixelRatio // Twice as thick as normal
-			// }
 		}
+
 		ColumnLayout {
 			anchors.bottom: parent.bottom
 			spacing: 0
+			visible: !config.sidebarHorizontal
 
 			SidebarItem {
 				id: userMenuButton
@@ -129,7 +168,7 @@ Item {
 
 			SidebarFavouritesView {
 				model: appsModel.sidebarModel
-				maxHeight: sidebarMenu.height - sidebarMenuTop.height - 2 * config.flatButtonSize
+				maxHeight: sidebarMenu.height - sidebarMenuTopVertical.height - 2 * config.flatButtonSize
 			}
 
 			SidebarItem {
@@ -143,6 +182,156 @@ Item {
 				SidebarContextMenu {
 					id: powerMenu
 					visualParent: powerMenuButton
+					model: appsModel.powerActionsModel
+				}
+			}
+		}
+
+		// Horizontal layout for top/bottom sidebar
+		RowLayout {
+			id: sidebarMenuHorizontal
+			anchors.fill: parent
+			spacing: 0
+			visible: config.sidebarHorizontal
+
+			property QtObject xdgUserDirHoriz: Lib.XdgUserDir {}
+
+			SidebarItem {
+				icon.name: "transform-scale"
+				text: i18n("Auto Resize")
+				tooltipText: i18n("Auto Resize")
+				onClicked: autoResizeDebounce.restart()
+			}
+
+			Rectangle {
+				Layout.preferredHeight: config.flatButtonSize * 0.6
+				Layout.alignment: Qt.AlignVCenter
+				width: 1
+				color: Kirigami.Theme.textColor
+				opacity: 0.25
+			}
+
+			SidebarViewButton {
+				appletIconName: "view-grid-symbolic"
+				labelText: i18n("Tiles Only")
+				onClicked: searchView.showTilesOnly()
+				checked: searchView.showingOnlyTiles
+			}
+
+			SidebarViewButton {
+				appletIconName: "view-list-text"
+				labelText: i18n("Alphabetical")
+				onClicked: appsView.showAppsAlphabetically()
+				checked: searchView.showingAppsAlphabetically
+			}
+
+			SidebarViewButton {
+				appletIconName: "view-list-tree"
+				labelText: i18n("Categories")
+				onClicked: appsView.showAppsCategorically()
+				checked: searchView.showingAppsCategorically
+			}
+
+			Item { Layout.fillWidth: true } // Spacer
+
+			SidebarItem {
+				id: userMenuButtonHoriz
+				icon.name: kuser.hasFaceIcon ? kuser.faceIconUrl : 'user-identity'
+				text: kuser.fullName
+				tooltipText: kuser.fullName
+				onClicked: {
+					userMenuHoriz.toggleOpen()
+				}
+				SidebarContextMenu {
+					id: userMenuHoriz
+					visualParent: userMenuButtonHoriz
+					model: appsModel.sessionActionsModel
+
+					PlasmaExtras.MenuItem {
+						icon: 'system-users'
+						text: i18n("User Manager")
+						onClicked: KCM.KCMLauncher.open('kcm_users')
+						visible: KConfig.KAuthorized.authorizeControlModule('kcm_users')
+					}
+				}
+			}
+
+			// Horizontal sidebar shortcuts (favourites)
+			Repeater {
+				id: sidebarFavouritesHorizontal
+				model: appsModel.sidebarModel
+
+				SidebarItem {
+					icon.name: symbolicIconName || model.iconName || model.decoration
+					text: xdgDisplayName || model.name || model.display
+					tooltipText: text
+					onClicked: {
+						var xdgFolder = isLocalizedFolder()
+						if (xdgFolder === 'DOCUMENTS') {
+							Qt.openUrlExternally(sidebarMenuHorizontal.xdgUserDirHoriz.documents)
+						} else if (xdgFolder === 'DOWNLOAD') {
+							Qt.openUrlExternally(sidebarMenuHorizontal.xdgUserDirHoriz.download)
+						} else if (xdgFolder === 'MUSIC') {
+							Qt.openUrlExternally(sidebarMenuHorizontal.xdgUserDirHoriz.music)
+						} else if (xdgFolder === 'PICTURES') {
+							Qt.openUrlExternally(sidebarMenuHorizontal.xdgUserDirHoriz.pictures)
+						} else if (xdgFolder === 'VIDEOS') {
+							Qt.openUrlExternally(sidebarMenuHorizontal.xdgUserDirHoriz.videos)
+						} else {
+							sidebarFavouritesHorizontal.model.triggerIndex(index)
+						}
+					}
+
+					function startsWith(s, sub) { return s.indexOf(sub) === 0 }
+					function endsWith(s, sub) { return s.indexOf(sub) === s.length - sub.length }
+					function isLocalizedFolder() {
+						var s = model.url ? model.url.toString() : ''
+						if (startsWith(s, 'xdg:')) {
+							s = s.substring('xdg:'.length, s.length)
+							if (s == 'DOCUMENTS' || s == 'DOWNLOAD' || s == 'MUSIC' || s == 'PICTURES' || s == 'VIDEOS') {
+								return s
+							}
+						}
+						return ''
+					}
+					property string xdgDisplayName: {
+						var xdgFolder = isLocalizedFolder()
+						if (xdgFolder === 'DOCUMENTS') return i18nd("xdg-user-dirs", "Documents")
+						else if (xdgFolder === 'DOWNLOAD') return i18nd("xdg-user-dirs", "Download")
+						else if (xdgFolder === 'MUSIC') return i18nd("xdg-user-dirs", "Music")
+						else if (xdgFolder === 'PICTURES') return i18nd("xdg-user-dirs", "Pictures")
+						else if (xdgFolder === 'VIDEOS') return i18nd("xdg-user-dirs", "Videos")
+						return ''
+					}
+					property string symbolicIconName: {
+						if (!model.url) return ""
+						var s = model.url.toString()
+						if (endsWith(s, '/org.kde.dolphin.desktop')) return 'folder-open-symbolic'
+						else if (endsWith(s, '/systemsettings.desktop')) return 'configure'
+						else if (startsWith(s, 'xdg:')) {
+							s = s.substring('xdg:'.length, s.length)
+							if (s === 'DOCUMENTS') return 'folder-documents-symbolic'
+							else if (s === 'DOWNLOAD') return 'folder-download-symbolic'
+							else if (s === 'MUSIC') return 'folder-music-symbolic'
+							else if (s === 'PICTURES') return 'folder-pictures-symbolic'
+							else if (s === 'VIDEOS') return 'folder-videos-symbolic'
+						}
+						return ""
+					}
+				}
+			}
+
+			SidebarItem {
+				id: powerMenuButtonHoriz
+				icon.name: 'system-shutdown-symbolic'
+				text: i18n("Power")
+				tooltipText: i18n("Power")
+				onClicked: {
+					powerMenuHoriz.toggleOpen()
+				}
+				SidebarContextMenu {
+					id: powerMenuHoriz
+					visualParent: powerMenuButtonHoriz
 					model: appsModel.powerActionsModel
 				}
 			}

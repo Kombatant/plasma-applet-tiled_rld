@@ -330,36 +330,73 @@ MouseArea {
 
 		Item {
 			id: sidebarPlaceholder
-			implicitWidth: config.sidebarWidth + config.sidebarRightMargin
+			Layout.preferredWidth: config.sidebarWidth + config.sidebarRightMargin
+			Layout.minimumWidth: config.sidebarWidth + config.sidebarRightMargin
+			Layout.maximumWidth: config.sidebarWidth + config.sidebarRightMargin
 			Layout.fillHeight: true
+			visible: config.sidebarOnLeft
 		}
 
-		SearchView {
-			id: searchView
-			Layout.fillHeight: true
-		}
-
-		TileGrid {
-			id: tileGrid
+		ColumnLayout {
+			id: mainColumnLayout
 			Layout.fillWidth: true
 			Layout.fillHeight: true
+			spacing: 0
 
-			cellSize: config.cellSize
-			cellMargin: config.cellMargin
-			cellPushedMargin: config.cellPushedMargin
+			// Top sidebar placeholder
+			Item {
+				id: topSidebarPlaceholder
+				Layout.preferredHeight: config.sidebarHeight
+				Layout.minimumHeight: config.sidebarHeight
+				Layout.maximumHeight: config.sidebarHeight
+				Layout.fillWidth: true
+				Layout.bottomMargin: config.sidebarRightMargin
+				visible: config.sidebarOnTop
+			}
 
-			tileModel: config.tileModel.value
+			RowLayout {
+				id: contentRowLayout
+				Layout.fillWidth: true
+				Layout.fillHeight: true
+				spacing: 0
 
-			onEditTile: function(tile) { tileEditorViewLoader.open(tile) }
+				SearchView {
+					id: searchView
+					Layout.fillHeight: true
+				}
 
-			onTileModelChanged: saveTileModel.restart()
-			Timer {
-				id: saveTileModel
-				interval: 2000
-				onTriggered: config.tileModel.save()
+				TileGrid {
+					id: tileGrid
+					Layout.fillWidth: true
+					Layout.fillHeight: true
+
+					cellSize: config.cellSize
+					cellMargin: config.cellMargin
+					cellPushedMargin: config.cellPushedMargin
+
+					tileModel: config.tileModel.value
+
+					onEditTile: function(tile) { tileEditorViewLoader.open(tile) }
+
+					onTileModelChanged: saveTileModel.restart()
+					Timer {
+						id: saveTileModel
+						interval: 2000
+						onTriggered: config.tileModel.save()
+					}
+				}
+			}
+
+			// Bottom sidebar placeholder
+			Item {
+				id: bottomSidebarPlaceholder
+				Layout.preferredHeight: config.sidebarHeight + config.sidebarRightMargin
+				Layout.minimumHeight: config.sidebarHeight + config.sidebarRightMargin
+				Layout.maximumHeight: config.sidebarHeight + config.sidebarRightMargin
+				Layout.fillWidth: true
+				visible: config.sidebarOnBottom
 			}
 		}
-		
 	}
 
 	SidebarView {

@@ -86,6 +86,7 @@ Item {
 		_ensureSettingInitialized('sidebarButtonSize', 48)
 		_ensureSettingInitialized('sidebarIconSize', 30)
 		_ensureSettingInitialized('sidebarPopupButtonSize', 36)
+		_ensureSettingInitialized('sidebarPosition', 'left')
 	}
 
 	Component.onCompleted: {
@@ -149,6 +150,12 @@ Item {
 	readonly property int sidebarMinOpenWidth: 200 * Screen.devicePixelRatio
 	readonly property int sidebarRightMargin: 4 * Screen.devicePixelRatio
 	readonly property int sidebarPopupButtonSize: plasmoid.configuration.sidebarPopupButtonSize * Screen.devicePixelRatio
+	readonly property string sidebarPosition: plasmoid.configuration.sidebarPosition || 'left'
+	readonly property bool sidebarOnLeft: sidebarPosition === 'left'
+	readonly property bool sidebarOnTop: sidebarPosition === 'top'
+	readonly property bool sidebarOnBottom: sidebarPosition === 'bottom'
+	readonly property bool sidebarHorizontal: sidebarOnTop || sidebarOnBottom
+	readonly property int sidebarHeight: sidebarHorizontal ? flatButtonSize : -1
 	readonly property int appListWidth: plasmoid.configuration.appListWidth * Screen.devicePixelRatio
 	readonly property int tileEditorMinWidth: Math.max(350, 350 * Screen.devicePixelRatio)
 	readonly property int minimumHeight: flatButtonSize * 5 // Issue #125
@@ -166,7 +173,15 @@ Item {
 	}
 	readonly property bool hideSearchField: plasmoid.configuration.hideSearchField
 	readonly property bool searchOnTop: plasmoid.configuration.searchOnTop
-	readonly property int leftSectionWidth: sidebarWidth + sidebarRightMargin + appAreaWidth
+	// When sidebar is on left, include it in the left section width
+	// When sidebar is horizontal (top/bottom), don't include it in the left section
+	readonly property int leftSectionWidth: {
+		if (sidebarHorizontal) {
+			return appAreaWidth
+		} else {
+			return sidebarWidth + sidebarRightMargin + appAreaWidth
+		}
+	}
 
 	readonly property real tileScale: plasmoid.configuration.tileScale
 	readonly property int cellBoxUnits: 80

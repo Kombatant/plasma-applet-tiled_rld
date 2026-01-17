@@ -7,7 +7,14 @@ MouseArea {
 	hoverEnabled: true
 	z: 1
 	// clip: true
-	implicitWidth: config.sidebarWidth
+
+	// Support both vertical (left) and horizontal (top/bottom) orientations
+	readonly property bool horizontal: config.sidebarHorizontal
+	
+	// Use explicit width/height based on orientation
+	width: horizontal ? parent.width : (open ? config.sidebarMinOpenWidth : config.sidebarWidth)
+	height: horizontal ? config.flatButtonSize : parent.height
+
 	property bool open: false
 
 	onOpenChanged: {

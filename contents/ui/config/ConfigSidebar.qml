@@ -28,10 +28,21 @@ LibConfig.FormKCM {
 		text: i18n("Sidebar")
 	}
 
+	LibConfig.ComboBox {
+		id: sidebarPositionControl
+		configKey: "sidebarPosition"
+		Kirigami.FormData.label: i18n("Position")
+		model: [
+			{ value: "left", text: i18n("Left") },
+			{ value: "top", text: i18n("Top") },
+			{ value: "bottom", text: i18n("Bottom") },
+		]
+	}
+
 	LibConfig.SpinBox {
 		id: sidebarButtonSize
 		configKey: 'sidebarButtonSize'
-		Kirigami.FormData.label: i18n("Width")
+		Kirigami.FormData.label: plasmoid.configuration.sidebarPosition === 'left' ? i18n("Width") : i18n("Height")
 		suffix: i18n("px")
 		minimumValue: 24
 		stepSize: 2
