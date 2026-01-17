@@ -351,6 +351,7 @@ Item {
 			z: 100
 			width: appObj.groupRect.w * cellBoxSize
 			height: appObj.groupRect.h * cellBoxSize
+			radius: tileItemView.cornerRadius
 		}
 	}
 
