@@ -19,6 +19,11 @@ KCM.AbstractKCM {
 
     id: page
 
+    // Force Window color scheme instead of inheriting Plasma theme colors
+    // This ensures controls look correct in light mode when Plasma theme is dark
+    Kirigami.Theme.colorSet: Kirigami.Theme.Window
+    Kirigami.Theme.inherit: false
+
     // Plasma's config dialog tries to set `cfg_<key>` and `cfg_<key>Default` properties
     // on the root item. We write directly to `plasmoid.configuration` in our pages, but
     // defining these avoids noisy "Setting initial properties failed" warnings.

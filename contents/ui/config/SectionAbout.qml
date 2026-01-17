@@ -11,6 +11,10 @@ KCM.SimpleKCM {
 	id: page
 	title: i18n("About")
 
+	// Force Window color scheme instead of inheriting Plasma theme colors
+	Kirigami.Theme.colorSet: Kirigami.Theme.Window
+	Kirigami.Theme.inherit: false
+
 	readonly property var metaData: Plasmoid.metaData
 
 	Component {

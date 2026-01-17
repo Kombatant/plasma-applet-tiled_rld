@@ -10,6 +10,10 @@ Item {
 	id: page
 	anchors.fill: parent
 
+	// Force Window color scheme instead of inheriting Plasma theme colors
+	Kirigami.Theme.colorSet: Kirigami.Theme.Window
+	Kirigami.Theme.inherit: false
+
 	// The parent ConfigMain.qml owns save/apply behavior and persists to Plasmoid.globalShortcut.
 	// We only edit the pending value.
 	property alias pendingShortcut: keySequenceItem.keySequence

@@ -9,6 +9,11 @@ KCM.SimpleKCM {
 	id: simpleKCM
 	default property alias _formChildren: formLayout.data
 
+	// Force Window color scheme instead of inheriting Plasma theme colors
+	// This ensures controls look correct in light mode when Plasma theme is dark
+	Kirigami.Theme.colorSet: Kirigami.Theme.Window
+	Kirigami.Theme.inherit: false
+
 	Kirigami.FormLayout {
 		id: formLayout
 	}

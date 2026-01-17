@@ -11,6 +11,10 @@ ColumnLayout {
 	id: page
 	spacing: Kirigami.Units.smallSpacing
 
+	// Force Window color scheme instead of inheriting Plasma theme colors
+	Kirigami.Theme.colorSet: Kirigami.Theme.Window
+	Kirigami.Theme.inherit: false
+
 	// Ensure defaults are initialized even if the user opens this page first.
 	TiledMenu.AppletConfig {
 		id: _configInit

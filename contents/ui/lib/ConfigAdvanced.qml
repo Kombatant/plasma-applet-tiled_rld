@@ -9,6 +9,10 @@ ColumnLayout {
 	id: page
 	readonly property real maxRange: Number.MAX_SAFE_INTEGER
 
+	// Force Window color scheme instead of inheriting Plasma theme colors
+	Kirigami.Theme.colorSet: Kirigami.Theme.Window
+	Kirigami.Theme.inherit: false
+
 	QQC2.ScrollView {
 		Layout.fillWidth: true
 		Layout.fillHeight: true
