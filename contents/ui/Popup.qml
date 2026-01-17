@@ -167,10 +167,20 @@ MouseArea {
 
 		var cols = Math.max(1, Math.ceil(tileGrid.maxColumn))
 		var rows = Math.max(1, Math.ceil(tileGrid.maxRow))
+		// Use tile content size for logical calculations so margins don't affect
+		// the computed number of columns/rows. However, the actual layout width
+		// must match the grid's rendered width (which uses cellBoxSize) so outer
+		// tiles are not cut off. Compute both values and apply the layout width.
+		var cellContent = config.cellSize
 		var cellBox = config.cellBoxSize
-		var targetGridWidth = cols * cellBox
-		var targetWidth = config.leftSectionWidth + targetGridWidth
-		var targetHeight = Math.max(config.minimumHeight, rows * cellBox)
+		var targetGridWidth = cols * cellBox // actual rendered grid width (includes margins)
+		var targetGridContentWidth = cols * cellContent // logical content-only width
+		// Subtract one column worth of per-tile margin for each column so the
+		// outer margins aren't double-counted when computing the final layout width.
+		var marginSubtract = cols * config.cellMargin
+		var targetGridWidthAdjusted = Math.max(0, targetGridWidth - marginSubtract)
+		var targetWidth = config.leftSectionWidth + targetGridWidthAdjusted
+		var targetHeight = Math.max(config.minimumHeight, rows * cellContent)
 		var dpr = Screen.devicePixelRatio || 1
 		var logicalHeight = Math.ceil(targetHeight / dpr)
 		var logicalWidth = Math.ceil(targetWidth / dpr)
@@ -178,10 +188,12 @@ MouseArea {
 		logObj('autoResize:computed', {
 			beforeMax: beforeMax,
 			afterMax: afterMax,
+			cellContent: cellContent,
 			cellBox: cellBox,
 			cols: cols,
 			rows: rows,
 			targetGridWidth: targetGridWidth,
+			targetGridContentWidth: targetGridContentWidth,
 			targetWidth: targetWidth,
 			targetHeight: targetHeight,
 			logicalHeight: logicalHeight,
