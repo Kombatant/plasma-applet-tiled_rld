@@ -47,10 +47,7 @@ LibConfig.FormKCM {
 		stepSize: 2
 	}
 
-	LibConfig.CheckBox {
-		configKey: 'sidebarViewLabels'
-		text: i18n("Show View Labels")
-	}
+
 
 	LibConfig.SpinBox {
 		id: sidebarPopupButtonSize

@@ -85,7 +85,6 @@ Item {
 		_ensureSettingInitialized('favGridCols', 6)
 		_ensureSettingInitialized('sidebarButtonSize', 48)
 		_ensureSettingInitialized('sidebarIconSize', 30)
-		_ensureSettingInitialized('sidebarViewLabels', true)
 		_ensureSettingInitialized('sidebarPopupButtonSize', 36)
 	}
 

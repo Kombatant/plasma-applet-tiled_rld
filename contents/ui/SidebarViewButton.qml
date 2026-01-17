@@ -7,7 +7,6 @@ SidebarItem {
 	id: control
 
 	implicitWidth: config.flatButtonSize
-	property bool showLabels: plasmoid.configuration.sidebarViewLabels
 	property string labelText: ""
 	labelVisible: false
 
@@ -17,10 +16,8 @@ SidebarItem {
 	checkedEdge: Qt.LeftEdge
 	checkedEdgeWidth: 4 * Screen.devicePixelRatio // Twice as thick as normal
 	display: QQC2.AbstractButton.IconOnly
-	text: ""
-	QQC2.ToolTip.text: labelText
-	QQC2.ToolTip.visible: !showLabels && hovered
-	implicitHeight: showLabels ? (config.flatButtonSize + label.implicitHeight + Kirigami.Units.smallSpacing) : config.flatButtonSize
+	tooltipText: labelText
+	implicitHeight: config.flatButtonSize
 
 	contentItem: Column {
 		anchors.fill: parent
@@ -40,7 +37,7 @@ SidebarItem {
 
 		Text {
 			id: label
-			visible: control.showLabels
+			visible: false
 			text: control.labelText
 			color: Kirigami.Theme.textColor
 			font: Kirigami.Theme.defaultFont

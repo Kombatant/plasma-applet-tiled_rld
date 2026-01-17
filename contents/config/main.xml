@@ -144,9 +144,7 @@
 		<entry name="sidebarIconSize" type="int">
 			<default>30</default>
 		</entry>
-		<entry name="sidebarViewLabels" type="bool">
-			<default>true</default>
-		</entry>
+
 		<entry name="sidebarPopupButtonSize" type="int">
 			<default>36</default>
 		</entry>

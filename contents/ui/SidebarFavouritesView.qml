@@ -12,6 +12,7 @@ Repeater {
 	delegate: SidebarItem {
 		icon.name: symbolicIconName || model.iconName || model.decoration
 		text: xdgDisplayName || model.name || model.display
+		tooltipText: text
 		sidebarMenu: repeater.parent.parent // SidebarContextMenu { Column { Repeater{} } }
 		onClicked: {
 			repeater.parent.parent.open = false // SidebarContextMenu { Column { Repeater{} } }

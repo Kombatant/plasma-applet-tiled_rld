@@ -56,6 +56,7 @@ Item {
 			SidebarItem {
 				icon.name: "transform-scale"
 				text: i18n("Auto Resize")
+				tooltipText: i18n("Auto Resize")
 				onClicked: autoResizeDebounce.restart()
 			}
 
@@ -106,6 +107,7 @@ Item {
 				id: userMenuButton
 				icon.name: kuser.hasFaceIcon ? kuser.faceIconUrl : 'user-identity'
 				text: kuser.fullName
+				tooltipText: kuser.fullName
 				onClicked: {
 					userMenu.toggleOpen()
 				}
@@ -134,6 +136,7 @@ Item {
 				id: powerMenuButton
 				icon.name: 'system-shutdown-symbolic'
 				text: i18n("Power")
+				tooltipText: i18n("Power")
 				onClicked: {
 					powerMenu.toggleOpen()
 				}

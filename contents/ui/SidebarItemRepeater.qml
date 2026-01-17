@@ -10,6 +10,7 @@ Repeater {
 		iconSize: repeater.iconSize
 		icon.name:  model.iconName || model.decoration
 		text: model.name || model.display
+		tooltipText: text
 		sidebarMenu: repeater.parent.parent // SidebarContextMenu { Column { Repeater{} } }
 		onClicked: {
 			repeater.parent.parent.open = false // SidebarContextMenu { Column { Repeater{} } }
