@@ -18,7 +18,7 @@ Tiled Menu Reloaded is a Plasma applet that provides a tiled launcher loosely in
 - Group tiles with headers; move and sort items within groups.
 - Drag-and-drop pinning from file manager and search results.
 - Animated tile support (GIF, APNG, SVG) and per-tile background images.
-- Configurable sidebar shortcuts and search filters.
+- Configurable sidebar position, shortcuts and search filters.
 - Quick search/filtering of applications and files.
 - Stores tile layout as a Base64-encoded XML fragment. Default preset images folder: ~/Pictures/TiledMenuReloaded
 
