@@ -14,6 +14,32 @@ Item {
 	property var popup
 	z: 1
 
+	readonly property int _fixedHorizontalButtons: 6 // auto resize + 3 view buttons + user + power
+	readonly property int sidebarShortcutLimit: {
+		if (!appsModel || !appsModel.sidebarModel || !config) {
+			return 0
+		}
+		if (config.sidebarHorizontal) {
+			var separatorWidth = sidebarMenuSeparator ? sidebarMenuSeparator.width : 0
+			var searchWidth = (sidebarBottomSearchField && sidebarBottomSearchField.visible) ? sidebarBottomSearchField.width : 0
+			var fixedWidth = (_fixedHorizontalButtons * config.flatButtonSize) + separatorWidth + searchWidth
+			var availableWidth = Math.max(0, sidebarMenu.width - fixedWidth)
+			return Math.max(0, Math.floor(availableWidth / config.flatButtonSize))
+		}
+		var topHeight = sidebarMenuTopVertical ? sidebarMenuTopVertical.height : 0
+		var availableHeight = Math.max(0, sidebarMenu.height - topHeight - (2 * config.flatButtonSize))
+		return Math.max(0, Math.floor(availableHeight / config.flatButtonSize))
+	}
+	readonly property bool canAddSidebarShortcut: {
+		if (!appsModel || !appsModel.sidebarModel) {
+			return false
+		}
+		if (sidebarShortcutLimit <= 0) {
+			return false
+		}
+		return appsModel.sidebarModel.count < sidebarShortcutLimit
+	}
+
 	// Use states for cleaner anchor management based on sidebar position
 	states: [
 		State {
@@ -68,8 +94,12 @@ Item {
 
 	DragAndDrop.DropArea {
 		anchors.fill: sidebarMenu
+		enabled: sidebarView.canAddSidebarShortcut
 
 		onDrop: {
+			if (!sidebarView.canAddSidebarShortcut) {
+				return
+			}
 			if (event && event.mimeData && event.mimeData.url) {
 				var url = event.mimeData.url.toString()
 				url = Utils.parseDropUrl(url)
@@ -204,6 +234,7 @@ Item {
 			}
 
 			Rectangle {
+				id: sidebarMenuSeparator
 				Layout.preferredHeight: config.flatButtonSize * 0.6
 				Layout.alignment: Qt.AlignVCenter
 				width: 1
@@ -287,11 +318,14 @@ Item {
 			Repeater {
 				id: sidebarFavouritesHorizontal
 				model: appsModel.sidebarModel
+				property int maxVisible: sidebarView.sidebarShortcutLimit
+				property int minVisibleIndex: count - maxVisible
 
 				SidebarItem {
 					icon.name: symbolicIconName || model.iconName || model.decoration
 					text: xdgDisplayName || model.name || model.display
 					tooltipText: text
+					visible: index >= sidebarFavouritesHorizontal.minVisibleIndex
 					onClicked: {
 						var xdgFolder = isLocalizedFolder()
 						if (xdgFolder === 'DOCUMENTS') {
