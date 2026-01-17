@@ -1,11 +1,26 @@
 import QtQuick
 import QtQml.Models as QtModels
 import org.kde.plasma.extras as PlasmaExtras
+import org.kde.plasma.core as PlasmaCore
 
 // https://invent.kde.org/plasma/plasma-framework/-/blame/master/src/declarativeimports/plasmaextracomponents/qmenu.h
 PlasmaExtras.Menu {
 	id: kickerContextMenu
 	required property var model
+
+	function computePlacement() {
+		if (Plasmoid.location === PlasmaCore.Types.LeftEdge) {
+			return PlasmaExtras.Menu.RightPosedTopAlignedPopup;
+		} else if (Plasmoid.location === PlasmaCore.Types.TopEdge) {
+			return PlasmaExtras.Menu.BottomPosedLeftAlignedPopup;
+		} else if (Plasmoid.location === PlasmaCore.Types.RightEdge) {
+			return PlasmaExtras.Menu.LeftPosedTopAlignedPopup;
+		} else if (Plasmoid.location === PlasmaCore.Types.BottomEdge) {
+			return PlasmaExtras.Menu.TopPosedRightAlignedPopup;
+		} else {
+			return PlasmaExtras.Menu.TopPosedLeftAlignedPopup;
+		}
+	}
 
 	function toggleOpen() {
 		if (kickerContextMenu.status == PlasmaExtras.Menu.Open) {
@@ -31,11 +46,7 @@ PlasmaExtras.Menu {
 		onObjectAdded: (index, object) => kickerContextMenu.addMenuItem(object)
 		onObjectRemoved: (index, object) => kickerContextMenu.removeMenuItem(object)
 	}
-	placement: {
-		if (searchView.searchOnTop) {
-			return PlasmaExtras.Menu.BottomPosedRightAlignedPopup
-		} else {
-			return PlasmaExtras.Menu.TopPosedRightAlignedPopup
-		}
-	}
+	placement: computePlacement()
+
+    // No debug logging in production.
 }
