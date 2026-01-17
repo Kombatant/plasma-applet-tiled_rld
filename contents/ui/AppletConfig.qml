@@ -85,7 +85,6 @@ Item {
 		_ensureSettingInitialized('favGridCols', 6)
 		_ensureSettingInitialized('sidebarButtonSize', 48)
 		_ensureSettingInitialized('sidebarIconSize', 30)
-		_ensureSettingInitialized('sidebarPopupButtonSize', 36)
 		_ensureSettingInitialized('sidebarPosition', 'left')
 	}
 
@@ -149,7 +148,6 @@ Item {
 	readonly property int sidebarWidth: flatButtonSize
 	readonly property int sidebarMinOpenWidth: 200 * Screen.devicePixelRatio
 	readonly property int sidebarRightMargin: 4 * Screen.devicePixelRatio
-	readonly property int sidebarPopupButtonSize: plasmoid.configuration.sidebarPopupButtonSize * Screen.devicePixelRatio
 	readonly property string sidebarPosition: plasmoid.configuration.sidebarPosition || 'left'
 	readonly property bool sidebarOnLeft: sidebarPosition === 'left'
 	readonly property bool sidebarOnTop: sidebarPosition === 'top'

@@ -54,7 +54,9 @@ ColumnLayout {
 		favGridCols: "int",
 		sidebarButtonSize: "int",
 		sidebarIconSize: "int",
-
+		sidebarPosition: "string",
+		tileRoundedCorners: "bool",
+		tileCornerRadius: "int",
 	})
 
 			TiledMenu.Base64XmlString {

@@ -29,14 +29,12 @@ MouseArea {
 		anchors.fill: parent
 		visible: !plasmoid.configuration.sidebarFollowsTheme
 		color: config.sidebarBackgroundColor
-		opacity: parent.open ? 1 : 0
 	}
 
 	Rectangle {
 		anchors.fill: parent
 		visible: plasmoid.configuration.sidebarFollowsTheme
 		color: Kirigami.Theme.backgroundColor
-		opacity: parent.open ? 1 : 0
 	}
 	KSvg.FrameSvgItem {
 		anchors.fill: parent
@@ -49,6 +47,6 @@ MouseArea {
 	SidebarMenuShadows {
 		id: sidebarMenuShadows
 		anchors.fill: parent
-		visible: !plasmoid.configuration.sidebarFollowsTheme && sidebarMenu.open
+		visible: !plasmoid.configuration.sidebarFollowsTheme
 	}
 }

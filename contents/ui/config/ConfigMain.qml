@@ -94,9 +94,7 @@ KCM.AbstractKCM {
     property var cfg_sidebarButtonSizeDefault
     property var cfg_sidebarIconSize
     property var cfg_sidebarIconSizeDefault
-    property var cfg_sidebarPopupButtonSize
-    property var cfg_sidebarPopupButtonSizeDefault
-    readonly property var _cfgKeys: ["icon", "fixedPanelIcon", "searchResultsGrouped", "searchDefaultFilters", "showRecentApps", "recentOrdering", "numRecentApps", "sidebarShortcuts", "defaultAppListView", "terminalApp", "taskManagerApp", "fileManagerApp", "tileModel", "tileScale", "tileIconSize", "tileMargin", "tilesLocked", "defaultTileColor", "defaultTileGradient", "sidebarBackgroundColor", "hideSearchField", "searchOnTop", "searchFieldFollowsTheme", "sidebarFollowsTheme", "tileLabelAlignment", "groupLabelAlignment", "showGroupTileNameBorder", "presetTilesFolder", "appDescription", "appListIconSize", "searchFieldHeight", "appListWidth", "popupHeight", "favGridCols", "sidebarButtonSize", "sidebarIconSize", "sidebarPopupButtonSize"]
+    readonly property var _cfgKeys: ["icon", "fixedPanelIcon", "searchResultsGrouped", "searchDefaultFilters", "showRecentApps", "recentOrdering", "numRecentApps", "sidebarShortcuts", "defaultAppListView", "terminalApp", "taskManagerApp", "fileManagerApp", "tileModel", "tileScale", "tileIconSize", "tileMargin", "tilesLocked", "defaultTileColor", "defaultTileGradient", "sidebarBackgroundColor", "hideSearchField", "searchOnTop", "searchFieldFollowsTheme", "sidebarFollowsTheme", "tileLabelAlignment", "groupLabelAlignment", "showGroupTileNameBorder", "presetTilesFolder", "appDescription", "appListIconSize", "searchFieldHeight", "appListWidth", "popupHeight", "favGridCols", "sidebarButtonSize", "sidebarIconSize", "sidebarPosition", "tileRoundedCorners", "tileCornerRadius"]
     // Make the initial config window a bit wider so pages lay out cleanly.
     // Do not force shrink: respect user resizing after open.
     readonly property int wideModeMinWidth: Kirigami.Units.gridUnit * 40

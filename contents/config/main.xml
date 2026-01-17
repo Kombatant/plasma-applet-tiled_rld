@@ -144,10 +144,6 @@
 		<entry name="sidebarIconSize" type="int">
 			<default>30</default>
 		</entry>
-
-		<entry name="sidebarPopupButtonSize" type="int">
-			<default>36</default>
-		</entry>
 		<entry name="sidebarPosition" type="string">
 			<!-- enum: left, top, bottom -->
 			<label>Position of the sidebar: left, top, or bottom.</label>

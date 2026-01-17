@@ -58,17 +58,6 @@ LibConfig.FormKCM {
 		stepSize: 2
 	}
 
-
-
-	LibConfig.SpinBox {
-		id: sidebarPopupButtonSize
-		Kirigami.FormData.label: i18n("Popup Button Height")
-		configKey: 'sidebarPopupButtonSize'
-		suffix: i18n("px")
-		minimumValue: 24
-		stepSize: 2
-	}
-
 	LibConfig.RadioButtonGroup {
 		id: sidebarThemeGroup
 		spacing: 0
