@@ -20,7 +20,8 @@ Tiled Menu Reloaded is a Plasma applet that provides a tiled launcher loosely in
 - Animated tile support (GIF, APNG, SVG) and per-tile background images.
 - Configurable sidebar position, shortcuts and search filters.
 - Quick search/filtering of applications and files.
-- Stores tile layout as a Base64-encoded XML fragment. Default preset images folder: ~/Pictures/TiledMenuReloaded
+- Stores tile layout as a Base64-encoded XML fragment. 
+- New default preset images folder: ~/Pictures/TiledMenuReloaded, configurable in settings.
 
 > [!CAUTION]
 > Nothing is free. If you use a LOT of images, animations etc in your menu, a lot of RAM **AND** VRAM is consumed by Plasmashell. That can actually have ramifications if you play games and you have a graphics card that doesn't have much VRAM. So keep an eye on that number!
