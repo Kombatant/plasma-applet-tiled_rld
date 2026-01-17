@@ -171,7 +171,11 @@ MouseArea {
 		var cellContent = config.cellSize
 		var targetGridWidth = cols * (config.cellBoxSize - config.cellMargin/4)
 		var targetWidth = config.leftSectionWidth + targetGridWidth
-		var targetHeight = Math.max(config.minimumHeight, rows * (config.cellBoxSize - config.cellMargin/4))
+		var sidebarExtraHeight = (config.sidebarOnTop || config.sidebarOnBottom)
+			? (config.sidebarHeight + config.sidebarRightMargin)
+			: 0
+		var contentHeight = Math.max(config.minimumHeight, rows * (config.cellBoxSize - config.cellMargin/4))
+		var targetHeight = contentHeight + sidebarExtraHeight
 		var dpr = Screen.devicePixelRatio || 1
 		var logicalHeight = Math.ceil(targetHeight / dpr)
 		var logicalWidth = Math.ceil(targetWidth / dpr)
