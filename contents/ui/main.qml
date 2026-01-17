@@ -116,7 +116,8 @@ PlasmoidItem {
 
 			onTriggered: {
 				var favWidth = Math.max(0, widget.width - config.leftSectionWidth)
-				var cols = Math.floor(favWidth / config.cellBoxSize)
+			// Compute columns based on tile content width (ignore tile margins so margins don't reduce column count)
+			var cols = Math.floor(favWidth / config.cellSize)
 				if (plasmoid.configuration.favGridCols != cols) {
 					plasmoid.configuration.favGridCols = cols
 				}
