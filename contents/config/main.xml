@@ -65,6 +65,14 @@
 		<entry name="tileMargin" type="double">
 			<default>5</default>
 		</entry>
+		<entry name="tileRoundedCorners" type="bool">
+			<label>Whether tiles and hover highlights use rounded corners.</label>
+			<default>true</default>
+		</entry>
+		<entry name="tileCornerRadius" type="int">
+			<label>Corner radius in logical pixels for tiles and hover highlights.</label>
+			<default>6</default>
+		</entry>
 		<entry name="tilesLocked" type="bool">
 			<default>false</default>
 		</entry>

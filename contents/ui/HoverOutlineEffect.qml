@@ -11,6 +11,7 @@ Item {
 	property int hoverOutlineSize: 1 * Screen.devicePixelRatio
 	property int hoverRadius: 40
 	property int pressedRadius: hoverRadius
+	property int cornerRadius: 0
 	property bool useOutlineMask: true
 
 	property var mouseArea
@@ -41,6 +42,7 @@ Item {
 		anchors.fill: parent
 		anchors.margins: hoverOutlineSize
 		color: fillColor
+		radius: hoverOutlineEffect.cornerRadius
 	}
 
 	Rectangle {
@@ -51,6 +53,7 @@ Item {
 		color: hoverOutlineEffect.pressed ? pressedFillColor : fillColor
 		border.color: borderColor
 		border.width: hoverOutlineSize
+		radius: hoverOutlineEffect.cornerRadius
 
 		Behavior on color {
 			ColorAnimation {

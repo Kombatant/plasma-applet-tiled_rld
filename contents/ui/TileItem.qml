@@ -33,6 +33,32 @@ Item {
 	//--- View Start
 	readonly property bool hasDescription: appObj.descriptionText.length > 0 || appObj.labelText.length > 0
 	readonly property real descriptionSpacing: cellMargin
+	readonly property bool useOverlayLabel: !!appObj.backgroundImage
+	readonly property real labelPaddingX: cellMargin + (2 * Screen.devicePixelRatio)
+	readonly property real labelPaddingY: cellMargin + (2 * Screen.devicePixelRatio)
+	readonly property real labelShadowOffset: Math.max(1, Math.round(1 * Screen.devicePixelRatio))
+	readonly property color labelBaseColor: (tileItemView && tileItemView.gradient ? tileItemView.gradientBottomColor : appObj.backgroundColor)
+	readonly property real labelBaseLuma: _relativeLuminance(labelBaseColor)
+	readonly property bool labelBaseIsLight: labelBaseLuma >= 0.6
+	readonly property bool labelUseDualOutline: !!appObj.backgroundImage
+	readonly property real labelOutlineDarkOpacity: labelUseDualOutline ? 0.45 : (labelBaseIsLight ? 0.6 : 0.2)
+	readonly property real labelOutlineLightOpacity: labelUseDualOutline ? 0.45 : (labelBaseIsLight ? 0.2 : 0.6)
+	readonly property color labelOutlineDarkColor: Qt.rgba(0, 0, 0, labelOutlineDarkOpacity)
+	readonly property color labelOutlineLightColor: Qt.rgba(1, 1, 1, labelOutlineLightOpacity)
+	readonly property color labelShadowColor: labelBaseIsLight ? Qt.rgba(0, 0, 0, 0.3) : Qt.rgba(1, 1, 1, 0.3)
+
+	function _linearizeChannel(v) {
+		return v <= 0.03928 ? (v / 12.92) : Math.pow((v + 0.055) / 1.055, 2.4)
+	}
+	function _relativeLuminance(c) {
+		if (!c) {
+			return 0
+		}
+		var r = _linearizeChannel(c.r)
+		var g = _linearizeChannel(c.g)
+		var b = _linearizeChannel(c.b)
+		return 0.2126 * r + 0.7152 * g + 0.0722 * b
+	}
 
 	Item {
 		id: tileContent
@@ -47,7 +73,7 @@ Item {
 			width: modelData.w * cellBoxSize
 			// Reserve bottom spacing so vertical gaps match horizontal gaps.
 			// (Horizontal gap is cellMargin from each neighbor => total tileMargin.)
-			height: Math.max(0, parent.height - (descriptionLabel.visible ? (descriptionLabel.height + descriptionSpacing) : 0) - (cellMargin * 2))
+			height: Math.max(0, parent.height - (useOverlayLabel ? 0 : (descriptionLabelBelow.visible ? (descriptionLabelBelow.height + descriptionSpacing) : 0)) - (cellMargin * 2))
 			readonly property int minSize: Math.min(width, height)
 			readonly property int maxSize: Math.max(width, height)
 			hovered: tileMouseArea.containsMouse
@@ -58,9 +84,111 @@ Item {
 			font: descriptionLabel.font
 		}
 
+		Item {
+			id: labelOverlay
+			visible: useOverlayLabel && appObj.showLabel && appObj.labelText.length > 0
+			anchors.left: parent.left
+			anchors.right: parent.right
+			anchors.bottom: parent.bottom
+			anchors.leftMargin: labelPaddingX
+			anchors.rightMargin: labelPaddingX
+			anchors.bottomMargin: labelPaddingY
+			height: visible ? (descriptionLabelFontMetrics.lineSpacing * 2) : 0
+
+			QQC2.Label {
+				id: descriptionLabelOutlineDark
+				visible: labelOverlay.visible && labelOutlineDarkOpacity > 0
+				text: appObj.labelText
+				anchors.left: parent.left
+				anchors.right: parent.right
+				anchors.bottom: parent.bottom
+				height: parent.height
+				clip: true
+				horizontalAlignment: Text.AlignLeft
+				verticalAlignment: Text.AlignBottom
+				wrapMode: Text.Wrap
+				maximumLineCount: 2
+				elide: Text.ElideRight
+				opacity: 1
+				font.bold: appObj.isGroup
+				font.pixelSize: Kirigami.Theme.defaultFont.pixelSize
+				color: "transparent"
+				renderType: Text.QtRendering
+				style: Text.Outline
+				styleColor: labelOutlineDarkColor
+			}
+
+			QQC2.Label {
+				id: descriptionLabelOutlineLight
+				visible: labelOverlay.visible && labelOutlineLightOpacity > 0
+				text: appObj.labelText
+				anchors.left: parent.left
+				anchors.right: parent.right
+				anchors.bottom: parent.bottom
+				height: parent.height
+				clip: true
+				horizontalAlignment: Text.AlignLeft
+				verticalAlignment: Text.AlignBottom
+				wrapMode: Text.Wrap
+				maximumLineCount: 2
+				elide: Text.ElideRight
+				opacity: 1
+				font.bold: appObj.isGroup
+				font.pixelSize: Kirigami.Theme.defaultFont.pixelSize
+				color: "transparent"
+				renderType: Text.QtRendering
+				style: Text.Outline
+				styleColor: labelOutlineLightColor
+			}
+
+			QQC2.Label {
+				id: descriptionLabelShadow
+				visible: labelOverlay.visible
+				text: appObj.labelText
+				anchors.left: parent.left
+				anchors.right: parent.right
+				anchors.bottom: parent.bottom
+				anchors.leftMargin: labelShadowOffset
+				anchors.bottomMargin: labelShadowOffset
+				height: parent.height
+				clip: true
+				horizontalAlignment: Text.AlignLeft
+				verticalAlignment: Text.AlignBottom
+				wrapMode: Text.Wrap
+				maximumLineCount: 2
+				elide: Text.ElideRight
+				opacity: labelUseDualOutline ? 0.25 : 0.2
+				font.bold: appObj.isGroup
+				font.pixelSize: Kirigami.Theme.defaultFont.pixelSize
+				color: labelShadowColor
+				renderType: Text.QtRendering
+			}
+
+			QQC2.Label {
+				id: descriptionLabel
+				visible: labelOverlay.visible
+				text: appObj.labelText
+				anchors.left: parent.left
+				anchors.right: parent.right
+				anchors.bottom: parent.bottom
+				height: parent.height
+				clip: true
+				horizontalAlignment: Text.AlignLeft
+				verticalAlignment: Text.AlignBottom
+				wrapMode: Text.Wrap
+				maximumLineCount: 2
+				elide: Text.ElideRight
+				opacity: 0.9
+				font.bold: appObj.isGroup
+				font.pixelSize: Kirigami.Theme.defaultFont.pixelSize
+				color: Kirigami.Theme.textColor
+				renderType: Text.QtRendering
+			}
+		}
+
 		QQC2.Label {
-			id: descriptionLabel
-			visible: appObj.showLabel && appObj.labelText.length > 0
+			id: descriptionLabelBelow
+			visible: !useOverlayLabel && appObj.showLabel && appObj.labelText.length > 0
 			text: appObj.labelText
 			anchors.top: tileItemView.bottom
 			anchors.left: parent.left
@@ -84,6 +212,7 @@ Item {
 		id: hoverOutlineEffect
 		anchors.fill: parent
 		anchors.margins: cellMargin
+		cornerRadius: tileItemView.cornerRadius
 		hoverRadius: {
 			if (appObj.isGroup) {
 				return tileItemView.maxSize

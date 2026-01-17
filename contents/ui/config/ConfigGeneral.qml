@@ -92,6 +92,24 @@ LibConfig.FormKCM {
 		minimumValue: 0
 		maximumValue: config.cellBoxUnits/2
 	}
+	RowLayout {
+		Kirigami.FormData.label: i18n("Rounded Corners")
+		LibConfig.CheckBox {
+			id: tileRoundedCornersToggle
+			text: i18n("Enable")
+			configKey: 'tileRoundedCorners'
+		}
+		LibConfig.SpinBox {
+			configKey: 'tileCornerRadius'
+			suffix: i18n("px")
+			minimumValue: 0
+			maximumValue: 32
+			enabled: tileRoundedCornersToggle.checked
+		}
+		QQC2.Label {
+			text: i18n("Corner radius")
+		}
+	}
 
 	LibConfig.RadioButtonGroup {
 		id: tilesThemeGroup

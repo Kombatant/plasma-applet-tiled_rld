@@ -2,10 +2,13 @@ import QtQuick
 import org.kde.plasma.components as PlasmaComponents3
 import org.kde.kirigami as Kirigami
 import org.kde.plasma.plasmoid
+import Qt5Compat.GraphicalEffects as QtGraphicalEffects
 
 Rectangle {
 	id: tileItemView
 	color: appObj.backgroundColor
+	radius: cornerRadius
+	readonly property real cornerRadius: (config && config.tileCornerRadius ? config.tileCornerRadius : 0)
 	property color gradientBottomColor: Qt.darker(appObj.backgroundColor, 2.0)
 
 	function _fileExtFromUrl(url) {
@@ -87,54 +90,80 @@ Rectangle {
 		}
 	]
 
-	AnimatedImage {
-		id: backgroundAnimatedImage
+	Item {
+		id: contentLayer
 		anchors.fill: parent
-		visible: !!appObj.backgroundImage && tileItemView.backgroundUseAnimatedRenderer
-		source: tileItemView.backgroundIsAnimated ? appObj.backgroundImage : ""
-		fillMode: Image.PreserveAspectCrop
-		asynchronous: true
-		playing: visible
+
+		AnimatedImage {
+			id: backgroundAnimatedImage
+			anchors.fill: parent
+			visible: !!appObj.backgroundImage && tileItemView.backgroundUseAnimatedRenderer
+			source: tileItemView.backgroundIsAnimated ? appObj.backgroundImage : ""
+			fillMode: Image.PreserveAspectCrop
+			asynchronous: true
+			playing: visible
+		}
+
+		Image {
+			id: backgroundImage
+			anchors.fill: parent
+			visible: !!appObj.backgroundImage && (!tileItemView.backgroundIsAnimated || tileItemView.backgroundAnimatedLoadFailed)
+			source: appObj.backgroundImage
+			fillMode: Image.PreserveAspectCrop
+			asynchronous: true
+		}
+
+		Kirigami.Icon {
+			id: icon
+			visible: appObj.showIcon
+			source: appObj.iconSource
+			anchors.verticalCenter: parent.verticalCenter
+			anchors.horizontalCenter: parent.horizontalCenter
+			property int size: Math.min(parent.width, parent.height) / 2
+			width: appObj.showIcon ? size : 0
+			height: appObj.showIcon ? size : 0
+			anchors.fill: appObj.iconFill ? parent : null
+			smooth: appObj.iconFill
+		}
+
+		PlasmaComponents3.Label {
+			id: label
+			visible: false // Label is rendered outside the tile (below) in TileItem.qml
+			text: appObj.labelText
+			anchors.top: parent.top
+			anchors.bottom: parent.bottom
+			anchors.leftMargin: tilePadding
+			anchors.rightMargin: tilePadding
+			anchors.left: parent.left
+			anchors.right: parent.right
+			wrapMode: Text.Wrap
+			horizontalAlignment: labelBelowIcon ? Text.AlignHCenter : labelAlignment
+			verticalAlignment: Text.AlignBottom
+			width: parent.width
+			renderType: Text.QtRendering // Fix pixelation when scaling. Plasma.Label uses NativeRendering.
+			style: Text.Outline
+			styleColor: appObj.backgroundGradient ? tileItemView.gradientBottomColor : appObj.backgroundColor
+		}
 	}
 
-	Image {
-		id: backgroundImage
+	Rectangle {
+		id: roundedMask
 		anchors.fill: parent
-		visible: !!appObj.backgroundImage && (!tileItemView.backgroundIsAnimated || tileItemView.backgroundAnimatedLoadFailed)
-		source: appObj.backgroundImage
-		fillMode: Image.PreserveAspectCrop
-		asynchronous: true
+		radius: tileItemView.cornerRadius
+		visible: false
 	}
 
-	Kirigami.Icon {
-		id: icon
-		visible: appObj.showIcon
-		source: appObj.iconSource
-		anchors.verticalCenter: parent.verticalCenter
-		anchors.horizontalCenter: parent.horizontalCenter
-		property int size: Math.min(parent.width, parent.height) / 2
-		width: appObj.showIcon ? size : 0
-		height: appObj.showIcon ? size : 0
-		anchors.fill: appObj.iconFill ? parent : null
-		smooth: appObj.iconFill
+	ShaderEffectSource {
+		id: contentSource
+		sourceItem: contentLayer
+		recursive: true
+		live: true
+		hideSource: true
 	}
 
-	PlasmaComponents3.Label {
-		id: label
-		visible: false // Label is rendered outside the tile (below) in TileItem.qml
-		text: appObj.labelText
-		anchors.top: parent.top
-		anchors.bottom: parent.bottom
-		anchors.leftMargin: tilePadding
-		anchors.rightMargin: tilePadding
-		anchors.left: parent.left
-		anchors.right: parent.right
-		wrapMode: Text.Wrap
-		horizontalAlignment: labelBelowIcon ? Text.AlignHCenter : labelAlignment
-		verticalAlignment: Text.AlignBottom
-		width: parent.width
-		renderType: Text.QtRendering // Fix pixelation when scaling. Plasma.Label uses NativeRendering.
-		style: Text.Outline
-		styleColor: appObj.backgroundGradient ? tileItemView.gradientBottomColor : appObj.backgroundColor
+	QtGraphicalEffects.OpacityMask {
+		anchors.fill: parent
+		source: contentSource
+		maskSource: roundedMask
 	}
 }

@@ -60,6 +60,8 @@ Item {
 		_ensureSettingInitialized('tileScale', 0.8)
 		_ensureSettingInitialized('tileIconSize', 72)
 		_ensureSettingInitialized('tileMargin', 5)
+		_ensureSettingInitialized('tileRoundedCorners', true)
+		_ensureSettingInitialized('tileCornerRadius', 6)
 		_ensureSettingInitialized('tilesLocked', false)
 
 		// Use empty string to indicate "use theme/default".
@@ -180,6 +182,7 @@ Item {
 	readonly property real cellPushedMargin: cellMargin * 2
 	readonly property int cellBoxSize: Math.round(cellMargin + cellSize + cellMargin)
 	readonly property int tileGridWidth: plasmoid.configuration.favGridCols * cellBoxSize
+	readonly property int tileCornerRadius: Math.max(0, Math.round((plasmoid.configuration.tileRoundedCorners ? plasmoid.configuration.tileCornerRadius : 0) * Screen.devicePixelRatio))
 
 	readonly property int favCellWidth: 60 * Screen.devicePixelRatio
 	readonly property int favCellPushedMargin: 5 * Screen.devicePixelRatio
