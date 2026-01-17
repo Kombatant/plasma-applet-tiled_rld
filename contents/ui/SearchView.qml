@@ -234,7 +234,9 @@ Item {
 
 	SearchField {
 		id: searchField
-		visible: !config.isEditingTile && searchView.showSearchField
+		// Hide the main search field when the sidebar is at the top or bottom so
+		// only the centered sidebar search is visible in those configurations.
+		visible: !config.isEditingTile && searchView.showSearchField && !config.sidebarOnBottom && !config.sidebarOnTop
 		height: config.searchFieldHeight
 		implicitHeight: config.searchFieldHeight
 		

@@ -46,7 +46,7 @@ LibConfig.FormKCM {
 		Kirigami.FormData.label: i18n("Search Field Height")
 		suffix: i18n("px")
 		minimumValue: 0
-		enabled: formLayout.searchOptionsEnabled
+		enabled: formLayout.searchOptionsEnabled && !config.sidebarOnTop && !config.sidebarOnBottom
 		opacity: enabled ? 1 : 0.45
 	}
 

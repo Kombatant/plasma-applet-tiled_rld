@@ -395,6 +395,11 @@ MouseArea {
 				Layout.maximumHeight: config.sidebarHeight + config.sidebarRightMargin
 				Layout.fillWidth: true
 				visible: config.sidebarOnBottom
+
+				// The horizontal sidebar contains its own centered SearchField (in
+				// SidebarView.RowLayout) to avoid overlap / z-order issues. This placeholder
+				// remains so the rest of the layout reserves space when the sidebar is
+				// positioned at the bottom.
 			}
 		}
 	}

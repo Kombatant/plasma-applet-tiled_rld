@@ -232,7 +232,34 @@ Item {
 				checked: searchView.showingAppsCategorically
 			}
 
-			Item { Layout.fillWidth: true } // Spacer
+			Item { Layout.fillWidth: true } // left spacer
+
+			// Centered search field for horizontal (top/bottom) sidebar. Visible only
+			// when the sidebar is at the bottom and the search field isn't hidden.
+			SearchField {
+				id: sidebarBottomSearchField
+				// Respect the global 'Hide search field' setting and show when sidebar is
+				// positioned at the top or bottom.
+				visible: (config.sidebarOnBottom || config.sidebarOnTop) && !config.isEditingTile && searchView.showSearchField
+				height: config.searchFieldHeight
+				implicitHeight: config.searchFieldHeight
+				width: Math.min(parent.width * 0.7, config.appListWidth)
+				anchors.verticalCenter: parent.verticalCenter
+				listView: (searchView.stackView && searchView.stackView.currentItem && searchView.stackView.currentItem.listView) ? searchView.stackView.currentItem.listView : []
+
+				MouseArea {
+					anchors.fill: parent
+					onClicked: {
+						// Make sure the search UI is visible and forward focus to the field
+						searchView.showSearchView()
+						if (sidebarBottomSearchField.inputItem && typeof sidebarBottomSearchField.inputItem.forceActiveFocus === 'function') {
+							sidebarBottomSearchField.inputItem.forceActiveFocus()
+						}
+					}
+				}
+			}
+
+			Item { Layout.fillWidth: true } // right spacer
 
 			SidebarItem {
 				id: userMenuButtonHoriz
