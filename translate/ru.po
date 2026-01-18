@@ -521,3 +521,7 @@ msgstr "Отсортировать Плитки"
 
 #~ msgid "Show recent applications"
 #~ msgstr "Показать недавние приложения"
+
+#: ../contents/ui/SidebarView.qml
+msgid "Tiled Menu Reloaded Settings"
+msgstr ""

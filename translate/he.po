@@ -517,3 +517,7 @@ msgstr "מיון אריחים"
 
 #~ msgid "Desktop Theme (%1)"
 #~ msgstr "ערכת הנושא של שולחן העבודה (%1)"
+
+#: ../contents/ui/SidebarView.qml
+msgid "Tiled Menu Reloaded Settings"
+msgstr ""

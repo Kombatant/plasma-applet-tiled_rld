@@ -508,3 +508,7 @@ msgstr "使用預設方塊磚佈局"
 #: ../contents/ui/TileItem.qml
 msgid "Sort Tiles"
 msgstr "排序方塊磚"
+
+#: ../contents/ui/SidebarView.qml
+msgid "Tiled Menu Reloaded Settings"
+msgstr ""

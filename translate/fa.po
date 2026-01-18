@@ -507,3 +507,7 @@ msgstr "استفاده از کاشی های پیشفرض"
 #: ../contents/ui/TileItem.qml
 msgid "Sort Tiles"
 msgstr "مرتب‌سازی کاشی ها"
+
+#: ../contents/ui/SidebarView.qml
+msgid "Tiled Menu Reloaded Settings"
+msgstr ""

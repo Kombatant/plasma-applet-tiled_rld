@@ -519,3 +519,7 @@ msgstr "Ordenar Painéis"
 
 #~ msgid "Show recent applications"
 #~ msgstr "Mostrar aplicações recentes"
+
+#: ../contents/ui/SidebarView.qml
+msgid "Tiled Menu Reloaded Settings"
+msgstr ""

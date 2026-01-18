@@ -514,3 +514,7 @@ msgstr "Sortuj Kafelki"
 
 #~ msgid "Desktop Theme (%1)"
 #~ msgstr "Motyw pulpitu (%1)"
+
+#: ../contents/ui/SidebarView.qml
+msgid "Tiled Menu Reloaded Settings"
+msgstr ""

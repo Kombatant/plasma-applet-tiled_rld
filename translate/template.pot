@@ -502,3 +502,7 @@ msgstr ""
 #: ../contents/ui/TileItem.qml
 msgid "Sort Tiles"
 msgstr ""
+
+#: ../contents/ui/SidebarView.qml
+msgid "Tiled Menu Reloaded Settings"
+msgstr ""

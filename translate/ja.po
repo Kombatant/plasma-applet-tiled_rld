@@ -513,3 +513,7 @@ msgstr "タイルをソート"
 
 #~ msgid "Desktop Theme (%1)"
 #~ msgstr "デスクトップテーマ (%1)"
+
+#: ../contents/ui/SidebarView.qml
+msgid "Tiled Menu Reloaded Settings"
+msgstr ""

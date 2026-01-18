@@ -515,3 +515,7 @@ msgstr "Uredi ploščice"
 
 #~ msgid "Alt + Right Click to resize the menu."
 #~ msgstr "Alt + desni klik za spreminjanje velikosti menija."
+
+#: ../contents/ui/SidebarView.qml
+msgid "Tiled Menu Reloaded Settings"
+msgstr ""

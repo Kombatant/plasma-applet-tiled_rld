@@ -518,3 +518,7 @@ msgstr "타일 정렬"
 
 #~ msgid "Apps"
 #~ msgstr "앱"
+
+#: ../contents/ui/SidebarView.qml
+msgid "Tiled Menu Reloaded Settings"
+msgstr ""

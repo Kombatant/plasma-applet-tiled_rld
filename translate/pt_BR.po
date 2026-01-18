@@ -514,3 +514,7 @@ msgstr "Organizar ladrilhos"
 
 #~ msgid "Desktop Theme (%1)"
 #~ msgstr "Tema da área de trabalho (%1)"
+
+#: ../contents/ui/SidebarView.qml
+msgid "Tiled Menu Reloaded Settings"
+msgstr ""

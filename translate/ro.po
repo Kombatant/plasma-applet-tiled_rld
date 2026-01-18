@@ -512,3 +512,7 @@ msgstr "Sortează Dalele"
 
 #~ msgid "Desktop Theme (%1)"
 #~ msgstr "Temă Desktop (%1)"
+
+#: ../contents/ui/SidebarView.qml
+msgid "Tiled Menu Reloaded Settings"
+msgstr ""

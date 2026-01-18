@@ -523,3 +523,7 @@ msgstr ""
 
 #~ msgid "Default Order"
 #~ msgstr "默认顺序"
+
+#: ../contents/ui/SidebarView.qml
+msgid "Tiled Menu Reloaded Settings"
+msgstr ""

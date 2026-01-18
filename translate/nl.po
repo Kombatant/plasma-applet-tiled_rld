@@ -526,3 +526,7 @@ msgstr "Tegels sorteren"
 
 #~ msgid "Default Order"
 #~ msgstr "Standaardvolgorde"
+
+#: ../contents/ui/SidebarView.qml
+msgid "Tiled Menu Reloaded Settings"
+msgstr ""

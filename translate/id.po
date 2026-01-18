@@ -518,3 +518,7 @@ msgstr "Urutkan Ubin"
 
 #~ msgid "Apps"
 #~ msgstr "Aplikasi"
+
+#: ../contents/ui/SidebarView.qml
+msgid "Tiled Menu Reloaded Settings"
+msgstr ""

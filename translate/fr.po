@@ -548,3 +548,7 @@ msgstr "Trier les Tuiles"
 
 #~ msgid "Settings"
 #~ msgstr "Configuration"
+
+#: ../contents/ui/SidebarView.qml
+msgid "Tiled Menu Reloaded Settings"
+msgstr ""

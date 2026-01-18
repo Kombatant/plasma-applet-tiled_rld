@@ -511,3 +511,7 @@ msgstr "Järjestä laatat"
 
 #~ msgid "<b>Version:</b> %1"
 #~ msgstr "<b>Versio:</b> %1"
+
+#: ../contents/ui/SidebarView.qml
+msgid "Tiled Menu Reloaded Settings"
+msgstr ""

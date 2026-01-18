@@ -513,3 +513,7 @@ msgstr "Döşemeleri Sıralama"
 
 #~ msgid "Desktop Theme (%1)"
 #~ msgstr "Masaüstü Teması (%1)"
+
+#: ../contents/ui/SidebarView.qml
+msgid "Tiled Menu Reloaded Settings"
+msgstr ""

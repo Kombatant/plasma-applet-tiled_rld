@@ -544,3 +544,7 @@ msgstr "Sortiere Kacheln"
 
 #~ msgid "Settings"
 #~ msgstr "Einstellungen"
+
+#: ../contents/ui/SidebarView.qml
+msgid "Tiled Menu Reloaded Settings"
+msgstr ""

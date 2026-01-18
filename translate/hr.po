@@ -512,3 +512,7 @@ msgstr "Sortiraj Pločice"
 
 #~ msgid "Desktop Theme (%1)"
 #~ msgstr "Desktop Tema"
+
+#: ../contents/ui/SidebarView.qml
+msgid "Tiled Menu Reloaded Settings"
+msgstr ""
