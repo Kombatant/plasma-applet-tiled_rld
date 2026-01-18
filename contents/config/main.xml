@@ -76,6 +76,11 @@
 		<entry name="tilesLocked" type="bool">
 			<default>false</default>
 		</entry>
+		<entry name="tileHoverEffect" type="string">
+			<!-- enum: classic, holographic -->
+			<label>Hover effect style for tiles.</label>
+			<default>classic</default>
+		</entry>
 
 		<!-- Colors -->
 		<!-- Use empty string instead of color type so that we can use default colors from the color scheme. -->

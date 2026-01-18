@@ -63,6 +63,7 @@ Item {
 		_ensureSettingInitialized('tileRoundedCorners', true)
 		_ensureSettingInitialized('tileCornerRadius', 6)
 		_ensureSettingInitialized('tilesLocked', false)
+		_ensureSettingInitialized('tileHoverEffect', 'classic')
 
 		// Use empty string to indicate "use theme/default".
 		_ensureSettingInitialized('defaultTileColor', '')

@@ -11,6 +11,29 @@ Rectangle {
 	readonly property real cornerRadius: (config && config.tileCornerRadius ? config.tileCornerRadius : 0)
 	property color gradientBottomColor: Qt.darker(appObj.backgroundColor, 2.0)
 
+	// Holographic hover effect properties
+	readonly property bool useHolographicEffect: plasmoid && plasmoid.configuration && plasmoid.configuration.tileHoverEffect === "holographic"
+	readonly property color holographicColor: "#00ffff" // Cyan
+	readonly property real holographicGlowOpacity: 0.5
+	scale: (useHolographicEffect && hovered) ? 1.05 : 1.0
+	Behavior on scale {
+		NumberAnimation {
+			duration: 300
+			easing.type: Easing.OutCubic
+		}
+	}
+
+	// Glow effect layer (box-shadow emulation) - only for holographic effect
+	layer.enabled: useHolographicEffect && hovered
+	layer.effect: QtGraphicalEffects.Glow {
+		samples: 17
+		radius: 12
+		spread: 0.3
+		color: Qt.rgba(tileItemView.holographicColor.r, tileItemView.holographicColor.g, tileItemView.holographicColor.b, tileItemView.holographicGlowOpacity)
+		transparentBorder: true
+		cached: false
+	}
+
 	function _fileExtFromUrl(url) {
 		if (!url) {
 			return ""
@@ -143,6 +166,47 @@ Rectangle {
 			renderType: Text.QtRendering // Fix pixelation when scaling. Plasma.Label uses NativeRendering.
 			style: Text.Outline
 			styleColor: appObj.backgroundGradient ? tileItemView.gradientBottomColor : appObj.backgroundColor
+		}
+
+		// Holographic sweep overlay effect
+		Item {
+			id: holographicSweep
+			anchors.fill: parent
+			clip: true
+			visible: tileItemView.useHolographicEffect
+			opacity: (tileItemView.useHolographicEffect && tileItemView.hovered) ? 1 : 0
+			Behavior on opacity {
+				NumberAnimation {
+					duration: 300
+					easing.type: Easing.OutCubic
+				}
+			}
+
+			Rectangle {
+				id: sweepGradient
+				width: parent.width * 2
+				height: parent.height * 2
+				x: tileItemView.hovered ? parent.width : -width
+				y: -parent.height * 0.5
+				rotation: -45
+				transformOrigin: Item.Center
+				opacity: 0.3
+				gradient: Gradient {
+					orientation: Gradient.Vertical
+					GradientStop { position: 0.0; color: "transparent" }
+					GradientStop { position: 0.3; color: "transparent" }
+					GradientStop { position: 0.5; color: tileItemView.holographicColor }
+					GradientStop { position: 0.7; color: "transparent" }
+					GradientStop { position: 1.0; color: "transparent" }
+				}
+
+				Behavior on x {
+					NumberAnimation {
+						duration: 500
+						easing.type: Easing.OutCubic
+					}
+				}
+			}
 		}
 	}
 

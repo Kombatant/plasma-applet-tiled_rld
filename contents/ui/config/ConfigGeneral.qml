@@ -149,6 +149,14 @@ LibConfig.FormKCM {
 		}
 	}
 	LibConfig.ComboBox {
+		configKey: "tileHoverEffect"
+		Kirigami.FormData.label: i18n("Hover Effect")
+		model: [
+			{ value: "classic", text: i18n("Classic") },
+			{ value: "holographic", text: i18n("Holographic") },
+		]
+	}
+	LibConfig.ComboBox {
 		configKey: "tileLabelAlignment"
 		Kirigami.FormData.label: i18n("Text Alignment")
 		model: [
