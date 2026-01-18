@@ -14,7 +14,8 @@ Item {
 	property var popup
 	z: 1
 
-	readonly property int _fixedHorizontalButtons: 6 // auto resize + 3 view buttons + user + power
+	readonly property int _fixedHorizontalButtons: 7 // auto resize + 3 view buttons + user + settings + power
+	readonly property url settingsIconSource: Qt.resolvedUrl("assets/tiled-settings.svg")
 	readonly property int sidebarShortcutLimit: {
 		if (!appsModel || !appsModel.sidebarModel || !config) {
 			return 0
@@ -202,6 +203,17 @@ Item {
 			}
 
 			SidebarItem {
+				id: settingsButton
+				icon.name: ""
+				icon.source: settingsIconSource
+				text: i18n("Settings")
+				tooltipText: i18n("Settings")
+				onClicked: {
+					plasmoid.internalAction("configure").trigger()
+				}
+			}
+
+			SidebarItem {
 				id: powerMenuButton
 				icon.name: 'system-shutdown-symbolic'
 				text: i18n("Power")
@@ -379,6 +391,17 @@ Item {
 						}
 						return ""
 					}
+				}
+			}
+
+			SidebarItem {
+				id: settingsButtonHoriz
+				icon.name: ""
+				icon.source: settingsIconSource
+				text: i18n("Settings")
+				tooltipText: i18n("Settings")
+				onClicked: {
+					plasmoid.internalAction("configure").trigger()
 				}
 			}
 
