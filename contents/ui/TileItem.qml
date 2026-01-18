@@ -37,7 +37,7 @@ Item {
 	readonly property real labelPaddingX: cellMargin + (6 * Screen.devicePixelRatio)
 	readonly property real labelPaddingY: cellMargin + (4 * Screen.devicePixelRatio)
 	readonly property real labelShadowOffset: Math.max(1, Math.round(1 * Screen.devicePixelRatio))
-	readonly property color labelBaseColor: (tileItemView && tileItemView.gradient ? tileItemView.gradientBottomColor : appObj.backgroundColor)
+	readonly property color labelBaseColor: (tileItemView && appObj.backgroundGradient ? tileItemView.gradientBottomColor : appObj.backgroundColor)
 	readonly property real labelBaseLuma: _relativeLuminance(labelBaseColor)
 	readonly property bool labelBaseIsLight: labelBaseLuma >= 0.6
 	readonly property bool labelUseDualOutline: !!appObj.backgroundImage

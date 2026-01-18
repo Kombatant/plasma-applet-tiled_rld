@@ -39,6 +39,7 @@ ColumnLayout {
 		tileIconSize: "int",
 		tileMargin: "double",
 		tilesLocked: "bool",
+		tileHoverEffect: "string",
 		defaultTileColor: "string",
 		defaultTileGradient: "bool",
 		sidebarBackgroundColor: "string",

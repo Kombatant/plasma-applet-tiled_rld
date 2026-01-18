@@ -8,7 +8,7 @@ FlatButton {
 	// In horizontal mode (top/bottom sidebar): fixed width, fixed height
 	Layout.fillWidth: !config.sidebarHorizontal
 	Layout.fillHeight: false
-	Layout.preferredWidth: config.sidebarHorizontal ? config.flatButtonSize : undefined
+	Layout.preferredWidth: config.sidebarHorizontal ? config.flatButtonSize : -1
 	Layout.preferredHeight: config.flatButtonSize
 	Layout.minimumWidth: expanded ? config.sidebarMinOpenWidth : implicitWidth
 	Layout.alignment: config.sidebarHorizontal ? Qt.AlignVCenter : Qt.AlignHCenter

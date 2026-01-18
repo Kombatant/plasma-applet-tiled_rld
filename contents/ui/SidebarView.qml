@@ -274,8 +274,8 @@ Item {
 				visible: (config.sidebarOnBottom || config.sidebarOnTop) && !config.isEditingTile && searchView.showSearchField
 				height: config.searchFieldHeight
 				implicitHeight: config.searchFieldHeight
-				width: Math.min(parent.width * 0.7, config.appListWidth)
-				anchors.verticalCenter: parent.verticalCenter
+				Layout.preferredWidth: Math.min(parent.width * 0.7, config.appListWidth)
+				Layout.alignment: Qt.AlignVCenter
 				listView: (searchView.stackView && searchView.stackView.currentItem && searchView.stackView.currentItem.listView) ? searchView.stackView.currentItem.listView : []
 
 				MouseArea {
