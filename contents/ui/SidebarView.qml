@@ -207,7 +207,7 @@ Item {
 				icon.name: ""
 				icon.source: settingsIconSource
 				text: i18n("Settings")
-				tooltipText: i18n("Settings")
+				tooltipText: i18n("Tiled Menu Reloaded Settings")
 				onClicked: {
 					plasmoid.internalAction("configure").trigger()
 				}
@@ -399,7 +399,7 @@ Item {
 				icon.name: ""
 				icon.source: settingsIconSource
 				text: i18n("Settings")
-				tooltipText: i18n("Settings")
+				tooltipText: i18n("Tiled Menu Reloaded Settings")
 				onClicked: {
 					plasmoid.internalAction("configure").trigger()
 				}
